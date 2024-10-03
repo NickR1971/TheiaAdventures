@@ -119,7 +119,8 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 		}
 
 		data.id = (uint)UnityEngine.Random.Range(100, 10000000);
-		GoToMainScene();
+		//GoToMainScene();
+		SceneManager.LoadScene("SceneNewGame");
 	}
 
 	public void GoToMainScene()
