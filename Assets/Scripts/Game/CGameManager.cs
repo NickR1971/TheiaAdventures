@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class CGameManager
 {
-	public static event Action onSave;
+	private static event Action onSave;
     public const int versionMajor=0;
     public const int versionMinor=1;
     public const int versionPatch=0;
@@ -28,6 +28,15 @@ public static class CGameManager
         gameData.versionMajor = versionMajor;
         gameData.versionMinor = versionMinor;
         gameData.versionPatch = versionPatch;
+    }
+    public static void AddOnSaveAction(Action _a)
+    {
+        onSave += _a;
+    }
+
+    public static void RemoveOnSaveAction(Action _a)
+    {
+        onSave -= _a;
     }
 
 }

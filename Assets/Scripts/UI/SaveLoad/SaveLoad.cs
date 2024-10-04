@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class SaveLoad : ISaveLoad
 {
-	private IGame game;
 	private CSaveFile saveFile;
 	private IMainMenu mainMenu;
 
-	public SaveLoad(CSaveFile _saveFile, IGame _game, IMainMenu _mainMenu)
+	public SaveLoad(CSaveFile _saveFile, IMainMenu _mainMenu)
     {
-		game = _game;
 		mainMenu = _mainMenu;
 		saveFile = _saveFile;
     }
@@ -27,15 +25,15 @@ public class SaveLoad : ISaveLoad
 
 	public void Save(string _name)
 	{
-		game.OnSave();
-		saveFile.Save(_name, game.GetData());
+		CGameManager.OnSave();
+		saveFile.Save(_name, CGameManager.GetData());
 	}
 
 	public void Load(string _name)
 	{
 		if (IsSavedGameExist())
 		{
-			SaveData data = game.GetData();
+			SaveData data = CGameManager.GetData();
 			saveFile.Load(_name, out data);
 			CGameManager.SetGameData(data); //-----??
 			mainMenu.GoToMainScene();

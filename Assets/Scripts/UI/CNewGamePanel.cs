@@ -10,13 +10,14 @@ public class CNewGamePanel : CUI
         InitUI();
     }
 
-    public void ToBattle()
+    public void ToGame()
     {
-        SceneManager.LoadScene("SceneBattle");
+        SceneManager.LoadScene("SceneBase");
     }
     
     public void ToLogo()
     {
+        CGameManager.SetGameData(null);
         SceneManager.LoadScene("SceneLogo");
     }
 }

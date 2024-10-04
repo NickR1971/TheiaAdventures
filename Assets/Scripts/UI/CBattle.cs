@@ -12,6 +12,6 @@ public class CBattle : CUI
     {
         InitUI();
         game = AllServices.Container.Get<IGame>();
-        game.CreateGame(game.GetData());
+        game.CreateGame(CGameManager.GetData());
     }
 }

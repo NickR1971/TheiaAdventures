@@ -23,7 +23,6 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	private IDialog dialog;
 	private UImanager uiManager;
 	private IGameConsole gameConsole;
-	private IGame game;
 	private IInputController inputController;
 
 
@@ -31,8 +30,10 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
     {
 		SettingsData settingsData;
 
-		game = new CGame();
-		SaveData data = game.GetData();
+		IGame game = new CGame();
+		AllServices.Container.Register<IGame>(game);
+
+		SaveData data = CGameManager.GetData();
 
 		AllServices.Container.Register<IMainMenu>(this);
 		AllServices.Container.Register<IGame>(game);
@@ -47,7 +48,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 			settingsData = new SettingsData();
         }
 		usedLanguage = settingsData.selected;
-		saveLoad = new SaveLoad(saveFile, game, this);
+		saveLoad = new SaveLoad(saveFile, this);
 		saveLoad.SetProfile(settingsData.profileName);
 
 		uiManager = new UImanager();
@@ -88,7 +89,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	//--------------------------------------------------------------
 	// IMainMenu interface
 	//--------------------------------------------------------------
-	public bool IsGameExist() => game.GetData()!=null;
+	public bool IsGameExist() => CGameManager.GetData()!=null;
 
 	public void SetLanguage(UsedLocal _language)
     {
@@ -111,7 +112,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 	public void NewGame()
 	{
-		SaveData data = game.GetData();
+		SaveData data = CGameManager.GetData();
 		if (data == null)
 		{
 			data = new SaveData();
@@ -130,7 +131,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 	public void MainMenuScene()
 	{
-        game.OnSave();
+        CGameManager.OnSave();
 		SceneManager.LoadScene("SceneLogo");
 	}
 

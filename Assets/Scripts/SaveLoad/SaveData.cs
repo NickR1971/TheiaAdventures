@@ -14,5 +14,6 @@ public class SaveData
 	public int versionMinor;
 	public int versionPatch;
 	public string comment;
+	public uint num_scene;
 	public string data;
 }
