@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDungeon : IService
 {
-    void Create(SaveData _data);
+    void Create(uint _gameID);
     int GetSequenceNumber(uint _max);
     IGameMap GetGameMap();
 }
@@ -16,7 +16,8 @@ public class CDungeon : MonoBehaviour, IDungeon
     [SerializeField] private GameObject solidPrefab;
     private IDialog dialog = null;
     private IGameConsole gameConsole = null;
-    private SaveData data = null;
+    //private SaveData data = null;
+    private uint gameID = 0;
     private CRand buildSequence;
     private CellCoordsCalculator cellCalculator;
     private CRoom[] map;
@@ -37,7 +38,7 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         dialog = AllServices.Container.Get<IDialog>();
         gameConsole = AllServices.Container.Get<IGameConsole>();
-        if (data != null) BuildGame();
+        if (gameID != 0) BuildGame();
     }
 
     private int GetRoomNumber(int _x, int _y) => _y * mapWidth + _x;
@@ -150,7 +151,7 @@ public class CDungeon : MonoBehaviour, IDungeon
 
     private void BuildGame()
     {
-        buildSequence = new CRand(data.id);
+        buildSequence = new CRand(gameID);
         const int maxroom = 50;
         int n = maxroom - GenerateMapFrom(5, 5, maxroom, false, false, false, false);
         Debug.Log($"Create {n} rooms");
@@ -182,9 +183,9 @@ public class CDungeon : MonoBehaviour, IDungeon
     //---------------------------------
     // IDungeon
     //---------------------------------
-    public void Create(SaveData _data)
+    public void Create(uint _gameID)
     {
-        data = _data;
+        gameID = _gameID;
         if (dialog != null) BuildGame();
     }
 

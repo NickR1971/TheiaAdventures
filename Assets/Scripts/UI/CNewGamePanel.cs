@@ -15,6 +15,7 @@ public class CNewGamePanel : CUI
         SceneManager.LoadScene("SceneBase");
     }
     
+    // cancel create new game
     public void ToLogo()
     {
         CGameManager.SetGameData(null);

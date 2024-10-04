@@ -10,8 +10,8 @@ public class CBase : CUI
         InitUI();
     }
 
-    public void ToBattle()
+    public void ToMenu()
     {
-        SceneManager.LoadScene("SceneBattle");
+        uiManager.CloseUI();
     }
 }

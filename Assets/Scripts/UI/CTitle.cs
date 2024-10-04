@@ -7,6 +7,9 @@ public class CTitle : CUI
     private void Start()
     {
         InitUI();
+    }
+    protected override void OnUpdate()
+    {
         if (AllServices.Container.Get<IMainMenu>().IsGameExist()) uiManager.CloseUI();
     }
     public void OnButton()

@@ -28,6 +28,6 @@ public class CGame : IGame
         gameConsole = AllServices.Container.Get<IGameConsole>();
         dungeon = AllServices.Container.Get<IDungeon>();
         if (dungeon == null) Debug.LogError("Dungeon interface not found!");
-        else dungeon.Create(_data);
+        else dungeon.Create(_data.id);
     }
 }
