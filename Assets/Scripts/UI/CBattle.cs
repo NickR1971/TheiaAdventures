@@ -13,5 +13,6 @@ public class CBattle : CUI
         InitUI();
         game = AllServices.Container.Get<IGame>();
         game.CreateGame(CGameManager.GetData());
+        CGameManager.GetData().num_scene = 2;
     }
 }

@@ -66,60 +66,58 @@ public class MyInputController : MonoBehaviour, IInputController
 
     public bool IsPressed(MyButton _code)
     {
+        bool rt = false;
         if (gamepad != null)
         {
-            return gamepad[buttons[(int)_code]].wasPressedThisFrame;
+            if (gamepad[buttons[(int)_code]].wasPressedThisFrame) rt = true;
         }
         if (keyboard != null)
         {
-            return keyboard[keys[(int)_code]].wasPressedThisFrame;
+            if (keyboard[keys[(int)_code]].wasPressedThisFrame) rt = true;
         }
-        return false;
+        return rt;
     }
     public bool IsPressed(Key _key) => keyboard[_key].wasPressedThisFrame;
 
     public void GetLeftStick(out float _horizontal, out float _vertical)
     {
-        if(gamepad==null)
+        _horizontal = 0;
+        _vertical = 0;
+
+        if (gamepad != null)
         {
-            _horizontal = 0;
-            _vertical = 0;
+            Vector2 v;
 
-            if (keyboard[Key.A].IsPressed()) _horizontal = -1;
-            if (keyboard[Key.D].IsPressed()) _horizontal = 1;
-            if (keyboard[Key.S].IsPressed()) _vertical = -1;
-            if (keyboard[Key.W].IsPressed()) _vertical = 1;
-
-            return;
+            v = gamepad.leftStick.ReadValue();
+            _horizontal = v.x;
+            _vertical = v.y;
         }
 
-        Vector2 v;
+        if (keyboard[Key.A].IsPressed()) _horizontal = -1;
+        if (keyboard[Key.D].IsPressed()) _horizontal = 1;    
+        if (keyboard[Key.S].IsPressed()) _vertical = -1;
+        if (keyboard[Key.W].IsPressed()) _vertical = 1;
 
-        v = gamepad.leftStick.ReadValue();
-        _horizontal = v.x;
-        _vertical = v.y;
     }
 
     public void GetRightStick(out float _horizontal, out float _vertical)
     {
-        if(gamepad==null)
+        _horizontal = 0;
+        _vertical = 0;
+        if (gamepad != null)
         {
-            _horizontal = 0;
-            _vertical = 0;
+            Vector2 v;
 
-            if (keyboard[Key.Numpad4].IsPressed()) _horizontal = -1;
-            if (keyboard[Key.Numpad6].IsPressed()) _horizontal = 1;
-            if (keyboard[Key.Numpad2].IsPressed()) _vertical = -1;
-            if (keyboard[Key.Numpad8].IsPressed()) _vertical = 1;
-
-            return;
+            v = gamepad.rightStick.ReadValue();
+            _horizontal = v.x;
+            _vertical = v.y;
         }
 
-        Vector2 v;
+        if (keyboard[Key.Numpad4].IsPressed()) _horizontal = -1;
+        if (keyboard[Key.Numpad6].IsPressed()) _horizontal = 1;
+        if (keyboard[Key.Numpad2].IsPressed()) _vertical = -1;
+        if (keyboard[Key.Numpad8].IsPressed()) _vertical = 1;
 
-        v = gamepad.rightStick.ReadValue();
-        _horizontal = v.x;
-        _vertical = v.y;
     }
 
     public bool IsPressedEnter()

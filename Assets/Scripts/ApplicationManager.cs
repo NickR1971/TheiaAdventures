@@ -120,13 +120,28 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 		}
 
 		data.id = (uint)UnityEngine.Random.Range(100, 10000000);
-		//GoToMainScene();
-		SceneManager.LoadScene("SceneNewGame");
+		data.num_scene = 0;
+		GoToMainScene();
 	}
 
 	public void GoToMainScene()
 	{
-		SceneManager.LoadScene("SceneBase");
+		switch (CGameManager.GetData().num_scene)
+        {
+			case 0:
+				SceneManager.LoadScene("SceneNewGame");
+				break;
+			case 1:
+				SceneManager.LoadScene("SceneBase");
+				break;
+			case 2:
+				SceneManager.LoadScene("SceneBattle");
+				break;
+			default:
+				Debug.LogError("Unknown scene detected: " + CGameManager.GetData().num_scene);
+				break;
+		}
+		
 	}
 
 	public void MainMenuScene()
