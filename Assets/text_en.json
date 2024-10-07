@@ -26,5 +26,13 @@
 { "key": "err_noCommnand", "value": "Command not found" },
 { "key": "err_noParam", "value": "Parameter not found" },
 { "key": "err_invalidParam", "value": "Invalid parameter" },
+{ "key": "game_name", "value": "Theia adventures" },
+{ "key": "game_attribute_Might", "value": "might" },
+{ "key": "game_attribute_Dex", "value": "dexterity" },
+{ "key": "game_attribute_Int", "value": "intellect" },
+{ "key": "game_attribute_Will", "value": "willpower" },
+{ "key": "game_attribute_Know", "value": "knowledge" },
+{ "key": "game_attribute_Speed", "value": "speed" },
+{ "key": "game_attribute_Init", "value": "initiative" },
 { "key": "core_empty", "value": "" }
 ] }

@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d0b850d874b8d4c872921ce0941007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strID: msg_helloWorld
+  strID: game_name
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

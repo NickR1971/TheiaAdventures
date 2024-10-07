@@ -57,6 +57,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         }
         AddCommand(new CGameConsoleCommand("help", Help));
         AddCommand(new CGameConsoleCommand("quit", Quit,ELocalStringID.core_quit));
+        AddCommand(new CGameConsoleCommand("getString", GetLocStr, "check local string"));
         mainMenu = AllServices.Container.Get<IMainMenu>();
         inputController = AllServices.Container.Get<IInputController>();
     }
@@ -156,5 +157,12 @@ public class CGameConsole : MonoBehaviour, IGameConsole
     public void OnButton()
     {
         Hide();
+    }
+    public void GetLocStr(string _str)
+    {
+        string locstr;
+
+        locstr = localization.GetString(_str);
+        ShowMessage(locstr);
     }
 }

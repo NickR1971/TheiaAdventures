@@ -27,5 +27,13 @@ err_divZero,
 err_noCommnand,
 err_noParam,
 err_invalidParam,
+game_name,
+game_attribute_Might,
+game_attribute_Dex,
+game_attribute_Int,
+game_attribute_Will,
+game_attribute_Know,
+game_attribute_Speed,
+game_attribute_Init,
 core_empty 
 }
