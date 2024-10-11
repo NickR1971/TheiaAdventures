@@ -2,6 +2,7 @@
 
 public interface ILocalization : IService
 {
+    UsedLocal GetCurrentLanguage();
     void LoadLanguage(UsedLocal _language);
     string GetString(ELocalStringID _id);
     string GetString(string _key);

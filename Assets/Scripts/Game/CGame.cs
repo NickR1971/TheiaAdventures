@@ -6,6 +6,7 @@ using UnityEngine;
 public interface IGame : IService
 {
     void CreateGame(SaveData _data);
+    CScenario GetScenario();
 }
 
 public class CGame : IGame
@@ -13,6 +14,7 @@ public class CGame : IGame
     private IDialog dialog = null;
     private IGameConsole gameConsole = null;
     private IDungeon dungeon = null;
+    private CScenario scenario = null;
 
     public CGame()
     {
@@ -30,4 +32,6 @@ public class CGame : IGame
         if (dungeon == null) Debug.LogError("Dungeon interface not found!");
         else dungeon.Create(_data.id);
     }
+
+    public CScenario GetScenario() => scenario;
 }

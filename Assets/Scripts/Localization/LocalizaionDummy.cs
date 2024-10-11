@@ -9,9 +9,12 @@ public class LocalizaionDummy : MonoBehaviour, ILocalization
         if (isActive)
             AllServices.Container.Register<ILocalization>(this);
     }
-    
+
     //-----------------------------------------------------
     // ILocalization
+
+    public UsedLocal GetCurrentLanguage() => UsedLocal.english;
+
     public string GetString(ELocalStringID _id)
     {
         return _id.ToString();
