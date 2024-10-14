@@ -15,7 +15,7 @@
 { "key": "core_profile", "value": "Profile" },
 { "key": "msg_remove", "value": "Remove" },
 { "key": "msg_areYouSure", "value": "Are you sure?" },
-{ "key": "msg_test", "value": "\"test\"  D'armon n'a'shesbernon" },
+{ "key": "msg_selectScenario", "value": "Select scenario" },
 { "key": "msg_helloWorld", "value": "Hello, world!" },
 { "key": "err_unknown", "value": "Unknown error" },
 { "key": "err_error", "value": "Error" },
@@ -34,5 +34,8 @@
 { "key": "game_attribute_Know", "value": "knowledge" },
 { "key": "game_attribute_Speed", "value": "speed" },
 { "key": "game_attribute_Init", "value": "initiative" },
+{ "key": "game_class_warrior", "value": "warrior" },
+{ "key": "game_class_wizard", "value": "wizard" },
+{ "key": "game_class_hunter", "value": "hunter" },
 { "key": "core_empty", "value": "" }
 ] }
