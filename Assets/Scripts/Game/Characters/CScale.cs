@@ -14,6 +14,13 @@ static public class CScale
         return _n;
     }
 
+    public static bool IsValidValue(int _n)
+    {
+        if (_n < 0) return false;
+        if (_n > 8) return false;
+        return true;
+    }
+
     public static string GetCValue(int _v) => strValues[CheckValue(_v)];
     public static int GetEValue(int _v) => Values[CheckValue(_v)];
 }
