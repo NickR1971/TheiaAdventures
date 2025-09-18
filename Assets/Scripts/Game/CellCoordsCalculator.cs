@@ -129,7 +129,7 @@ public abstract class CellCoordsCalculator : IGameMap
             case ECellType.water:
                 return Color.blue;
             default:
-                return Color.white;
+                return Color.red;
         }
     }
     private bool CheckSurface(Vector3 _position, out Vector3 _result, out ECellType _surfaceType)
