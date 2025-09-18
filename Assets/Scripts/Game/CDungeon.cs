@@ -11,9 +11,9 @@ public interface IDungeon : IService
 
 public class CDungeon : MonoBehaviour, IDungeon
 {
-    [SerializeField] private GameObject floorPrefab;
     [SerializeField] private GameObject cellPrefab;
     [SerializeField] private GameObject solidPrefab;
+    [SerializeField] private GameObject[] roomPrefabs = new GameObject[16];
     private IDialog dialog = null;
     private IGameConsole gameConsole = null;
     //private SaveData data = null;
@@ -56,8 +56,16 @@ public class CDungeon : MonoBehaviour, IDungeon
         if (CheckPosition(_x, _y) == false) return false;
 
         int roomNumber = GetRoomNumber(_x, _y);
+        int roomtype = 0;
 
-        map[roomNumber] = Instantiate(floorPrefab, CRoom.CalcPosition(_x, _y), Quaternion.identity, transform).GetComponent<CRoom>();
+        if (_east) roomtype += 1;
+        if (_west) roomtype += 2;
+        if (_south) roomtype += 4;
+        if (_north) roomtype += 8;
+
+        if (roomtype == 15) _north = _south = _west = _east = false;
+
+        map[roomNumber] = Instantiate(roomPrefabs[roomtype], CRoom.CalcPosition(_x, _y), Quaternion.identity, transform).GetComponent<CRoom>();
         map[roomNumber]
             .Init(this)
             .SetWalls(_north, _south, _west, _east)
@@ -153,7 +161,7 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         buildSequence = new CRand(gameID);
         const int maxroom = 50;
-        int n = maxroom - GenerateMapFrom(5, 5, maxroom, false, false, false, false);
+        int n = maxroom - GenerateMapFrom(5, 5, maxroom);
         Debug.Log($"Create {n} rooms");
 
         int x, y;
