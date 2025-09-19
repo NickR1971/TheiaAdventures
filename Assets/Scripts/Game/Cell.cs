@@ -25,11 +25,13 @@ public class Cell
     public int GetNearNumber(EMapDirection _direction) => nearList[(int)_direction];
     public void AddRoom(CRoom _room) => room = _room;
     public CRoom GetRoom() => room;
+    public int GetNumber() => number;
 
     public void SetObject(GameObject _obj)
     {
         obj = _obj;
         obj.transform.position = position;
+        obj.GetComponent<CCell>().Init(this);
     }
 
     public void SetColor(Color _color)
@@ -37,5 +39,7 @@ public class Cell
         if (obj == null) Debug.Log($"Cell #{number} mark not instantiated!");
         else obj.GetComponent<Renderer>().material.color = _color;
     }
+
+    public void SetActive(bool _f) { obj.SetActive(_f); }
 }
 

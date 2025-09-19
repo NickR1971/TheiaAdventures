@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class CRoom : MonoBehaviour
 {
-//    [SerializeField] private GameObject wallNorth;
-//    [SerializeField] private GameObject wallSouth;
-//    [SerializeField] private GameObject wallWest;
-//    [SerializeField] private GameObject wallEast;
     private IDungeon dungeon = null;
     private int row;
     private int col;
@@ -54,10 +50,6 @@ public class CRoom : MonoBehaviour
 
     public CRoom SetWalls(bool _north, bool _south, bool _west, bool _east)
     {
-//        wallNorth.SetActive(_north);
-//        wallSouth.SetActive(_south);
-//        wallWest.SetActive(_west);
-//        wallEast.SetActive(_east);
 
         isFreeNorth = !_north;
         isFreeSouth = !_south;

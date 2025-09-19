@@ -166,6 +166,7 @@ public abstract class CellCoordsCalculator : IGameMap
             cell.SetBaseType(surfaceType);
             onCreateCell(cell);
             cell.SetColor(GetSurfaceColor(surfaceType));
+            cell.SetActive(position.y < 3.1f);
         }
     }
 
@@ -184,6 +185,7 @@ public abstract class CellCoordsCalculator : IGameMap
     }
 }
 
+//=================================================================================================
 public class CellSquareCalculator : CellCoordsCalculator
 {
     public CellSquareCalculator() : base(10,13)
