@@ -125,7 +125,7 @@ public abstract class CellCoordsCalculator : IGameMap
             case ECellType.ground:
                 return Color.green;
             case ECellType.stone:
-                return Color.gray;
+                return Color.cyan;
             case ECellType.water:
                 return Color.blue;
             default:
