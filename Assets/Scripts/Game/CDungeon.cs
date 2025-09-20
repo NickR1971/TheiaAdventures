@@ -139,14 +139,126 @@ public class CDungeon : MonoBehaviour, IDungeon
                     break;
             }
             n = GetSequenceNumber(100);
-            if (n < 10) _north = _south = _west = _east = false;
-            else if (n < 95)
+
+            // шанс на кімнату без стін
+            if (n < 4) _north = _south = _west = _east = false;
+            else if (n < 97) // шанс гарантованого тупика
             {
-                if (GetSequenceNumber(10) < 4) _north = false;
-                if (GetSequenceNumber(10) < 4) _south = false;
-                if (GetSequenceNumber(10) < 4) _west = false;
-                if (GetSequenceNumber(10) < 4) _east = false;
+                if(!_north)
+                {
+                    switch(GetSequenceNumber(6))
+                    {
+                        case 1:
+                            _south = false;
+                            break;
+                        case 2:
+                            _west = false;
+                            break;
+                        case 3:
+                            _east = false;
+                            break;
+                        case 4:
+                            _south = false;
+                            _west = false;
+                            break;
+                        case 5:
+                            _west = false;
+                            _east = false;
+                            break;
+                        default:
+                            _east = false;
+                            _south = false;
+                            break;
+                    }
+                }
+                if (!_south)
+                {
+                    switch (GetSequenceNumber(6))
+                    {
+                        case 1:
+                            _north = false;
+                            break;
+                        case 2:
+                            _west = false;
+                            break;
+                        case 3:
+                            _east = false;
+                            break;
+                        case 4:
+                            _north = false;
+                            _west = false;
+                            break;
+                        case 5:
+                            _west = false;
+                            _east = false;
+                            break;
+                        default:
+                            _east = false;
+                            _north = false;
+                            break;
+                    }
+                }
+                if (!_west)
+                {
+                    switch (GetSequenceNumber(6))
+                    {
+                        case 1:
+                            _north = false;
+                            break;
+                        case 2:
+                            _south = false;
+                            break;
+                        case 3:
+                            _east = false;
+                            break;
+                        case 4:
+                            _north = false;
+                            _south = false;
+                            break;
+                        case 5:
+                            _south = false;
+                            _east = false;
+                            break;
+                        default:
+                            _east = false;
+                            _north = false;
+                            break;
+                    }
+                }
+                if (!_east)
+                {
+                    switch (GetSequenceNumber(6))
+                    {
+                        case 1:
+                            _north = false;
+                            break;
+                        case 2:
+                            _west = false;
+                            break;
+                        case 3:
+                            _south = false;
+                            break;
+                        case 4:
+                            _north = false;
+                            _west = false;
+                            break;
+                        case 5:
+                            _west = false;
+                            _south = false;
+                            break;
+                        default:
+                            _south = false;
+                            _north = false;
+                            break;
+                    }
+                }
             }
+
+            if (x == 1) _west = true;
+            if (x == mapWidth - 2) _east = true;
+            if (y == 1) _south = true;
+            if (y == mapHeight - 2) _north = true;
+
             _number = GenerateMapFrom(x, y, _number, _north, _south, _west, _east);
         }
         return 0;
@@ -161,7 +273,10 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         buildSequence = new CRand(gameID);
         const int maxroom = 50;
-        int n = maxroom - GenerateMapFrom(5, 5, maxroom);
+        const int startX = 2;
+        const int startY = 2;
+
+        int n = maxroom - GenerateMapFrom(startX, startY, maxroom);
         Debug.Log($"Create {n} rooms");
 
         int x, y;
