@@ -171,7 +171,7 @@ public class CDungeon : MonoBehaviour, IDungeon
                             break;
                     }
                 }
-                if (!_south)
+                else if (!_south)
                 {
                     switch (GetSequenceNumber(6))
                     {
@@ -198,7 +198,7 @@ public class CDungeon : MonoBehaviour, IDungeon
                             break;
                     }
                 }
-                if (!_west)
+                else if (!_west)
                 {
                     switch (GetSequenceNumber(6))
                     {
@@ -225,7 +225,7 @@ public class CDungeon : MonoBehaviour, IDungeon
                             break;
                     }
                 }
-                if (!_east)
+                else if (!_east)
                 {
                     switch (GetSequenceNumber(6))
                     {
