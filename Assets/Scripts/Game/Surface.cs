@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum ECellType
 {
-    none = 0, ground = 1, stone = 2, water = 3, ice = 4, wood = 5, start = 6
+    none = 0, ground = 1, stone = 2,
+    water = 3, ice = 4, wood = 5,
+    swamp = 6, lava = 7, sand=8,
+    start = 9
 }
 
 public interface ISurface

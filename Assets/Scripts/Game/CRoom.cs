@@ -6,6 +6,7 @@ using UnityEngine;
 public class CRoom : MonoBehaviour
 {
     private IDungeon dungeon = null;
+    private CRand localSequence;
     private int row;
     private int col;
     private const int centerCol = 5;
@@ -41,7 +42,7 @@ public class CRoom : MonoBehaviour
     public CRoom SetBasePosition(int _col, int _row)
     {
         row = _row; col = _col;
-
+        localSequence = new CRand((uint)dungeon.GetSequenceNumber((uint)(100000 * row + col)));
         return this;
     }
 

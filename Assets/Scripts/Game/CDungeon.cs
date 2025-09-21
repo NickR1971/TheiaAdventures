@@ -291,7 +291,8 @@ public class CDungeon : MonoBehaviour, IDungeon
                 }
             }
         }
-            cellCalculator.SetOnCreateCellAction(OnCreateCell);
+   
+        cellCalculator.SetOnCreateCellAction(OnCreateCell);
         for (y = 0; y < mapHeight; y++)
         {
             for(x=0;x<mapWidth;x++)
