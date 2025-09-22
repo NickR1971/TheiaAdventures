@@ -11,6 +11,7 @@ public abstract class CActor : CGameObject
     protected ActorState state;
     protected float walkSpeed;
     protected float runSpeed;
+    protected float turnAngle;
 
     private class Command
     {
@@ -50,6 +51,9 @@ public abstract class CActor : CGameObject
     }
     protected void InitActor()
     {
+        ISaveLoad sl = AllServices.Container.Get<ISaveLoad>();
+        if (sl.IsHexCell()) turnAngle = 30.0f;
+        else turnAngle = 90.0f;
         InitGameObject();
         state = ActorState.idle;
         walkSpeed = 1.0f;

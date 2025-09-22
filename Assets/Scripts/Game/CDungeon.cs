@@ -16,7 +16,6 @@ public class CDungeon : MonoBehaviour, IDungeon
     [SerializeField] private GameObject[] roomPrefabs = new GameObject[16];
     private IDialog dialog = null;
     private IGameConsole gameConsole = null;
-    //private SaveData data = null;
     private uint gameID = 0;
     private CRand buildSequence;
     private CellCoordsCalculator cellCalculator;
@@ -28,8 +27,9 @@ public class CDungeon : MonoBehaviour, IDungeon
     private void Awake()
     {
         AllServices.Container.Register<IDungeon>(this);
-        cellCalculator = new CellHexCalculator();
-        //cellCalculator = new CellSquareCalculator();
+        ISaveLoad sl = AllServices.Container.Get<ISaveLoad>();
+        if (sl.IsHexCell()) cellCalculator = new CellHexCalculator();
+        else cellCalculator = new CellSquareCalculator();
         map = new CRoom[mapWidth * mapHeight];
         cellCalculator.CreateMap(mapWidth, mapHeight);
     }
