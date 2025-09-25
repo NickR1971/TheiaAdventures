@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum ActorState { idle, walk, run, melee, range, die }
 
 public enum ActorCommand { wait, walk, run, turnleft, turnright, jump, crouch, melee, range, interact, use, die }
 
-public abstract class CActor : CGameObject
+public abstract class CActor : CGameObject, IPointerClickHandler
 {
     protected ActorState state;
     protected float walkSpeed;
@@ -58,6 +59,7 @@ public abstract class CActor : CGameObject
         state = ActorState.idle;
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
+        positionControl.Rotate(90.0f); // turn model to east
     }
 
     protected override void DoUpdate()
@@ -81,4 +83,22 @@ public abstract class CActor : CGameObject
     public abstract void SetState(ActorState _state);
     public abstract void Turn(float _angle);
     public abstract void Idle();
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+                SetState(ActorState.melee);
+                break;
+            case PointerEventData.InputButton.Right:
+                Idle();
+                break;
+            case PointerEventData.InputButton.Middle:
+                SetState(ActorState.die);
+                break;
+            default:
+                break;
+        }
+    }
 }
