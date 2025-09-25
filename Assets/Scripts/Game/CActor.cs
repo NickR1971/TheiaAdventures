@@ -36,10 +36,10 @@ public abstract class CActor : CGameObject
                 SetState(ActorState.melee);
                 break;
             case ActorCommand.turnleft:
-                Turn(-60);
+                Turn(-turnAngle);
                 break;
             case ActorCommand.turnright:
-                Turn(60);
+                Turn(turnAngle);
                 break;
             case ActorCommand.die:
                 SetState(ActorState.die);

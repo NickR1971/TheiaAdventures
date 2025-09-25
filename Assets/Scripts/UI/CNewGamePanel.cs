@@ -69,9 +69,9 @@ public class CNewGamePanel : CUI
         int n;
 
         origin = _id / 10;
-        textOrigin.strID = origins[origin].ToString();
+        textOrigin.SetText(origins[origin]);
         n = _id % 10; n--;  n += origin * 4;
-        textClass.strID = classes[n].ToString();
+        textClass.SetText(classes[n]);
 
         textOrigin.RefreshText();
         textClass.RefreshText();
@@ -83,7 +83,7 @@ public class CNewGamePanel : CUI
         if (_n > maxConst) _n = maxConst;
         constSelected = _n;
 
-        textConst.strID = constType[constSelected].ToString();
+        textConst.SetText(constType[constSelected]);
         textConst.RefreshText();
         SetAttributes();
     }

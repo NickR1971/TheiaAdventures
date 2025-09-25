@@ -7,8 +7,8 @@ public struct CAttributes
     int might;
     int dexterity;
     int intelligence;
-    int willPower;
     int knowledge;
+    int personality;
 }
 
 public struct CSecondaryAttributes

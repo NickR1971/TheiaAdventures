@@ -21,7 +21,10 @@ public class CTextLocalize : MonoBehaviour
     {
         localization.RemoveOnChange(RefreshText);
     }
-
+    public void SetText(ELocalStringID _id)
+    {
+        strID = _id.ToString();
+    }
     public void RefreshText()
     {
         textField.text = localization.GetString(strID);
