@@ -13,5 +13,4 @@ public interface ISaveLoad : IService
 	void RemoveSave(string _name);
 	string[] GetSavedList();
 	string[] GetCommentList();
-	bool IsHexCell(); // select hex or square cell
 }

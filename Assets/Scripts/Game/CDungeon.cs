@@ -28,8 +28,7 @@ public class CDungeon : MonoBehaviour, IDungeon
     private void Awake()
     {
         AllServices.Container.Register<IDungeon>(this);
-        ISaveLoad sl = AllServices.Container.Get<ISaveLoad>();
-        if (sl.IsHexCell()) cellCalculator = new CellHexCalculator();
+        if (CGameManager.IsHexCell()) cellCalculator = new CellHexCalculator();
         else cellCalculator = new CellSquareCalculator();
         map = new CRoom[mapWidth * mapHeight];
         cellCalculator.CreateMap(mapWidth, mapHeight);

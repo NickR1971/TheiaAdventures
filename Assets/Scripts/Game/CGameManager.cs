@@ -59,5 +59,6 @@ public static class CGameManager
     {
         onSave -= _a;
     }
+    public static bool IsHexCell() { return true; } // select hex or square cell
 
 }

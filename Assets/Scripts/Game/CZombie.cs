@@ -13,7 +13,6 @@ public class CZombie : CActor
         walkSpeed = 0.5f;
         runSpeed = 2.0f;
     }
-
     public override void SetState(ActorState _state)
     {
         state = _state;
@@ -21,12 +20,12 @@ public class CZombie : CActor
         {
             case ActorState.walk:
                 animator.SetBool("walk", true);
-                positionControl.MoveForward(walkSpeed);
+                if (!MoveForward(walkSpeed)) Idle();
                 break;
             case ActorState.run:
                 animator.SetBool("walk", true);
                 animator.SetBool("run", true);
-                positionControl.MoveForward(runSpeed);
+                if (!MoveForward(runSpeed)) Idle();
                 break;
             case ActorState.melee:
                 animator.SetBool("run", false);

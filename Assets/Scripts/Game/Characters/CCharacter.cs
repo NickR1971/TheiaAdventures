@@ -33,8 +33,6 @@ public class CCharacter
 {
     protected string chrName;
     protected ECharacterType chrType;
-    protected int cellNum;
-    protected EMapDirection dir;
     protected CAttributes attributes;
     protected CSecondaryAttributes secondaryAttributes;
     protected CCharactersPoints points;
@@ -42,7 +40,6 @@ public class CCharacter
     public CCharacter()
     {
         chrName = "Hero";
-        dir = EMapDirection.east;
         chrType = ECharacterType.hero;
         attributes.might = 3;
         attributes.dexterity = 3;

@@ -13,6 +13,7 @@ public abstract class CActor : CGameObject, IPointerClickHandler
     protected IGameMap gameMap;
     protected Cell currentCell;
     protected ActorState state;
+    protected EMapDirection dir;
     protected float walkSpeed;
     protected float runSpeed;
     protected float turnAngle;
@@ -41,9 +42,11 @@ public abstract class CActor : CGameObject, IPointerClickHandler
                 break;
             case ActorCommand.turnleft:
                 Turn(-turnAngle);
+                dir = CDirControl.GetLeft(dir);
                 break;
             case ActorCommand.turnright:
                 Turn(turnAngle);
+                dir = CDirControl.GetRight(dir);
                 break;
             case ActorCommand.die:
                 SetState(ActorState.die);
@@ -57,14 +60,24 @@ public abstract class CActor : CGameObject, IPointerClickHandler
     {
         dungeon = AllServices.Container.Get<IDungeon>();
         gameMap = dungeon.GetGameMap();
-        ISaveLoad sl = AllServices.Container.Get<ISaveLoad>();
-        if (sl.IsHexCell()) turnAngle = 30.0f;
+        bool isHex = CGameManager.IsHexCell();
+        if (isHex) turnAngle = 60.0f;
         else turnAngle = 90.0f;
+        CDirControl.SetHex(isHex);
         InitGameObject();
         state = ActorState.idle;
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
+        dir = EMapDirection.east;
         positionControl.Rotate(90.0f); // turn model to east
+    }
+    protected bool MoveForward(float _speed)
+    {
+        Cell cell = gameMap.GetCell(currentCell.GetNearNumber(dir));
+        if (cell == null) return false;
+        positionControl.MoveTo(cell.GetPosition(), _speed);
+        currentCell = cell;
+        return true;
     }
 
     protected override void DoUpdate()
@@ -95,13 +108,13 @@ public abstract class CActor : CGameObject, IPointerClickHandler
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                SetState(ActorState.walk);
+                AddCommand(ActorCommand.turnleft);
                 break;
             case PointerEventData.InputButton.Right:
-                Idle();
+                AddCommand(ActorCommand.turnright);
                 break;
             case PointerEventData.InputButton.Middle:
-                SetState(ActorState.die);
+                AddCommand(ActorCommand.walk);
                 break;
             default:
                 break;
