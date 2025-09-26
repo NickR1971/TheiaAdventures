@@ -9,6 +9,9 @@ public enum ActorCommand { wait, walk, run, turnleft, turnright, jump, crouch, m
 
 public abstract class CActor : CGameObject, IPointerClickHandler
 {
+    protected IDungeon dungeon;
+    protected IGameMap gameMap;
+    protected Cell currentCell;
     protected ActorState state;
     protected float walkSpeed;
     protected float runSpeed;
@@ -52,6 +55,8 @@ public abstract class CActor : CGameObject, IPointerClickHandler
     }
     protected void InitActor()
     {
+        dungeon = AllServices.Container.Get<IDungeon>();
+        gameMap = dungeon.GetGameMap();
         ISaveLoad sl = AllServices.Container.Get<ISaveLoad>();
         if (sl.IsHexCell()) turnAngle = 30.0f;
         else turnAngle = 90.0f;
@@ -74,6 +79,7 @@ public abstract class CActor : CGameObject, IPointerClickHandler
         if (cmd.command == ActorCommand.die) cmdList.Clear();
     }
 
+    public void SetCurrentCell(Cell _cell) { currentCell = _cell; }
     public void AddCommand(ActorCommand _cmd)
     {
         cmdList.Enqueue(new Command(_cmd));
@@ -89,7 +95,7 @@ public abstract class CActor : CGameObject, IPointerClickHandler
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                SetState(ActorState.melee);
+                SetState(ActorState.walk);
                 break;
             case PointerEventData.InputButton.Right:
                 Idle();
