@@ -11,7 +11,7 @@ public class CNewGamePanel : CUI
     [SerializeField] private CTextAttribute Might;
     [SerializeField] private CTextAttribute Dex;
     [SerializeField] private CTextAttribute Intel;
-    [SerializeField] private CTextAttribute Will;
+    [SerializeField] private CTextAttribute Pers;
     [SerializeField] private CTextAttribute Know;
     private int origin;
     private ELocalStringID[] origins = {
@@ -20,8 +20,8 @@ public class CNewGamePanel : CUI
         ELocalStringID.game_origin_noble };
     private ELocalStringID[] classes = { 
         ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter, ELocalStringID.game_class_acolyte, ELocalStringID.game_class_adept,
-        ELocalStringID.game_class_pikeman, ELocalStringID.game_class_crossbowman, ELocalStringID.game_class_acolyte, ELocalStringID.game_class_adept,
-        ELocalStringID.game_class_knight, ELocalStringID.game_class_duelist, ELocalStringID.game_class_acolyte, ELocalStringID.game_class_adept };
+        ELocalStringID.game_class_pikeman, ELocalStringID.game_class_crossbowman, ELocalStringID.game_class_monk, ELocalStringID.game_class_alchemist,
+        ELocalStringID.game_class_knight, ELocalStringID.game_class_duelist, ELocalStringID.game_class_priest, ELocalStringID.game_class_sorcerer };
 
     private ELocalStringID[] constType = {
         ELocalStringID.game_const_balanced, ELocalStringID.game_const_scholar, ELocalStringID.game_const_barbarian, ELocalStringID.game_const_leader, ELocalStringID.game_const_agile,
@@ -33,7 +33,7 @@ public class CNewGamePanel : CUI
     private int[] mightValues = { 3, 1, 4, 4, 2, 5, 3, 1, 2, 2 };
     private int[] dexValues =   { 3, 2, 4, 3, 4, 3, 5, 1, 2, 2 };
     private int[] intValues =   { 3, 4, 3, 2, 4, 1, 2, 5, 2, 3 };
-    private int[] willValues =  { 3, 4, 3, 4, 2, 3, 2, 3, 3, 5 };
+    private int[] persValues =  { 3, 4, 3, 4, 2, 3, 2, 3, 3, 5 };
     private int[] knowValues =  { 3, 4, 1, 2, 3, 1, 2, 4, 5, 1 };
 
     private void Start()
@@ -47,7 +47,7 @@ public class CNewGamePanel : CUI
         Might.SetValue(mightValues[constSelected]);
         Dex.SetValue(dexValues[constSelected]);
         Intel.SetValue(intValues[constSelected]);
-        Will.SetValue(willValues[constSelected]);
+        Pers.SetValue(persValues[constSelected]);
         Know.SetValue(knowValues[constSelected]);
     }
 
