@@ -30,6 +30,12 @@ public static class CGameManager
     public const int versionMinor=1;
     public const int versionPatch=0;
     private static SaveData gameData = null;
+    private static ICharacterManager characterManager = null;
+
+    public static void SetCharacterInterface(ICharacterManager _characterManager)
+    {
+        characterManager = _characterManager;
+    }
 
 	public static void SetGameData(SaveData _data)
     {

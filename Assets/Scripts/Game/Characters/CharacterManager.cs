@@ -32,6 +32,11 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     }
     void Start()
     {
-        
+        CGameManager.SetCharacterInterface(this);
+    }
+    void OnDestroy()
+    {
+        AllServices.Container.UnRegister<ICharacterManager>();
+        CGameManager.SetCharacterInterface(null);
     }
 }
