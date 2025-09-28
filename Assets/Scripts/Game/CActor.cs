@@ -62,7 +62,7 @@ public abstract class CActor : CGameObject, IPointerClickHandler
         gameMap = dungeon.GetGameMap();
         bool isHex = CGameManager.IsHexCell();
         if (isHex) turnAngle = 60.0f;
-        else turnAngle = 90.0f;
+        else turnAngle = 45.0f;
         CDirControl.SetHex(isHex);
         InitGameObject();
         state = ActorState.idle;
