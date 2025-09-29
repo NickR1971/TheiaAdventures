@@ -37,30 +37,30 @@ public abstract class CellCoordsCalculator : IGameMap
         xNearList[(int)EMapDirection.center] = 0;
         yNearList[(int)EMapDirection.center] = 0;
         xNearList[(int)EMapDirection.north] = 0;
-        yNearList[(int)EMapDirection.north] = 1;
+        yNearList[(int)EMapDirection.north] = -1;
         xNearList[(int)EMapDirection.northeast] = 1;
-        yNearList[(int)EMapDirection.northeast] = 1;
+        yNearList[(int)EMapDirection.northeast] = -1;
         xNearList[(int)EMapDirection.east] = 1;
         yNearList[(int)EMapDirection.east] = 0;
         xNearList[(int)EMapDirection.southeast] = 1;
-        yNearList[(int)EMapDirection.southeast] = -1;
+        yNearList[(int)EMapDirection.southeast] = 1;
         xNearList[(int)EMapDirection.south] = 0;
-        yNearList[(int)EMapDirection.south] = -1;
+        yNearList[(int)EMapDirection.south] = 1;
         xNearList[(int)EMapDirection.southwest] = -1;
-        yNearList[(int)EMapDirection.southwest] = -1;
+        yNearList[(int)EMapDirection.southwest] = 1;
         xNearList[(int)EMapDirection.west] = -1;
         yNearList[(int)EMapDirection.west] = 0;
         xNearList[(int)EMapDirection.northwest] = -1;
-        yNearList[(int)EMapDirection.northwest] = 1;
+        yNearList[(int)EMapDirection.northwest] = -1;
         direction[(int)EMapDirection.center] = new Vector3(0, -1, 0);
-        direction[(int)EMapDirection.north] = new Vector3(0, -1, 1);
-        direction[(int)EMapDirection.northeast] = new Vector3(1, -1, 1);
+        direction[(int)EMapDirection.north] = new Vector3(0, -1, -1);
+        direction[(int)EMapDirection.northeast] = new Vector3(1, -1, -1);
         direction[(int)EMapDirection.east] = new Vector3(1, -1, 0);
-        direction[(int)EMapDirection.southeast] = new Vector3(1, -1, -1);
-        direction[(int)EMapDirection.south] = new Vector3(0, -1, -1);
-        direction[(int)EMapDirection.southwest] = new Vector3(-1, -1, -1);
+        direction[(int)EMapDirection.southeast] = new Vector3(1, -1, 1);
+        direction[(int)EMapDirection.south] = new Vector3(0, -1, 1);
+        direction[(int)EMapDirection.southwest] = new Vector3(-1, -1, 1);
         direction[(int)EMapDirection.west] = new Vector3(-1, -1, 0);
-        direction[(int)EMapDirection.northwest] = new Vector3(-1, -1, 1);
+        direction[(int)EMapDirection.northwest] = new Vector3(-1, -1, -1);
     }
 
     public int GetRoomWidth() => width;
@@ -218,10 +218,10 @@ public class CellHexCalculator : CellCoordsCalculator
 {
     public CellHexCalculator() : base(10,15)
     {
-        direction[(int)EMapDirection.northeast] = new Vector3(0.866f, -1, 0.5f);
-        direction[(int)EMapDirection.southeast] = new Vector3(0.866f, -1, -0.5f);
-        direction[(int)EMapDirection.southwest] = new Vector3(-0.866f, -1, -0.5f);
-        direction[(int)EMapDirection.northwest] = new Vector3(-0.866f, -1, 0.5f);
+        direction[(int)EMapDirection.northeast] = new Vector3(0.866f, -1, -0.5f);
+        direction[(int)EMapDirection.southeast] = new Vector3(0.866f, -1, 0.5f);
+        direction[(int)EMapDirection.southwest] = new Vector3(-0.866f, -1, 0.5f);
+        direction[(int)EMapDirection.northwest] = new Vector3(-0.866f, -1, -0.5f);
     }
 
     private void CorrectNearList(bool _isOddRow)

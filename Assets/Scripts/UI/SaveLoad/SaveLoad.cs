@@ -50,9 +50,4 @@ public class SaveLoad : ISaveLoad
 	public string[] GetSavedList() => saveFile.GetSavedList();
 
 	public string[] GetCommentList() => saveFile.GetCommentList();
-
-    public bool IsHexCell()
-    {
-		return true;
-    }
 }

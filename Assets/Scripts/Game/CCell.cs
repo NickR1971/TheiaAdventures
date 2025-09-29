@@ -21,23 +21,21 @@ public class CCell : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        string btn;
-
+        gameConsole.Show();
         switch(eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                btn = " [left]";
+                cell.SetColor(Color.blue);
                 break;
             case PointerEventData.InputButton.Right:
-                btn = " [right]";
+                gameConsole.ShowMessage("check cell " + num);
                 break;
             case PointerEventData.InputButton.Middle:
-                btn = " [middle]";
+                gameConsole.ExecuteCommand("cell " + num);
                 break;
             default:
-                btn = " [???]";
+                gameConsole.ShowMessage("unknown event at cell " + num);
                 break;
         }
-        gameConsole.ShowMessage("cell " + num + btn);
     }
 }

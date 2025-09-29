@@ -1,17 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum ActorState { idle, walk, run, melee, range, die }
 
 public enum ActorCommand { wait, walk, run, turnleft, turnright, jump, crouch, melee, range, interact, use, die }
 
-public abstract class CActor : CGameObject
+public abstract class CActor : CGameObject, IPointerClickHandler
 {
+    protected IBattle battle;
+    protected IDungeon dungeon;
+    protected IGameMap gameMap;
+    protected Cell currentCell;
     protected ActorState state;
+    protected EMapDirection dir;
     protected float walkSpeed;
     protected float runSpeed;
     protected float turnAngle;
+    protected Sprite charSprite;
+    protected string charName;
 
     private class Command
     {
@@ -36,10 +44,12 @@ public abstract class CActor : CGameObject
                 SetState(ActorState.melee);
                 break;
             case ActorCommand.turnleft:
-                Turn(-60);
+                Turn(-turnAngle);
+                dir = CDirControl.GetLeft(dir);
                 break;
             case ActorCommand.turnright:
-                Turn(60);
+                Turn(turnAngle);
+                dir = CDirControl.GetRight(dir);
                 break;
             case ActorCommand.die:
                 SetState(ActorState.die);
@@ -51,13 +61,27 @@ public abstract class CActor : CGameObject
     }
     protected void InitActor()
     {
-        ISaveLoad sl = AllServices.Container.Get<ISaveLoad>();
-        if (sl.IsHexCell()) turnAngle = 30.0f;
-        else turnAngle = 90.0f;
+        battle = AllServices.Container.Get<IBattle>();
+        dungeon = AllServices.Container.Get<IDungeon>();
+        gameMap = dungeon.GetGameMap();
+        bool isHex = CGameManager.IsHexCell();
+        if (isHex) turnAngle = 60.0f;
+        else turnAngle = 45.0f;
+        CDirControl.SetHex(isHex);
         InitGameObject();
         state = ActorState.idle;
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
+        dir = EMapDirection.east;
+        positionControl.Rotate(90.0f); // turn model to east
+    }
+    protected bool MoveForward(float _speed)
+    {
+        Cell cell = gameMap.GetCell(currentCell.GetNearNumber(dir));
+        if (cell == null) return false;
+        positionControl.MoveTo(cell.GetPosition(), _speed);
+        currentCell = cell;
+        return true;
     }
 
     protected override void DoUpdate()
@@ -72,6 +96,12 @@ public abstract class CActor : CGameObject
         if (cmd.command == ActorCommand.die) cmdList.Clear();
     }
 
+    public CActor SetCurrentCell(Cell _cell) { currentCell = _cell; return this; }
+    public Cell GetCurrentCell() { return currentCell; }
+    public CActor SetName(string _name) { charName = _name; return this; }
+    public string GetName() { return charName; }
+    public CActor SetSprite(Sprite _spr) { charSprite = _spr; return this; }
+    public Sprite GetSprite() { return charSprite; }
     public void AddCommand(ActorCommand _cmd)
     {
         cmdList.Enqueue(new Command(_cmd));
@@ -81,4 +111,24 @@ public abstract class CActor : CGameObject
     public abstract void SetState(ActorState _state);
     public abstract void Turn(float _angle);
     public abstract void Idle();
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        battle.SetCharacterName(charName);
+        battle.SetCharacterSprite(charSprite);
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+                AddCommand(ActorCommand.turnleft);
+                break;
+            case PointerEventData.InputButton.Right:
+                AddCommand(ActorCommand.turnright);
+                break;
+            case PointerEventData.InputButton.Middle:
+                AddCommand(ActorCommand.walk);
+                break;
+            default:
+                break;
+        }
+    }
 }

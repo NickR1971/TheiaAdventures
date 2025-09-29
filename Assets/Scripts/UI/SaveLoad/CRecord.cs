@@ -25,7 +25,7 @@ public class CRecord : MonoBehaviour
         localization = AllServices.Container.Get<ILocalization>();
 
         saveName.text = localization.GetString(ELocalStringID.core_newSave);
-        buttonText.strID = ELocalStringID.core_saveGame.ToString();
+        buttonText.SetText(ELocalStringID.core_saveGame);
         ActionButton.onClick.AddListener(OnNewSave);
         DeleteButton.gameObject.SetActive(false);
     }
@@ -34,7 +34,7 @@ public class CRecord : MonoBehaviour
     {
         saveName.text = _name;
         commentText.text = _comment;
-        buttonText.strID = ELocalStringID.core_saveGame.ToString();
+        buttonText.SetText(ELocalStringID.core_saveGame);
         ActionButton.onClick.AddListener(OnSaveOK);
     }
 
@@ -42,7 +42,7 @@ public class CRecord : MonoBehaviour
     {
         saveName.text = _name;
         commentText.text = _comment;
-        buttonText.strID = ELocalStringID.core_loadGame.ToString();
+        buttonText.SetText(ELocalStringID.core_loadGame);
         ActionButton.onClick.AddListener(OnLoadOK);
     }
     public void ResetTemplate()

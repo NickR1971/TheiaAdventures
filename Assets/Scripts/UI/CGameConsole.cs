@@ -165,4 +165,9 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         locstr = localization.GetString(_str);
         ShowMessage(locstr);
     }
+
+    public void ExecuteCommand(string _cmd)
+    {
+        DoCommand(_cmd);
+    }
 }

@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EMapDirection
-{
-    center = 0, north = 1, northeast = 2, east = 3, southeast = 4, south = 5, southwest = 6, west = 7, northwest = 8
-}
-
 public interface ICamera : IService
 {
     void CorrectViewPoint(Vector3 _viewpoint);
@@ -28,8 +23,8 @@ public class CCamera : MonoBehaviour, ICamera
     private Vector3 viewpoint;
     private Vector3[] positionList;
     private Vector3 currentPosition;
-    private float height = 15.0f;
-    private float distance = 15.0f;
+    private float height = 10.0f;
+    private float distance = 10.0f;
     private bool isViewLock = true;
 
     private void InitPositions()

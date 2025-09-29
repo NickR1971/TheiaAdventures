@@ -6,6 +6,7 @@ public interface IDungeon : IService
 {
     void Create(uint _gameID);
     int GetSequenceNumber(uint _max);
+    CActor CreateCharacter(GameObject _chr, Cell _cell);
     IGameMap GetGameMap();
 }
 
@@ -27,8 +28,7 @@ public class CDungeon : MonoBehaviour, IDungeon
     private void Awake()
     {
         AllServices.Container.Register<IDungeon>(this);
-        ISaveLoad sl = AllServices.Container.Get<ISaveLoad>();
-        if (sl.IsHexCell()) cellCalculator = new CellHexCalculator();
+        if (CGameManager.IsHexCell()) cellCalculator = new CellHexCalculator();
         else cellCalculator = new CellSquareCalculator();
         map = new CRoom[mapWidth * mapHeight];
         cellCalculator.CreateMap(mapWidth, mapHeight);
@@ -326,5 +326,11 @@ public class CDungeon : MonoBehaviour, IDungeon
     public IGameMap GetGameMap()
     {
         return cellCalculator;
+    }
+
+    public CActor CreateCharacter(GameObject _chr, Cell _cell)
+    {
+        return Instantiate(_chr, _cell.GetPosition(), Quaternion.identity, transform)
+            .GetComponent<CActor>().SetCurrentCell(_cell);
     }
 }

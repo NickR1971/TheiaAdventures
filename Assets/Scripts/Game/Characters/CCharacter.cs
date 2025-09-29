@@ -4,34 +4,47 @@ using UnityEngine;
 
 public struct CAttributes
 {
-    int might;
-    int dexterity;
-    int intelligence;
-    int willPower;
-    int knowledge;
+    public int might;
+    public int dexterity;
+    public int intelligence;
+    public int knowledge;
+    public int personality;
 }
 
 public struct CSecondaryAttributes
 {
-    int initiative;
-    int speed;
-    int reaction;
+    public int initiative;
+    public int speed;
+    public int reaction;
 }
 
 public struct CCharactersPoints
 {
-    int redHits;
-    int yellowHits;
-    int greenHits;
-    int blueHits;
-    int actions;
-    int mana;
-    int will;
+    public int redHits;
+    public int yellowHits;
+    public int greenHits;
+    public int blueHits;
+    public int actions;
+    public int mana;
+    public int will;
 }
 
 public class CCharacter
 {
+    protected string chrName;
+    protected ECharacterType chrType;
     protected CAttributes attributes;
     protected CSecondaryAttributes secondaryAttributes;
     protected CCharactersPoints points;
+
+    public CCharacter()
+    {
+        chrName = "Hero";
+        chrType = ECharacterType.hero;
+        attributes.might = 3;
+        attributes.dexterity = 3;
+        attributes.intelligence = 3;
+        attributes.knowledge = 3;
+        attributes.personality = 3;
+    }
 }
