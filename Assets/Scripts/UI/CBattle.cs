@@ -21,35 +21,59 @@ public class CBattle : CUI, IBattle
     [SerializeField] private GameObject characterName;
     private Image imgChar;
     private Text nameChar;
+    private const int startCellsSize = 100;
+    private Cell[] startSells = new Cell[startCellsSize];
+    private int countStartCells = 0;
+    private int maxCells;
 
-    private void CreateTestCharacter()
+    private void SelectStartCells()
     {
-        Cell[] startSells = new Cell[100];
-        Cell cell;
-        int countStartCells = 0;
-        int maxCells;
         int i;
-        Sprite spr;
-        GameObject prefab;
+        Cell cell;
 
-        if (!charManager.GetCharacter(ECharacterType.zombie, out spr, out prefab)) return;
         maxCells = gameMap.GetWidth() * gameMap.GetHeight();
-        SetCharacterSprite(spr);
-        SetCharacterName(CLocalization.GetString(ELocalStringID.game_class_zombie));
         for (i = 0; i < maxCells; i++)
         {
             cell = gameMap.GetCell(i);
             if (cell == null) continue;
             if (cell.GetBaseType() == ECellType.start)
             {
-                startSells[countStartCells] = cell;
-                countStartCells++;
-                if (countStartCells == 100) break;
+                startSells[countStartCells++] = cell;
+                if (countStartCells == startCellsSize) break;
             }
         }
-        i = dungeon.GetSequenceNumber((uint)countStartCells);
-        cell = startSells[i];
-        dungeon.CreateCharacter(prefab, cell);
+    }
+    private Cell GetStartCell()
+    {
+        Cell cell;
+        int n;
+        n = dungeon.GetSequenceNumber((uint)countStartCells);
+        cell = startSells[n];
+
+        countStartCells--; // remove selected cell from list
+        startSells[n] = startSells[countStartCells];
+
+        return cell;
+    }
+    private CActor CreateCharacter(ECharacterType _charType)
+    {
+        Cell cell;
+        Sprite spr;
+        GameObject prefab;
+ 
+        if (!charManager.GetCharacter(_charType, out spr, out prefab))
+            return null;
+        cell = GetStartCell();
+
+        return dungeon.CreateCharacter(prefab, cell)
+            .SetSprite(spr)
+            .SetName(CLocalization.GetString(ELocalStringID.game_class_zombie) + cell.GetNumber());
+   }
+    private void CreateTestCharacter()
+    {
+        Cell cell = CreateCharacter(ECharacterType.zombie).GetCurrentCell();
+        CreateCharacter(ECharacterType.zombie);
+        CreateCharacter(ECharacterType.skeleton);
         gameConsole.ExecuteCommand("cell " + cell.GetNumber());
     }
     public void SetCharacterName(string _name)
@@ -78,7 +102,7 @@ public class CBattle : CUI, IBattle
         nameChar = characterName.GetComponent<Text>();
 
         gameMap = dungeon.GetGameMap();
-        gameConsole.Show();
+        SelectStartCells();
         CreateTestCharacter();
     }
 }

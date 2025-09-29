@@ -9,6 +9,7 @@ public enum ActorCommand { wait, walk, run, turnleft, turnright, jump, crouch, m
 
 public abstract class CActor : CGameObject, IPointerClickHandler
 {
+    protected IBattle battle;
     protected IDungeon dungeon;
     protected IGameMap gameMap;
     protected Cell currentCell;
@@ -17,6 +18,8 @@ public abstract class CActor : CGameObject, IPointerClickHandler
     protected float walkSpeed;
     protected float runSpeed;
     protected float turnAngle;
+    protected Sprite charSprite;
+    protected string charName;
 
     private class Command
     {
@@ -58,6 +61,7 @@ public abstract class CActor : CGameObject, IPointerClickHandler
     }
     protected void InitActor()
     {
+        battle = AllServices.Container.Get<IBattle>();
         dungeon = AllServices.Container.Get<IDungeon>();
         gameMap = dungeon.GetGameMap();
         bool isHex = CGameManager.IsHexCell();
@@ -92,7 +96,12 @@ public abstract class CActor : CGameObject, IPointerClickHandler
         if (cmd.command == ActorCommand.die) cmdList.Clear();
     }
 
-    public void SetCurrentCell(Cell _cell) { currentCell = _cell; }
+    public CActor SetCurrentCell(Cell _cell) { currentCell = _cell; return this; }
+    public Cell GetCurrentCell() { return currentCell; }
+    public CActor SetName(string _name) { charName = _name; return this; }
+    public string GetName() { return charName; }
+    public CActor SetSprite(Sprite _spr) { charSprite = _spr; return this; }
+    public Sprite GetSprite() { return charSprite; }
     public void AddCommand(ActorCommand _cmd)
     {
         cmdList.Enqueue(new Command(_cmd));
@@ -105,6 +114,8 @@ public abstract class CActor : CGameObject, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        battle.SetCharacterName(charName);
+        battle.SetCharacterSprite(charSprite);
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:

@@ -6,7 +6,7 @@ public interface IDungeon : IService
 {
     void Create(uint _gameID);
     int GetSequenceNumber(uint _max);
-    void CreateCharacter(GameObject _chr, Cell _cell);
+    CActor CreateCharacter(GameObject _chr, Cell _cell);
     IGameMap GetGameMap();
 }
 
@@ -328,9 +328,9 @@ public class CDungeon : MonoBehaviour, IDungeon
         return cellCalculator;
     }
 
-    public void CreateCharacter(GameObject _chr, Cell _cell)
+    public CActor CreateCharacter(GameObject _chr, Cell _cell)
     {
-        Instantiate(_chr, _cell.GetPosition(), Quaternion.identity, transform)
+        return Instantiate(_chr, _cell.GetPosition(), Quaternion.identity, transform)
             .GetComponent<CActor>().SetCurrentCell(_cell);
     }
 }
