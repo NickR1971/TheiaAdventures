@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 
 public enum ActorState { idle, walk, run, melee, range, die }
 
-public enum ActorCommand { wait, walk, run, turnleft, turnright, jump, crouch, melee, range, interact, use, die }
+public enum ActorCommand { wait, walk, run, turnleft, turnright, jump, crouch,
+    melee, range, interact, use, die }
 
-public abstract class CActor : CGameObject, IPointerClickHandler
+public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
 {
     protected IBattle battle;
     protected IDungeon dungeon;
@@ -114,18 +115,16 @@ public abstract class CActor : CGameObject, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        battle.SetCharacterName(charName);
-        battle.SetCharacterSprite(charSprite);
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                AddCommand(ActorCommand.turnleft);
+                AddCommand(ActorCommand.melee);
                 break;
             case PointerEventData.InputButton.Right:
-                AddCommand(ActorCommand.turnright);
+                Idle();
                 break;
             case PointerEventData.InputButton.Middle:
-                AddCommand(ActorCommand.walk);
+                battle.SetCurrentCharacter(this);
                 break;
             default:
                 break;

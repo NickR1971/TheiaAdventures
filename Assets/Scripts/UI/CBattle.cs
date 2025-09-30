@@ -8,6 +8,7 @@ public interface IBattle : IService
 {
     void SetCharacterSprite(Sprite _sprite);
     void SetCharacterName(string _name);
+    void SetCurrentCharacter(ICharacter _charSelected);
 }
 
 public class CBattle : CUI, IBattle
@@ -21,6 +22,7 @@ public class CBattle : CUI, IBattle
     [SerializeField] private GameObject characterName;
     private Image imgChar;
     private Text nameChar;
+    private ICharacter currentCharacter;
     private const int startCellsSize = 100;
     private Cell[] startSells = new Cell[startCellsSize];
     private int countStartCells = 0;
@@ -67,7 +69,7 @@ public class CBattle : CUI, IBattle
 
         return dungeon.CreateCharacter(prefab, cell)
             .SetSprite(spr)
-            .SetName(CLocalization.GetString(ELocalStringID.game_class_zombie) + cell.GetNumber());
+            .SetName(_charType.ToString() + cell.GetNumber());
    }
     private void CreateTestCharacter()
     {
@@ -89,6 +91,7 @@ public class CBattle : CUI, IBattle
     private void Awake()
     {
         AllServices.Container.Register<IBattle>(this);
+        currentCharacter = null;
     }
     private void Start()
     {
@@ -105,5 +108,32 @@ public class CBattle : CUI, IBattle
         gameMap = dungeon.GetGameMap();
         SelectStartCells();
         CreateTestCharacter();
+    }
+
+    public void SetCurrentCharacter(ICharacter _charSelected)
+    {
+        currentCharacter = _charSelected;
+        nameChar.text = currentCharacter.GetName();
+        imgChar.sprite = currentCharacter.GetSprite();
+    }
+    public void OnLeft()
+    {
+        if (currentCharacter == null) return;
+        currentCharacter.AddCommand(ActorCommand.turnleft);
+    }
+    public void OnRight()
+    {
+        if (currentCharacter == null) return;
+        currentCharacter.AddCommand(ActorCommand.turnright);
+    }
+    public void OnForward()
+    {
+        if (currentCharacter == null) return;
+        currentCharacter.AddCommand(ActorCommand.walk);
+    }
+    public void OnMelee()
+    {
+        if (currentCharacter == null) return;
+        currentCharacter.AddCommand(ActorCommand.melee);
     }
 }
