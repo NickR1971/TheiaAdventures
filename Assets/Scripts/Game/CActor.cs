@@ -90,7 +90,11 @@ public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
         base.DoUpdate();
 
         if (positionControl.IsBusy()) return;
-        if (cmdList.Count == 0) return;
+        if (cmdList.Count == 0)
+        {
+            Idle();
+            return;
+        }
 
         Command cmd = cmdList.Dequeue();
         DoCommand(cmd);
