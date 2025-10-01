@@ -27,16 +27,31 @@ public class CKnight : CActor
         switch (state)
         {
             case ActorState.walk:
+                animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();
                 break;
             case ActorState.run:
+                animator.SetBool("walk", true);
+                animator.SetBool("run", true);
                 if (!MoveForward(runSpeed)) Idle();
                 break;
             case ActorState.melee:
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
+                animator.SetBool("attack", true);
+                positionControl.Wait(1);
                 break;
             case ActorState.die:
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
+                animator.SetBool("attack", false);
+                animator.SetBool("die", true);
+                positionControl.Wait(1);
                 break;
             case ActorState.idle:
+                animator.SetBool("attack", false);
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
                 break;
             default:
                 break;
