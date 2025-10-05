@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActorState { idle, walk, run, melee, range, die }
+public enum ActorState { idle, move, melee, range, magic, die }
 
 public enum ActorCommand { wait=0, walk=1, run=2, turnleft=3, turnright=4, jump=5, crouch=6,
     melee=7, heavyattack=8, range=9, magic=10, interact=11, use=12, die=13 }
@@ -29,7 +29,8 @@ public abstract class CActor : CGameObject, ICharacter
     }
 
     private Queue<Command> cmdList = new Queue<Command>();
-
+    
+    /***************
     private void DoCommand(Command _cmd)
     {
         lastCommand = _cmd.command;
@@ -74,6 +75,7 @@ public abstract class CActor : CGameObject, ICharacter
                 break;
         }
     }
+    **********/
     protected void InitActor()
     {
         battle = AllServices.Container.Get<IBattle>();
@@ -120,7 +122,7 @@ public abstract class CActor : CGameObject, ICharacter
         }
 
         Command cmd = cmdList.Dequeue();
-        DoCommand(cmd);
+        DoCommand(cmd.command);
         if (cmd.command == ActorCommand.die) cmdList.Clear();
     }
 
@@ -135,8 +137,9 @@ public abstract class CActor : CGameObject, ICharacter
         cmdList.Enqueue(new Command(_cmd));
     }
     public ActorState GetState() => state;
+    public abstract void DoCommand(ActorCommand _cmd);
     public abstract int GetActions(out int[] _cmd);
-    public abstract void SetState(ActorState _state);
+    //public abstract void SetState(ActorState _state);
     public abstract void Idle();
     protected override void OnLeftClick()
     {

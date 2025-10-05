@@ -13,43 +13,90 @@ public class CZombie : CActor
         walkSpeed = 0.5f;
         runSpeed = 2.0f;
     }
-    public override void SetState(ActorState _state)
+    public override void DoCommand(ActorCommand _cmd)
     {
-        state = _state;
-        switch (state)
+        switch (_cmd)
         {
-            case ActorState.walk:
+            case ActorCommand.walk:
+                SetState(ActorState.move);
                 animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();
                 break;
-            case ActorState.run:
+            case ActorCommand.run:
+                SetState(ActorState.move);
                 animator.SetBool("walk", true);
                 animator.SetBool("run", true);
                 if (!MoveForward(runSpeed)) Idle();
                 break;
-            case ActorState.melee:
+            case ActorCommand.turnleft:
+                SetState(ActorState.move);
+                TurnLeft();
+                break;
+            case ActorCommand.turnright:
+                SetState(ActorState.move);
+                TurnRight();
+                break;
+            case ActorCommand.jump:
+                break;
+            case ActorCommand.crouch:
+                break;
+            case ActorCommand.melee:
+                SetState(ActorState.melee);
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 animator.SetBool("attack", true);
                 positionControl.Wait(1);
                 break;
-            case ActorState.die:
+            case ActorCommand.heavyattack:
+                SetState(ActorState.melee);
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
-                animator.SetBool("attack", false);
-                animator.SetBool("die2",true);
+                animator.SetBool("attack", true);
                 positionControl.Wait(1);
                 break;
-            case ActorState.idle:
-                animator.SetBool("attack", false);
+            case ActorCommand.range:
+                break;
+            case ActorCommand.magic:
+                break;
+            case ActorCommand.interact:
+                break;
+            case ActorCommand.use:
+                break;
+            case ActorCommand.die:
+                SetState(ActorState.die);
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
+                animator.SetBool("attack", false);
+                animator.SetBool("die2", true);
+                positionControl.Wait(1);
+                break;
+            default:
+                Idle();
+                break;
+        }
+    }
+    private void SetState(ActorState _state)
+    {
+        if (state == _state) return;
+        switch (state)
+        {
+            case ActorState.move:
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
+                break;
+            case ActorState.melee:
+                animator.SetBool("attack", false);
+                break;
+            case ActorState.die:
+                animator.SetBool("die1", false);
+                animator.SetBool("die2", false);
                 break;
             default:
                 animator.SetBool("die1",false);
                 animator.SetBool("die2",false);
                 break;
         }
+        state = _state;
     }
 
     public override void Idle()

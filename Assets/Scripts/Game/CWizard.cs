@@ -16,26 +16,73 @@ public class CWizard : CActor
     {
         SetState(ActorState.idle);
     }
-    public override void SetState(ActorState _state)
+    public override void DoCommand(ActorCommand _cmd)
     {
-        state = _state;
-        switch (state)
+        switch (_cmd)
         {
-            case ActorState.walk:
+            case ActorCommand.walk:
+                SetState(ActorState.move);
+                animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();
                 break;
-            case ActorState.run:
+            case ActorCommand.run:
+                SetState(ActorState.move);
+                animator.SetBool("walk", true);
+                animator.SetBool("run", true);
                 if (!MoveForward(runSpeed)) Idle();
+                break;
+            case ActorCommand.turnleft:
+                SetState(ActorState.move);
+                TurnLeft();
+                break;
+            case ActorCommand.turnright:
+                SetState(ActorState.move);
+                TurnRight();
+                break;
+            case ActorCommand.jump:
+                break;
+            case ActorCommand.crouch:
+                break;
+            case ActorCommand.melee:
+                break;
+            case ActorCommand.heavyattack:
+                break;
+            case ActorCommand.range:
+                break;
+            case ActorCommand.magic:
+                break;
+            case ActorCommand.interact:
+                break;
+            case ActorCommand.use:
+                break;
+            case ActorCommand.die:
+                SetState(ActorState.die);
+                animator.SetBool("die", true);
+                positionControl.Wait(1);
+                break;
+            default:
+                Idle();
+                break;
+        }
+    }
+    private void SetState(ActorState _state)
+    {
+        if (state == _state) return;
+        switch (state)
+        {
+            case ActorState.move:
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
                 break;
             case ActorState.melee:
                 break;
             case ActorState.die:
-                break;
-            case ActorState.idle:
+                animator.SetBool("die", false);
                 break;
             default:
                 break;
         }
+        state = _state;
     }
     public override int GetActions(out int[] _cmd)
     {
