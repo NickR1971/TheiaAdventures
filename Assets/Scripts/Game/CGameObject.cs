@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class CGameObject : MonoBehaviour
+public abstract class CGameObject : MonoBehaviour, IPointerClickHandler
 {
     protected CPositionControl positionControl;
 
@@ -19,6 +20,26 @@ public abstract class CGameObject : MonoBehaviour
     {
         positionControl = new CPositionControl(transform);
     }
+    protected abstract void OnLeftClick();
+    protected abstract void OnRightClick();
+    protected abstract void OnMiddleClick();
 
     public Vector3 GetPosition() => transform.position;
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+                OnLeftClick();
+                break;
+            case PointerEventData.InputButton.Right:
+                OnRightClick();
+                break;
+            case PointerEventData.InputButton.Middle:
+                OnMiddleClick();
+                break;
+            default:
+                break;
+        }
+    }
 }

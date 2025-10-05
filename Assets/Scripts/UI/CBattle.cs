@@ -20,6 +20,8 @@ public class CBattle : CUI, IBattle
     private IGameMap gameMap;
     [SerializeField] private GameObject characterImage;
     [SerializeField] private GameObject characterName;
+    [SerializeField] private Sprite[] actionSprites = new Sprite[14];
+    [SerializeField] private Button[] actionButtons = new Button[14];
     private Image imgChar;
     private Text nameChar;
     private ICharacter currentCharacter;
@@ -27,6 +29,8 @@ public class CBattle : CUI, IBattle
     private Cell[] startSells = new Cell[startCellsSize];
     private int countStartCells = 0;
     private int maxCells;
+    private int numActions;
+    private int[] charActions = null;
 
     private void SelectStartCells()
     {
@@ -92,6 +96,7 @@ public class CBattle : CUI, IBattle
     {
         AllServices.Container.Register<IBattle>(this);
         currentCharacter = null;
+        numActions = 0;
     }
     private void Start()
     {
@@ -109,12 +114,73 @@ public class CBattle : CUI, IBattle
         SelectStartCells();
         CreateTestCharacter();
     }
-
+    private void SetListener(Button _btn, int _num)
+    {
+        switch(_num)
+        {
+            case 0:
+                _btn.onClick.AddListener(() => CharCommand(0));
+                break;
+            case 1:
+                _btn.onClick.AddListener(() => CharCommand(1));
+                break;
+            case 2:
+                _btn.onClick.AddListener(() => CharCommand(2));
+                break;
+            case 3:
+                _btn.onClick.AddListener(() => CharCommand(3));
+                break;
+            case 4:
+                _btn.onClick.AddListener(() => CharCommand(4));
+                break;
+            case 5:
+                _btn.onClick.AddListener(() => CharCommand(5));
+                break;
+            case 6:
+                _btn.onClick.AddListener(() => CharCommand(6));
+                break;
+            case 7:
+                _btn.onClick.AddListener(() => CharCommand(7));
+                break;
+            case 8:
+                _btn.onClick.AddListener(() => CharCommand(8));
+                break;
+            case 9:
+                _btn.onClick.AddListener(() => CharCommand(9));
+                break;
+            case 10:
+                _btn.onClick.AddListener(() => CharCommand(10));
+                break;
+            case 11:
+                _btn.onClick.AddListener(() => CharCommand(11));
+                break;
+            case 12:
+                _btn.onClick.AddListener(() => CharCommand(12));
+                break;
+            case 13:
+                _btn.onClick.AddListener(() => CharCommand(13));
+                break;
+        }
+    }
     public void SetCurrentCharacter(ICharacter _charSelected)
     {
+        int i;
+
         currentCharacter = _charSelected;
         nameChar.text = currentCharacter.GetName();
         imgChar.sprite = currentCharacter.GetSprite();
+        for (i = 0; i < numActions; i++)
+        {
+            actionButtons[i].onClick.RemoveAllListeners();
+            actionButtons[i].gameObject.SetActive(false);
+        }
+        numActions = currentCharacter.GetActions(out charActions);
+        for (i = 0; i < numActions; i++)
+        {
+            actionButtons[i].gameObject.SetActive(true);
+            actionButtons[i].image.sprite = actionSprites[charActions[i]];
+            SetListener(actionButtons[i], charActions[i]);
+        }
     }
     public void OnLeft()
     {
@@ -135,5 +201,14 @@ public class CBattle : CUI, IBattle
     {
         if (currentCharacter == null) return;
         currentCharacter.AddCommand(ActorCommand.melee);
+    }
+    public void CharCommand(int _cmd)
+    {
+        CharCommand((ActorCommand)_cmd);
+    }
+    public void CharCommand(ActorCommand _cmd)
+    {
+        if (currentCharacter == null) return;
+        currentCharacter.AddCommand(_cmd);
     }
 }

@@ -7,4 +7,5 @@ public interface ICharacter
     string GetName();
     Sprite GetSprite();
     void AddCommand(ActorCommand _cmd);
+    int GetActions(out int[] _cmd);
 }

@@ -12,10 +12,6 @@ public class CKnight : CActor
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
     }
-    public override void Turn(float _angle)
-    {
-        positionControl.Rotate(_angle);
-    }
 
     public override void Idle()
     {
@@ -23,6 +19,7 @@ public class CKnight : CActor
     }
     public override void SetState(ActorState _state)
     {
+        string animeFlag;
         state = _state;
         switch (state)
         {
@@ -36,25 +33,39 @@ public class CKnight : CActor
                 if (!MoveForward(runSpeed)) Idle();
                 break;
             case ActorState.melee:
+                if (lastCommand == ActorCommand.heavyattack) animeFlag = "attack2";
+                else animeFlag = "attack";
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
-                animator.SetBool("attack", true);
+                animator.SetBool(animeFlag, true);
                 positionControl.Wait(1);
                 break;
             case ActorState.die:
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 animator.SetBool("attack", false);
+                animator.SetBool("attack2", false);
                 animator.SetBool("die", true);
                 positionControl.Wait(1);
                 break;
             case ActorState.idle:
                 animator.SetBool("attack", false);
+                animator.SetBool("attack2", false);
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 break;
             default:
                 break;
         }
+    }
+    public override int GetActions(out int[] _cmd)
+    {
+        _cmd = new int[5];
+        _cmd[0] = 1;
+        _cmd[1] = 3;
+        _cmd[2] = 4;
+        _cmd[3] = 7;
+        _cmd[4] = 8;
+        return 5;
     }
 }

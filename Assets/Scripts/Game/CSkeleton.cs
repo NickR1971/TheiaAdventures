@@ -51,13 +51,17 @@ public class CSkeleton : CActor
         }
     }
 
-    public override void Turn(float _angle)
-    {
-        positionControl.Rotate(_angle);
-    }
-
     public override void Idle()
     {
         SetState(ActorState.idle);
+    }
+    public override int GetActions(out int[] _cmd)
+    {
+        _cmd = new int[4];
+        _cmd[0] = 1;
+        _cmd[1] = 3;
+        _cmd[2] = 4;
+        _cmd[3] = 7;
+        return 4;
     }
 }

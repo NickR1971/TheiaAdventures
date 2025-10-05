@@ -15,6 +15,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
 {
     [SerializeField] private Sprite[] sprites = new Sprite[7];
     [SerializeField] private GameObject[] prefabs = new GameObject[7];
+    private CActor currentCharacter;
 
     public bool GetCharacter(ECharacterType _ctype, out Sprite _spr, out GameObject _prefab)
     {
@@ -22,7 +23,9 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
 
         _prefab = prefabs[i];
         _spr = sprites[i];
+        currentCharacter = null;
         if (_prefab == null) return false;
+        currentCharacter = _prefab.GetComponent<CActor>();
         return true;
     }
 

@@ -1,20 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public enum ActorState { idle, walk, run, melee, range, die }
 
-public enum ActorCommand { wait, walk, run, turnleft, turnright, jump, crouch,
-    melee, range, interact, use, die }
+public enum ActorCommand { wait=0, walk=1, run=2, turnleft=3, turnright=4, jump=5, crouch=6,
+    melee=7, heavyattack=8, range=9, magic=10, interact=11, use=12, die=13 }
 
-public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
+public abstract class CActor : CGameObject, ICharacter
 {
     protected IBattle battle;
     protected IDungeon dungeon;
     protected IGameMap gameMap;
     protected Cell currentCell;
     protected ActorState state;
+    protected ActorCommand lastCommand;
     protected EMapDirection dir;
     protected float walkSpeed;
     protected float runSpeed;
@@ -25,7 +25,6 @@ public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
     private class Command
     {
         public ActorCommand command;
-
         public Command(ActorCommand _cmd) { command = _cmd; }
     }
 
@@ -33,6 +32,8 @@ public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
 
     private void DoCommand(Command _cmd)
     {
+        lastCommand = _cmd.command;
+
         switch(_cmd.command)
         {
             case ActorCommand.run:
@@ -41,16 +42,29 @@ public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
             case ActorCommand.walk:
                 SetState(ActorState.walk);
                 break;
+            case ActorCommand.turnleft:
+                TurnLeft();
+                break;
+            case ActorCommand.turnright:
+                TurnRight();
+                break;
+            case ActorCommand.jump:
+                break;
+            case ActorCommand.crouch:
+                break;
             case ActorCommand.melee:
                 SetState(ActorState.melee);
                 break;
-            case ActorCommand.turnleft:
-                Turn(-turnAngle);
-                dir = CDirControl.GetLeft(dir);
+            case ActorCommand.heavyattack:
+                SetState(ActorState.melee);
                 break;
-            case ActorCommand.turnright:
-                Turn(turnAngle);
-                dir = CDirControl.GetRight(dir);
+            case ActorCommand.range:
+                break;
+            case ActorCommand.magic:
+                break;
+            case ActorCommand.interact:
+                break;
+            case ActorCommand.use:
                 break;
             case ActorCommand.die:
                 SetState(ActorState.die);
@@ -84,7 +98,16 @@ public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
         currentCell = cell;
         return true;
     }
-
+    protected void TurnLeft()
+    {
+        positionControl.Rotate(-turnAngle);
+        dir = CDirControl.GetLeft(dir);
+    }
+    protected void TurnRight()
+    {
+        positionControl.Rotate(turnAngle);
+        dir = CDirControl.GetRight(dir);
+    }
     protected override void DoUpdate()
     {
         base.DoUpdate();
@@ -111,27 +134,21 @@ public abstract class CActor : CGameObject, ICharacter, IPointerClickHandler
     {
         cmdList.Enqueue(new Command(_cmd));
     }
-
     public ActorState GetState() => state;
+    public abstract int GetActions(out int[] _cmd);
     public abstract void SetState(ActorState _state);
-    public abstract void Turn(float _angle);
     public abstract void Idle();
-
-    public void OnPointerClick(PointerEventData eventData)
+    protected override void OnLeftClick()
     {
-        switch (eventData.button)
-        {
-            case PointerEventData.InputButton.Left:
-                AddCommand(ActorCommand.melee);
-                break;
-            case PointerEventData.InputButton.Right:
-                Idle();
-                break;
-            case PointerEventData.InputButton.Middle:
-                battle.SetCurrentCharacter(this);
-                break;
-            default:
-                break;
-        }
+        AddCommand(ActorCommand.melee);
     }
+    protected override void OnRightClick()
+    {
+        Idle();
+    }
+    protected override void OnMiddleClick()
+    {
+        battle.SetCurrentCharacter(this);
+    }
+
 }
