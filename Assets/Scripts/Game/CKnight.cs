@@ -97,12 +97,17 @@ public class CKnight : CActor
     }
     public override int GetActions(out int[] _cmd)
     {
-        _cmd = new int[5];
-        _cmd[0] = 1;
-        _cmd[1] = 3;
-        _cmd[2] = 4;
-        _cmd[3] = 7;
-        _cmd[4] = 8;
-        return 5;
+        if (activeCommandsNum == 0)
+        {
+            AddActiveCommand(ActorCommand.walk);
+            AddActiveCommand(ActorCommand.run);
+            AddActiveCommand(ActorCommand.turnleft);
+            AddActiveCommand(ActorCommand.turnright);
+            AddActiveCommand(ActorCommand.melee);
+            AddActiveCommand(ActorCommand.heavyattack);
+            AddActiveCommand(ActorCommand.die);
+        }
+        _cmd = activeCommandsList;
+        return activeCommandsNum;
     }
 }

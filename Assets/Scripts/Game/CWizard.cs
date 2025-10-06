@@ -86,11 +86,15 @@ public class CWizard : CActor
     }
     public override int GetActions(out int[] _cmd)
     {
-        _cmd = new int[4];
-        _cmd[0] = 1;
-        _cmd[1] = 3;
-        _cmd[2] = 4;
-        _cmd[3] = 7;
-        return 4;
+        if (activeCommandsNum == 0)
+        {
+            AddActiveCommand(ActorCommand.walk);
+            AddActiveCommand(ActorCommand.turnleft);
+            AddActiveCommand(ActorCommand.turnright);
+            AddActiveCommand(ActorCommand.melee);
+            AddActiveCommand(ActorCommand.die);
+        }
+        _cmd = activeCommandsList;
+        return activeCommandsNum;
     }
 }

@@ -20,6 +20,7 @@ public class CZombie : CActor
             case ActorCommand.walk:
                 SetState(ActorState.move);
                 animator.SetBool("walk", true);
+                animator.SetBool("run", false);
                 if (!MoveForward(walkSpeed)) Idle();
                 break;
             case ActorCommand.run:
@@ -59,14 +60,14 @@ public class CZombie : CActor
             case ActorCommand.magic:
                 break;
             case ActorCommand.interact:
+                SetState(ActorState.hit);
+                animator.SetBool("die1", true);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.use:
                 break;
             case ActorCommand.die:
                 SetState(ActorState.die);
-                animator.SetBool("run", false);
-                animator.SetBool("walk", false);
-                animator.SetBool("attack", false);
                 animator.SetBool("die2", true);
                 positionControl.Wait(1);
                 break;
@@ -78,7 +79,7 @@ public class CZombie : CActor
     private void SetState(ActorState _state)
     {
         if (state == _state) return;
-        switch (state)
+        switch (state) // reset previus state flags
         {
             case ActorState.move:
                 animator.SetBool("run", false);
@@ -87,13 +88,11 @@ public class CZombie : CActor
             case ActorState.melee:
                 animator.SetBool("attack", false);
                 break;
-            case ActorState.die:
+            case ActorState.hit:
                 animator.SetBool("die1", false);
-                animator.SetBool("die2", false);
                 break;
-            default:
-                animator.SetBool("die1",false);
-                animator.SetBool("die2",false);
+            case ActorState.die:
+                animator.SetBool("die2", false);
                 break;
         }
         state = _state;
@@ -106,12 +105,17 @@ public class CZombie : CActor
 
     public override int GetActions(out int[] _cmd)
     {
-        _cmd = new int[5];
-        _cmd[0] = 1;
-        _cmd[1] = 2;
-        _cmd[2] = 3;
-        _cmd[3] = 4;
-        _cmd[4] = 7;
-        return 5;
+        if(activeCommandsNum==0)
+        {
+            AddActiveCommand(ActorCommand.walk);
+            AddActiveCommand(ActorCommand.run);
+            AddActiveCommand(ActorCommand.turnleft);
+            AddActiveCommand(ActorCommand.turnright);
+            AddActiveCommand(ActorCommand.melee);
+            AddActiveCommand(ActorCommand.interact);
+            AddActiveCommand(ActorCommand.die);
+        }
+        _cmd = activeCommandsList;
+        return activeCommandsNum;
     }
 }

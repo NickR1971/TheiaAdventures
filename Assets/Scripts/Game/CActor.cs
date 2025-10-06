@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActorState { idle, move, melee, range, magic, die }
+public enum ActorState { idle, move, melee, range, magic, use, hit, die }
 
 public enum ActorCommand { wait=0, walk=1, run=2, turnleft=3, turnright=4, jump=5, crouch=6,
     melee=7, heavyattack=8, range=9, magic=10, interact=11, use=12, die=13 }
@@ -14,13 +14,15 @@ public abstract class CActor : CGameObject, ICharacter
     protected IGameMap gameMap;
     protected Cell currentCell;
     protected ActorState state;
-    protected ActorCommand lastCommand;
     protected EMapDirection dir;
     protected float walkSpeed;
     protected float runSpeed;
     protected float turnAngle;
     protected Sprite charSprite;
     protected string charName;
+    protected const int maxCommands = 14;
+    protected int[] activeCommandsList = new int[maxCommands];
+    protected int activeCommandsNum;
 
     private class Command
     {
@@ -30,52 +32,6 @@ public abstract class CActor : CGameObject, ICharacter
 
     private Queue<Command> cmdList = new Queue<Command>();
     
-    /***************
-    private void DoCommand(Command _cmd)
-    {
-        lastCommand = _cmd.command;
-
-        switch(_cmd.command)
-        {
-            case ActorCommand.run:
-                SetState(ActorState.run);
-                break;
-            case ActorCommand.walk:
-                SetState(ActorState.walk);
-                break;
-            case ActorCommand.turnleft:
-                TurnLeft();
-                break;
-            case ActorCommand.turnright:
-                TurnRight();
-                break;
-            case ActorCommand.jump:
-                break;
-            case ActorCommand.crouch:
-                break;
-            case ActorCommand.melee:
-                SetState(ActorState.melee);
-                break;
-            case ActorCommand.heavyattack:
-                SetState(ActorState.melee);
-                break;
-            case ActorCommand.range:
-                break;
-            case ActorCommand.magic:
-                break;
-            case ActorCommand.interact:
-                break;
-            case ActorCommand.use:
-                break;
-            case ActorCommand.die:
-                SetState(ActorState.die);
-                break;
-            default:
-                Idle();
-                break;
-        }
-    }
-    **********/
     protected void InitActor()
     {
         battle = AllServices.Container.Get<IBattle>();
@@ -87,10 +43,15 @@ public abstract class CActor : CGameObject, ICharacter
         CDirControl.SetHex(isHex);
         InitGameObject();
         state = ActorState.idle;
+        activeCommandsNum = 0;
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
         dir = EMapDirection.east;
         positionControl.Rotate(90.0f); // turn model to east
+    }
+    protected void AddActiveCommand(ActorCommand _cmd)
+    {
+        if (activeCommandsNum < maxCommands) activeCommandsList[activeCommandsNum++] = (int)_cmd;
     }
     protected bool MoveForward(float _speed)
     {
@@ -117,7 +78,7 @@ public abstract class CActor : CGameObject, ICharacter
         if (positionControl.IsBusy()) return;
         if (cmdList.Count == 0)
         {
-            Idle();
+            if(state!= ActorState.die ) Idle();
             return;
         }
 
@@ -139,7 +100,6 @@ public abstract class CActor : CGameObject, ICharacter
     public ActorState GetState() => state;
     public abstract void DoCommand(ActorCommand _cmd);
     public abstract int GetActions(out int[] _cmd);
-    //public abstract void SetState(ActorState _state);
     public abstract void Idle();
     protected override void OnLeftClick()
     {
