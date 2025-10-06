@@ -25,12 +25,6 @@ public class CWizard : CActor
                 animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();
                 break;
-            case ActorCommand.run:
-                SetState(ActorState.move);
-                animator.SetBool("walk", true);
-                animator.SetBool("run", true);
-                if (!MoveForward(runSpeed)) Idle();
-                break;
             case ActorCommand.turnleft:
                 SetState(ActorState.move);
                 TurnLeft();
@@ -44,16 +38,33 @@ public class CWizard : CActor
             case ActorCommand.crouch:
                 break;
             case ActorCommand.melee:
+                SetState(ActorState.melee);
+                animator.SetBool("attack", true);
+                animator.SetBool("attack2", false);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.heavyattack:
+                SetState(ActorState.melee);
+                animator.SetBool("attack", false);
+                animator.SetBool("attack2", true);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.range:
+                SetState(ActorState.range);
+                animator.SetBool("range", true);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.magic:
+                SetState(ActorState.magic);
+                animator.SetBool("magic", true);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.interact:
                 break;
             case ActorCommand.use:
+                SetState(ActorState.use);
+                animator.SetBool("use", true);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.die:
                 SetState(ActorState.die);
@@ -71,10 +82,20 @@ public class CWizard : CActor
         switch (state)
         {
             case ActorState.move:
-                animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 break;
             case ActorState.melee:
+                animator.SetBool("attack", false);
+                animator.SetBool("attack2", false);
+                break;
+            case ActorState.magic:
+                animator.SetBool("magic", false);
+                break;
+            case ActorState.range:
+                animator.SetBool("range", false);
+                break;
+            case ActorState.use:
+                animator.SetBool("use", false);
                 break;
             case ActorState.die:
                 animator.SetBool("die", false);
@@ -92,6 +113,10 @@ public class CWizard : CActor
             AddActiveCommand(ActorCommand.turnleft);
             AddActiveCommand(ActorCommand.turnright);
             AddActiveCommand(ActorCommand.melee);
+            AddActiveCommand(ActorCommand.heavyattack);
+            AddActiveCommand(ActorCommand.range);
+            AddActiveCommand(ActorCommand.magic);
+            AddActiveCommand(ActorCommand.use);
             AddActiveCommand(ActorCommand.die);
         }
         _cmd = activeCommandsList;
