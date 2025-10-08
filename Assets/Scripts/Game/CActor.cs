@@ -23,6 +23,7 @@ public abstract class CActor : CGameObject, ICharacter
     protected const int maxCommands = 14;
     protected int[] activeCommandsList = new int[maxCommands];
     protected int activeCommandsNum;
+    protected CCharacter character;
 
     private class Command
     {
@@ -31,7 +32,7 @@ public abstract class CActor : CGameObject, ICharacter
     }
 
     private Queue<Command> cmdList = new Queue<Command>();
-    
+
     protected void InitActor()
     {
         battle = AllServices.Container.Get<IBattle>();
@@ -84,9 +85,8 @@ public abstract class CActor : CGameObject, ICharacter
 
         Command cmd = cmdList.Dequeue();
         DoCommand(cmd.command);
-        if (cmd.command == ActorCommand.die) cmdList.Clear();
     }
-
+    public void SetCharacter(CCharacter _character) { character = _character; }
     public CActor SetCurrentCell(Cell _cell) { currentCell = _cell; return this; }
     public Cell GetCurrentCell() { return currentCell; }
     public CActor SetName(string _name) { charName = _name; return this; }
@@ -113,5 +113,4 @@ public abstract class CActor : CGameObject, ICharacter
     {
         battle.SetCurrentCharacter(this);
     }
-
 }
