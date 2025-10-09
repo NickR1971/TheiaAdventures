@@ -44,7 +44,7 @@ public enum CharacterCommand
     special=7, interact = 8, use = 9
 }
 
-public abstract class CCharacter
+public abstract class CCharacter : ICharacter
 {
     protected Character character;
     protected const int maxCommands = 10;
@@ -52,6 +52,28 @@ public abstract class CCharacter
     protected int activeCommandsNum;
     protected CActor actor;
 
+    public static CCharacter Create(Character _character)
+    {
+        CCharacter chr = null;
+
+        switch(_character.cType)
+        {
+            case ECharacterType.knight:
+                chr = new CUnitKnight(_character);
+                break;
+            case ECharacterType.mage:
+                chr = new CUnitMage(_character);
+                break;
+            case ECharacterType.zombie:
+                chr = new CUnitZombie(_character);
+                break;
+            case ECharacterType.skeleton:
+                chr = new CUnitSkeleton(_character);
+                break;
+        }
+
+        return chr;
+    }
     public CCharacter(Character _character)
     {
         character = _character;
@@ -71,4 +93,14 @@ public abstract class CCharacter
     public string GetName() => character.cName;
     public Sprite GetSprite() => actor.GetSprite();
     public abstract void DoCommand(CharacterCommand _cmd);
+
+    public void AddCommand(ActorCommand _cmd)
+    {
+        actor.AddCommand(_cmd);
+    }
+
+    public int GetActions(out int[] _cmd)
+    {
+        return actor.GetActions(out _cmd);
+    }
 }

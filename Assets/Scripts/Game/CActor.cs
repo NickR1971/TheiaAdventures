@@ -7,7 +7,7 @@ public enum ActorState { idle, move, melee, range, magic, use, hit, die }
 public enum ActorCommand { wait=0, walk=1, run=2, turnleft=3, turnright=4, jump=5, crouch=6,
     melee=7, heavyattack=8, range=9, magic=10, interact=11, use=12, die=13 }
 
-public abstract class CActor : CGameObject, ICharacter
+public abstract class CActor : CGameObject
 {
     protected IBattle battle;
     protected IDungeon dungeon;
@@ -19,7 +19,6 @@ public abstract class CActor : CGameObject, ICharacter
     protected float runSpeed;
     protected float turnAngle;
     protected Sprite charSprite;
-    protected string charName;
     protected const int maxCommands = 14;
     protected int[] activeCommandsList = new int[maxCommands];
     protected int activeCommandsNum;
@@ -86,17 +85,18 @@ public abstract class CActor : CGameObject, ICharacter
         Command cmd = cmdList.Dequeue();
         DoCommand(cmd.command);
     }
-    public void SetCharacter(CCharacter _character) { character = _character; }
+    public void SetCharacter(CCharacter _character)
+    {
+        character = _character;
+        character.SetActor(this);
+    }
+    public CCharacter GetGaracter() => character;
     public CActor SetCurrentCell(Cell _cell) { currentCell = _cell; return this; }
     public Cell GetCurrentCell() { return currentCell; }
-    public CActor SetName(string _name) { charName = _name; return this; }
-    public string GetName() { return charName; }
+    public string GetName() => character.GetName();
     public CActor SetSprite(Sprite _spr) { charSprite = _spr; return this; }
-    public Sprite GetSprite() { return charSprite; }
-    public void AddCommand(ActorCommand _cmd)
-    {
-        cmdList.Enqueue(new Command(_cmd));
-    }
+    public Sprite GetSprite() => charSprite;
+    public void AddCommand(ActorCommand _cmd) => cmdList.Enqueue(new Command(_cmd));
     public ActorState GetState() => state;
     public abstract void DoCommand(ActorCommand _cmd);
     public abstract int GetActions(out int[] _cmd);
@@ -111,6 +111,6 @@ public abstract class CActor : CGameObject, ICharacter
     }
     protected override void OnMiddleClick()
     {
-        battle.SetCurrentCharacter(this);
+        battle.SetCurrentCharacter(character);
     }
 }
