@@ -36,6 +36,10 @@ public class CSkeleton : CActor
                 SetState(ActorState.move);
                 TurnRight();
                 break;
+            case ActorCommand.turnback:
+                SetState(ActorState.move);
+                TurnBackward();
+                break;
             case ActorCommand.jump:
                 break;
             case ActorCommand.crouch:
@@ -89,18 +93,5 @@ public class CSkeleton : CActor
     public override void Idle()
     {
         SetState(ActorState.idle);
-    }
-    public override int GetActions(out int[] _cmd)
-    {
-        if (activeCommandsNum == 0)
-        {
-            AddActiveCommand(ActorCommand.walk);
-            AddActiveCommand(ActorCommand.turnleft);
-            AddActiveCommand(ActorCommand.turnright);
-            AddActiveCommand(ActorCommand.melee);
-            AddActiveCommand(ActorCommand.die);
-        }
-        _cmd = activeCommandsList;
-        return activeCommandsNum;
     }
 }

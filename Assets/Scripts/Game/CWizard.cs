@@ -33,6 +33,10 @@ public class CWizard : CActor
                 SetState(ActorState.move);
                 TurnRight();
                 break;
+            case ActorCommand.turnback:
+                SetState(ActorState.move);
+                TurnBackward();
+                break;
             case ActorCommand.jump:
                 break;
             case ActorCommand.crouch:
@@ -60,10 +64,15 @@ public class CWizard : CActor
                 positionControl.Wait(1);
                 break;
             case ActorCommand.interact:
+                SetState(ActorState.use);
+                animator.SetBool("interact", true);
+                animator.SetBool("use", false);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.use:
                 SetState(ActorState.use);
                 animator.SetBool("use", true);
+                animator.SetBool("interact", false);
                 positionControl.Wait(1);
                 break;
             case ActorCommand.die:
@@ -96,6 +105,7 @@ public class CWizard : CActor
                 break;
             case ActorState.use:
                 animator.SetBool("use", false);
+                animator.SetBool("interact", false);
                 break;
             case ActorState.die:
                 animator.SetBool("die", false);
@@ -104,22 +114,5 @@ public class CWizard : CActor
                 break;
         }
         state = _state;
-    }
-    public override int GetActions(out int[] _cmd)
-    {
-        if (activeCommandsNum == 0)
-        {
-            AddActiveCommand(ActorCommand.walk);
-            AddActiveCommand(ActorCommand.turnleft);
-            AddActiveCommand(ActorCommand.turnright);
-            AddActiveCommand(ActorCommand.melee);
-            AddActiveCommand(ActorCommand.heavyattack);
-            AddActiveCommand(ActorCommand.range);
-            AddActiveCommand(ActorCommand.magic);
-            AddActiveCommand(ActorCommand.use);
-            AddActiveCommand(ActorCommand.die);
-        }
-        _cmd = activeCommandsList;
-        return activeCommandsNum;
     }
 }

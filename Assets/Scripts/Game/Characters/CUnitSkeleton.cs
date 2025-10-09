@@ -8,20 +8,27 @@ public class CUnitSkeleton : CCharacter
     {
         AddActiveCommand(CharacterCommand.move);
         AddActiveCommand(CharacterCommand.attack);
-        AddActiveCommand(CharacterCommand.interact);
-        AddActiveCommand(CharacterCommand.use);
     }
     public override void DoCommand(CharacterCommand _cmd)
     {
         switch (_cmd)
         {
             case CharacterCommand.move:
+                if (selectedCell == null)
+                {
+                    selectedCommand = _cmd;
+                    ActivateNearCells();
+                }
+                else
+                {
+                    RotateToSelectedCell();
+                    actor.AddCommand(ActorCommand.walk);
+                    selectedCell = null;
+                    gamemap.ActivateCells(false);
+                }
                 break;
             case CharacterCommand.attack:
-                break;
-            case CharacterCommand.interact:
-                break;
-            case CharacterCommand.use:
+                actor.AddCommand(ActorCommand.melee);
                 break;
         }
     }

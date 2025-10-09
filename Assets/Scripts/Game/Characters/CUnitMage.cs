@@ -17,14 +17,30 @@ public class CUnitMage : CCharacter
         switch (_cmd)
         {
             case CharacterCommand.move:
+                if (selectedCell == null)
+                {
+                    selectedCommand = _cmd;
+                    ActivateNearCells();
+                }
+                else
+                {
+                    RotateToSelectedCell();
+                    actor.AddCommand(ActorCommand.walk);
+                    selectedCell = null;
+                    gamemap.ActivateCells(false);
+                }
                 break;
             case CharacterCommand.attack:
+                actor.AddCommand(ActorCommand.melee);
                 break;
             case CharacterCommand.magic:
+                actor.AddCommand(ActorCommand.magic);
                 break;
             case CharacterCommand.interact:
+                actor.AddCommand(ActorCommand.interact);
                 break;
             case CharacterCommand.use:
+                actor.AddCommand(ActorCommand.use);
                 break;
         }
     }

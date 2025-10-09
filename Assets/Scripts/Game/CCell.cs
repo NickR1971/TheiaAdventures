@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class CCell : MonoBehaviour, IPointerClickHandler
 {
-    private IGameConsole gameConsole = null;
+    private IBattle battle = null;
     private Cell cell;
     private int num;
 
@@ -13,7 +13,7 @@ public class CCell : MonoBehaviour, IPointerClickHandler
     {
         cell = _cell;
         num = cell.GetNumber();
-        gameConsole = AllServices.Container.Get<IGameConsole>();
+        battle = AllServices.Container.Get<IBattle>();
     }
 
     public Cell GetCell() => cell;
@@ -21,20 +21,20 @@ public class CCell : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        gameConsole.Show();
+        ICharacter curChar = battle.GetCurrentCharacter();
+        
+        if (curChar == null) return;
+
         switch(eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                cell.SetColor(Color.blue);
+                curChar.OnClickCell(num, 1);
                 break;
             case PointerEventData.InputButton.Right:
-                gameConsole.ShowMessage("check cell " + num);
+                curChar.OnClickCell(num, 2);
                 break;
             case PointerEventData.InputButton.Middle:
-                gameConsole.ExecuteCommand("cell " + num);
-                break;
-            default:
-                gameConsole.ShowMessage("unknown event at cell " + num);
+                curChar.OnClickCell(num, 0);
                 break;
         }
     }

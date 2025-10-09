@@ -11,18 +11,32 @@ public class CUnitKnight : CCharacter
         AddActiveCommand(CharacterCommand.interact);
         AddActiveCommand(CharacterCommand.use);
     }
-
     public override void DoCommand(CharacterCommand _cmd)
     {
-        switch(_cmd)
+        switch (_cmd)
         {
             case CharacterCommand.move:
+                if (selectedCell == null)
+                {
+                    selectedCommand = _cmd;
+                    ActivateNearCells();
+                }
+                else
+                {
+                    RotateToSelectedCell();
+                    actor.AddCommand(ActorCommand.walk);
+                    selectedCell = null;
+                    gamemap.ActivateCells(false);
+                }
                 break;
             case CharacterCommand.attack:
+                actor.AddCommand(ActorCommand.melee);
                 break;
             case CharacterCommand.interact:
+                actor.AddCommand(ActorCommand.wait);
                 break;
             case CharacterCommand.use:
+                actor.AddCommand(ActorCommand.wait);
                 break;
         }
     }

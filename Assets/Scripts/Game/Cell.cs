@@ -10,6 +10,7 @@ public class Cell
     private ECellType baseType;
     private int[] nearList;
     private CRoom room;
+    private CGameObject curGameObject;
 
     public Cell(Vector3 _position, int _number, int[] _nearList)
     {
@@ -17,11 +18,17 @@ public class Cell
         number = _number;
         baseType = ECellType.none;
         nearList = _nearList;
+        curGameObject = null;
     }
-
+    public void SetGameObject(CGameObject _obj)
+    {
+        curGameObject = _obj;
+    }
+    public CGameObject GetGameObject() => curGameObject;
     public void SetBaseType(ECellType _type) => baseType = _type;
     public ECellType GetBaseType() => baseType;
     public Vector3 GetPosition() => position;
+    public float GetHeight() => position.y;
     public int GetNearNumber(EMapDirection _direction) => nearList[(int)_direction];
     public void AddRoom(CRoom _room) => room = _room;
     public CRoom GetRoom() => room;

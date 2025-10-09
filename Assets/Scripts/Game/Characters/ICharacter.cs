@@ -6,6 +6,7 @@ public interface ICharacter
 {
     string GetName();
     Sprite GetSprite();
-    void AddCommand(ActorCommand _cmd);
+    void AddCommand(CharacterCommand _cmd);
     int GetActions(out int[] _cmd);
+    void OnClickCell(int _num, int _button);
 }

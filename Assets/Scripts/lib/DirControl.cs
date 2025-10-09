@@ -4,12 +4,16 @@ using UnityEngine;
 
 public enum EMapDirection
 {
-    center = 0, north = 1, northeast = 2, east = 3, southeast = 4, south = 5, southwest = 6, west = 7, northwest = 8
+    center = 0, north = 1, northeast = 2, east = 3, southeast = 4,
+    south = 5, southwest = 6, west = 7, northwest = 8
 }
 
 public static class CDirControl
 {
     private static bool[] directions = { false, true, true, true, true, true, true, true, true };
+    private static EMapDirection[] backDirections = { EMapDirection.center,
+        EMapDirection.south, EMapDirection.southwest, EMapDirection.west, EMapDirection.northwest,
+        EMapDirection.north, EMapDirection.northeast, EMapDirection.east, EMapDirection.southeast };
     public static void SetHex(bool _f)
     {
         directions[(int)EMapDirection.north] = !_f;
@@ -37,4 +41,5 @@ public static class CDirControl
 
         return (EMapDirection)i;
     }
+    public static EMapDirection GetBack(EMapDirection _start) => backDirections[(int)_start];
 }

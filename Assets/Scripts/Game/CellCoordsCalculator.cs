@@ -12,12 +12,14 @@ public interface IGameMap
     Cell GetCell(int _number);
     Cell GetCell(int _x, int _y);
     Vector3 GetDirectionVector(EMapDirection _direction);
+    void ActivateCells(bool _flag);
 }
 public abstract class CellCoordsCalculator : IGameMap
 {
     private Action<Cell> onCreateCell;
     private int startCellInRoom = 0;
     private Cell[] map;
+    private int mapSize;
 
     protected readonly int width;
     protected readonly int height;
@@ -110,7 +112,8 @@ public abstract class CellCoordsCalculator : IGameMap
     {
         mapWidth = _width;
         mapHeight = _height;
-        map = new Cell[mapHeight * mapWidth * width * height];
+        mapSize = mapHeight * mapWidth * width * height;
+        map = new Cell[mapSize];
     }
 
     private int CalcNum(int _x, int _y)
@@ -165,8 +168,9 @@ public abstract class CellCoordsCalculator : IGameMap
             map[cellNumber] = cell;
             cell.SetBaseType(surfaceType);
             onCreateCell(cell);
-            cell.SetColor(GetSurfaceColor(surfaceType));
-            cell.SetActive(position.y < 3.1f);
+//            cell.SetColor(GetSurfaceColor(surfaceType));
+            cell.SetColor(Color.yellow);
+            cell.SetActive(false);
         }
     }
 
@@ -182,6 +186,15 @@ public abstract class CellCoordsCalculator : IGameMap
     public Vector3 GetDirectionVector(EMapDirection _direction)
     {
         return direction[(int)_direction];
+    }
+    public void ActivateCells(bool _flag)
+    {
+        int i;
+        for(i=0;i<mapSize;i++)
+        {
+            if (map[i] != null) 
+                map[i].SetActive(_flag);
+        }
     }
 }
 
