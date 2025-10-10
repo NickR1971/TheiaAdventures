@@ -273,8 +273,8 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         buildSequence = new CRand(gameID);
         const int maxroom = 50;
-        const int startX = 2;
-        const int startY = 2;
+        const int startX = 1;
+        const int startY = 1;
 
         int n = maxroom - GenerateMapFrom(startX, startY, maxroom);
         Debug.Log($"Create {n} rooms");

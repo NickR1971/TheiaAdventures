@@ -234,13 +234,16 @@ public abstract class CCharacter : ICharacter
     }
     protected void ActivateAvailableCells(Cell _cell, int _distance)
     {
+        const int cV = 500;
         _cell.SetActive(true);
+        _cell.SetValue(cV - _distance);
         _distance--;
 
         if (_distance <= 0) return;
 
         Cell cell;
         EMapDirection dirStart, dir;
+        int d = cV - _distance;
 
         dirStart = EMapDirection.east;
         dir = dirStart;
@@ -250,7 +253,8 @@ public abstract class CCharacter : ICharacter
             dir = CDirControl.GetLeft(dir);
             if (IsAccessCell(cell))
             {
-                ActivateAvailableCells(cell, _distance);
+                if (cell.GetValue() > d)
+                    ActivateAvailableCells(cell, _distance);
             }
         }
         while (dir != dirStart);
