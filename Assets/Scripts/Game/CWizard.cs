@@ -21,6 +21,7 @@ public class CWizard : CActor
         switch (_cmd)
         {
             case ActorCommand.walk:
+            case ActorCommand.run:
                 SetState(ActorState.move);
                 animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();

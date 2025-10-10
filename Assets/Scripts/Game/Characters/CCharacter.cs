@@ -133,18 +133,18 @@ public abstract class CCharacter : ICharacter
         if (i == 4) i = 0;
         return i;
     }
-    protected void RotateToSelectedCell()
+    private EMapDirection Rotate(Cell _from, Cell _to, EMapDirection _startDir)
     {
         int n;
-        int num = selectedCell.GetNumber();
-        Cell cell = actor.GetCurrentCell();
-        EMapDirection dir = actor.GetDirection();
+        int num = _to.GetNumber();
+        Cell cell = _from;
+        EMapDirection dir = _startDir;
 
-        if (cell.GetNearNumber(dir) == num) return;
+        if (cell.GetNearNumber(dir) == num) return _startDir;
         if (cell.GetNearNumber(CDirControl.GetBack(dir)) == num)
         {
             actor.AddCommand(ActorCommand.turnback);
-            return;
+            return CDirControl.GetBack(_startDir);
         }
         n = CheckLeft(cell, dir, num);
         if (n > 0)
@@ -153,19 +153,77 @@ public abstract class CCharacter : ICharacter
             {
                 actor.AddCommand(ActorCommand.turnleft);
                 n--;
+                _startDir = CDirControl.GetLeft(_startDir);
             }
-            return;
         }
-        n = CheckRight(cell, dir, num);
-        if (n > 0)
+        else
         {
-            while (n > 0)
+            n = CheckRight(cell, dir, num);
+            if (n > 0)
             {
-                actor.AddCommand(ActorCommand.turnright);
-                n--;
+                while (n > 0)
+                {
+                    actor.AddCommand(ActorCommand.turnright);
+                    n--;
+                    _startDir = CDirControl.GetRight(_startDir);
+                }
             }
-            return;
         }
+        return _startDir;
+    }
+    protected void CreatePathTo(Cell _cell, int _distance)
+    {
+        _cell.SetValue(_distance++);
+        if (_cell.GetNumber() == actor.GetCurrentCell().GetNumber()) return;
+
+        Cell cell;
+        EMapDirection dirStart, dir;
+
+        dirStart = EMapDirection.east;
+        dir = dirStart;
+        do
+        {
+            cell = gamemap.GetCell(_cell.GetNearNumber(dir));
+            dir = CDirControl.GetLeft(dir);
+            if (cell == null) continue;
+            if (cell.IsActive())
+            {
+                if (cell.GetValue() > _distance)
+                    CreatePathTo(cell, _distance);
+            }
+        }
+        while (dir != dirStart);
+    }
+    protected void MoveChar()
+    {
+        ActorCommand moveCmd = ActorCommand.walk;
+
+        if (actor.GetCurrentCell().GetValue() > 2) moveCmd = ActorCommand.run;
+
+        Cell cell1 = actor.GetCurrentCell();
+        Cell cell2 = null, cell;
+        EMapDirection dirStart, dir;
+
+        dirStart = actor.GetDirection();
+        do
+        {
+            dir = dirStart;
+            do
+            {
+                cell = gamemap.GetCell(cell1.GetNearNumber(dir));
+                if (cell2 == null) cell2 = cell;
+                if (cell != null)
+                {
+                    if (cell.GetValue() < cell2.GetValue()) cell2 = cell;
+                }
+                dir = CDirControl.GetLeft(dir);
+            }
+            while (dir != dirStart);
+            dirStart = Rotate(cell1, cell2, dirStart);
+            actor.AddCommand(moveCmd);
+            cell1 = cell2;
+        }
+        while (cell1.GetValue() > 0);
     }
     private bool IsAccessCell(Cell _cell)
     {
@@ -174,39 +232,42 @@ public abstract class CCharacter : ICharacter
         if (_cell.GetHeight() > 3.0f) return false;
         return true;
     }
-    protected void ActivateNearCells()
+    protected void ActivateAvailableCells(Cell _cell, int _distance)
     {
-        EMapDirection dirForward, dirBackward, dirLeft, dirRight;
-        int i;
-        int[] left = new int[9];
-        int[] right = new int[9];
-        Cell cell = actor.GetCurrentCell();
+        _cell.SetActive(true);
+        _distance--;
 
-        for (i = 0; i < 9; i++) left[i] = right[i] = 0;
-        dirForward = actor.GetDirection();
-        i = 0; dirLeft = dirRight = dirForward;
-        dirBackward = CDirControl.GetBack(dirForward);
+        if (_distance <= 0) return;
+
+        Cell cell;
+        EMapDirection dirStart, dir;
+
+        dirStart = EMapDirection.east;
+        dir = dirStart;
         do
         {
-            left[i] = cell.GetNearNumber(dirLeft);
-            right[i] = cell.GetNearNumber(dirRight);
-
-            if (!IsAccessCell(gamemap.GetCell(left[i]))) left[i] = 0;
-            if (!IsAccessCell(gamemap.GetCell(right[i]))) right[i] = 0;
-            i++;
-            dirLeft = CDirControl.GetLeft(dirLeft);
-            dirRight = CDirControl.GetRight(dirRight);
+            cell = gamemap.GetCell(_cell.GetNearNumber(dir));
+            dir = CDirControl.GetLeft(dir);
+            if (IsAccessCell(cell))
+            {
+                ActivateAvailableCells(cell, _distance);
+            }
         }
-        while (dirLeft != dirBackward);
-        
-        left[i] = right[i] = cell.GetNearNumber(dirBackward);
-        if (gamemap.GetCell(left[i]) == null) left[i] = right[i] = 0;
-        else if (gamemap.GetCell(left[i]).GetHeight() > 3.0f) left[i] = right[i] = 0;
-
-        for (i = 0; i < 9; i++)
+        while (dir != dirStart);
+    }
+    protected void StandartMove()
+    {
+        if (selectedCell == null)
         {
-            if (left[i] != 0) gamemap.GetCell(left[i]).SetActive(true);
-            if (right[i] != 0) gamemap.GetCell(right[i]).SetActive(true);
+            selectedCommand = CharacterCommand.move;
+            ActivateAvailableCells(actor.GetCurrentCell(), character.secondaryAttributes.speed + 1);
+        }
+        else
+        {
+            CreatePathTo(selectedCell, 0);
+            MoveChar();
+            selectedCell = null;
+            gamemap.ActivateCells(false);
         }
     }
     public abstract void DoCommand(CharacterCommand _cmd);
@@ -233,8 +294,6 @@ public abstract class CCharacter : ICharacter
                 gamemap.ActivateCells(false);
                 break;
             case 0: // middle button
-                selectedCell = cell;
-                RotateToSelectedCell();
                 selectedCell = null;
                 gamemap.ActivateCells(false);
                 break;

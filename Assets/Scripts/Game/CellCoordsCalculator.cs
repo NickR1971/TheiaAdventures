@@ -192,8 +192,11 @@ public abstract class CellCoordsCalculator : IGameMap
         int i;
         for(i=0;i<mapSize;i++)
         {
-            if (map[i] != null) 
+            if (map[i] != null)
+            {
                 map[i].SetActive(_flag);
+                map[i].ResetValue();
+            }
         }
     }
 }

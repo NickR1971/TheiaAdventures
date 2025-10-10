@@ -11,6 +11,8 @@ public class Cell
     private int[] nearList;
     private CRoom room;
     private CGameObject curGameObject;
+    private const int maxValue = 999;
+    private int tempValue;
 
     public Cell(Vector3 _position, int _number, int[] _nearList)
     {
@@ -19,6 +21,7 @@ public class Cell
         baseType = ECellType.none;
         nearList = _nearList;
         curGameObject = null;
+        tempValue = maxValue;
     }
     public void SetGameObject(CGameObject _obj)
     {
@@ -45,8 +48,13 @@ public class Cell
     {
         if (obj == null) Debug.Log($"Cell #{number} mark not instantiated!");
         else obj.GetComponent<Renderer>().material.color = _color;
+        
     }
 
-    public void SetActive(bool _f) { obj.SetActive(_f); }
+    public void SetActive(bool _f) => obj.SetActive(_f);
+    public bool IsActive() => obj.activeSelf;
+    public void SetValue(int _v) => tempValue = _v;
+    public void ResetValue() => tempValue = maxValue;
+    public int GetValue() => tempValue;
 }
 

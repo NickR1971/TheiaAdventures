@@ -15,18 +15,7 @@ public class CUnitZombie : CCharacter
         switch (_cmd)
         {
             case CharacterCommand.move:
-                if (selectedCell == null)
-                {
-                    selectedCommand = _cmd;
-                    ActivateNearCells();
-                }
-                else
-                {
-                    RotateToSelectedCell();
-                    actor.AddCommand(ActorCommand.walk);
-                    selectedCell = null;
-                    gamemap.ActivateCells(false);
-                }
+                StandartMove();
                 break;
             case CharacterCommand.attack:
                 actor.AddCommand(ActorCommand.melee);
