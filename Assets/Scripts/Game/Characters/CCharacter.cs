@@ -298,6 +298,7 @@ public abstract class CCharacter : ICharacter
                 gamemap.ActivateCells(false);
                 break;
             case 0: // middle button
+                Rotate(actor.GetCurrentCell(), cell, actor.GetDirection());
                 selectedCell = null;
                 gamemap.ActivateCells(false);
                 break;

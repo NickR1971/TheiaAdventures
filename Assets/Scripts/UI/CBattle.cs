@@ -15,6 +15,7 @@ public interface IBattle : IService
 public class CBattle : CUI, IBattle
 {
     private IGame game;
+    private ICamera iCamera;
     private IGameConsole gameConsole;
     private ICharacterManager charManager;
     private IDungeon dungeon;
@@ -42,6 +43,7 @@ public class CBattle : CUI, IBattle
     private void Start()
     {
         InitUI();
+        iCamera = AllServices.Container.Get<ICamera>();
         game = AllServices.Container.Get<IGame>();
         gameConsole = AllServices.Container.Get<IGameConsole>();
         charManager = AllServices.Container.Get<ICharacterManager>();
@@ -54,6 +56,10 @@ public class CBattle : CUI, IBattle
         gameMap = dungeon.GetGameMap();
         SelectStartCells();
         CreateTestCharacter();
+    }
+    private void OnDestroy()
+    {
+        AllServices.Container.UnRegister<IBattle>();
     }
     private void SelectStartCells()
     {
@@ -169,7 +175,8 @@ public class CBattle : CUI, IBattle
         CreateCharacter(ECharacterType.mage);
         CreateCharacter(ECharacterType.skeleton);
         CreateCharacter(ECharacterType.knight);
-        gameConsole.ExecuteCommand("cell " + cell.GetNumber());
+        //gameConsole.ExecuteCommand("cell " + cell.GetNumber());
+        iCamera.SetViewPoint(cell.GetPosition());
     }
     public void SetCharacterName(string _name)
     {
