@@ -22,10 +22,10 @@ public class CUnitKnight : CCharacter
                 actor.AddCommand(ActorCommand.melee);
                 break;
             case CharacterCommand.interact:
-                actor.AddCommand(ActorCommand.wait);
+                actor.AddCommand(ActorCommand.interact);
                 break;
             case CharacterCommand.use:
-                actor.AddCommand(ActorCommand.wait);
+                actor.AddCommand(ActorCommand.use);
                 break;
         }
     }

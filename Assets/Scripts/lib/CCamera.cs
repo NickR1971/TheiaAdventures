@@ -10,7 +10,7 @@ public interface ICamera : IService
     void SetPositionInstant(Vector3 _position);
     void SetPosition(Vector3 _position);
     void SetPosition(EMapDirection _dir);
-    void SetRelativePosition(float _height, float _distance);
+    void SetRelativePosition(float _height, float _distance, EMapDirection _direction);
     void SetViewLock(bool _isViewLock);
     bool IsBusy();
 }
@@ -123,11 +123,12 @@ public class CCamera : MonoBehaviour, ICamera
         SetViewPointInstant(viewpoint);
     }
 
-    public void SetRelativePosition(float _height, float _distance)
+    public void SetRelativePosition(float _height, float _distance, EMapDirection _direction)
     {
         if (_height > 0) height = _height;
         if (distance > 0) distance = _distance;
         InitPositions();
+        SetPosition(_direction);
     }
 
     public void SetViewLock(bool _isViewLock)

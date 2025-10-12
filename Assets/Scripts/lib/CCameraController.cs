@@ -6,27 +6,35 @@ public class CCameraController : MonoBehaviour
 {
     private ICamera iCamera;
     private IInputController iInputController;
-    private bool isLock = true;
     private float speed = 10.0f;
+    private int dir;
 
     private   void Start()
     {
         iCamera = GetComponent<ICamera>();
         iInputController = AllServices.Container.Get<IInputController>();
-        iCamera.SetPosition(EMapDirection.south);
+        iCamera.SetPosition(EMapDirection.north);
+        dir = (int)EMapDirection.north;
     }
 
     private void Update()
     {
         if (iCamera.IsBusy()) return;
+        if(iInputController.IsPressed(MyButton.LBumper))
+        {
+            dir++;
+            if (dir == 9) dir = 1;
+            iCamera.SetPosition((EMapDirection)dir);
+        }
+        if (iInputController.IsPressed(MyButton.RBumper))
+        {
+            dir--;
+            if (dir == 0) dir = 8;
+            iCamera.SetPosition((EMapDirection)dir);
+        }
         if (iInputController.IsPressed(MyButton.Rstick))
         {
-            isLock = !isLock;
-            iCamera.SetViewLock(!isLock);
-            if (isLock)
-            {
-                iCamera.SetViewPointInstant(transform.position + new Vector3(0, -5, 5));
-            }
+            iCamera.SetPosition((EMapDirection)dir);
         }
 
         iInputController.GetRightStick(out float h, out float v);

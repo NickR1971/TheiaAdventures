@@ -65,8 +65,14 @@ public class CKnight : CActor
             case ActorCommand.magic:
                 break;
             case ActorCommand.interact:
+                SetState(ActorState.use);
+                animator.SetBool("attack", true);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.use:
+                SetState(ActorState.use);
+                animator.SetBool("attack", false);
+                positionControl.Wait(1);
                 break;
             case ActorCommand.die:
                 SetState(ActorState.die);
@@ -90,6 +96,9 @@ public class CKnight : CActor
             case ActorState.melee:
                 animator.SetBool("attack", false);
                 animator.SetBool("attack2", false);
+                break;
+            case ActorState.use:
+                animator.SetBool("attack", false);
                 break;
             case ActorState.die:
                 animator.SetBool("die", false);
