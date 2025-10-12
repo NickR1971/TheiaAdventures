@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public abstract class CGameObject : MonoBehaviour, IPointerClickHandler
 {
     protected CPositionControl positionControl;
+    protected Cell currentCell = null;
 
     void Update()
     {
@@ -23,7 +24,14 @@ public abstract class CGameObject : MonoBehaviour, IPointerClickHandler
     protected abstract void OnLeftClick();
     protected abstract void OnRightClick();
     protected abstract void OnMiddleClick();
-
+    public CGameObject SetCurrentCell(Cell _cell)
+    {
+        if (currentCell != null) currentCell.ResetGameObject();
+        currentCell = _cell;
+        currentCell.SetGameObject(this);
+        return this;
+    }
+    public Cell GetCurrentCell() => currentCell;
     public Vector3 GetPosition() => transform.position;
     public void OnPointerClick(PointerEventData eventData)
     {

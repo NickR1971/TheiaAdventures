@@ -11,6 +11,7 @@ public class Cell
     private int[] nearList;
     private CRoom room;
     private CGameObject curGameObject;
+    private CGameObject localGameObject;
     private const int maxValue = 999;
     private int tempValue;
 
@@ -20,11 +21,17 @@ public class Cell
         number = _number;
         baseType = ECellType.none;
         nearList = _nearList;
+        localGameObject = null;
         curGameObject = null;
         tempValue = maxValue;
     }
+    public void ResetGameObject()
+    {
+        curGameObject = localGameObject;
+    }
     public void SetGameObject(CGameObject _obj)
     {
+        localGameObject = curGameObject;
         curGameObject = _obj;
     }
     public CGameObject GetGameObject() => curGameObject;

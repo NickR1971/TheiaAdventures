@@ -304,5 +304,9 @@ public abstract class CCharacter : ICharacter
                 break;
         }
     }
+    public Cell GetPositionCell()
+    {
+        return actor.GetCurrentCell();
+    }
     //======================
 }

@@ -12,7 +12,6 @@ public abstract class CActor : CGameObject
     protected IBattle battle;
     protected IDungeon dungeon;
     protected IGameMap gameMap;
-    protected Cell currentCell = null;
     protected ActorState state;
     protected EMapDirection dir;
     protected float walkSpeed;
@@ -88,14 +87,6 @@ public abstract class CActor : CGameObject
         character.SetActor(this);
     }
     public CCharacter GetGaracter() => character;
-    public CActor SetCurrentCell(Cell _cell) 
-    {
-        if (currentCell != null) currentCell.SetGameObject(null);
-        currentCell = _cell;
-        currentCell.SetGameObject(this);
-        return this;
-    }
-    public Cell GetCurrentCell() => currentCell;
     public EMapDirection GetDirection() => dir;
     public string GetName() => character.GetName();
     public CActor SetSprite(Sprite _spr) { charSprite = _spr; return this; }

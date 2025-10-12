@@ -175,7 +175,6 @@ public class CBattle : CUI, IBattle
         CreateCharacter(ECharacterType.mage);
         CreateCharacter(ECharacterType.skeleton);
         CreateCharacter(ECharacterType.knight);
-        //gameConsole.ExecuteCommand("cell " + cell.GetNumber());
         iCamera.SetViewPoint(cell.GetPosition());
     }
     public void SetCharacterName(string _name)
@@ -242,6 +241,7 @@ public class CBattle : CUI, IBattle
             actionButtons[i].image.sprite = actionSprites[charActions[i]];
             SetListener(actionButtons[i], charActions[i]);
         }
+        iCamera.SetViewPoint(currentCharacter.GetPositionCell().GetPosition());
     }
     public ICharacter GetCurrentCharacter() => currentCharacter;
     public void CharCommand(int _cmd)

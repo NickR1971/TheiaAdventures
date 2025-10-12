@@ -330,7 +330,9 @@ public class CDungeon : MonoBehaviour, IDungeon
 
     public CActor CreateCharacter(GameObject _chr, Cell _cell)
     {
-        return Instantiate(_chr, _cell.GetPosition(), Quaternion.identity, transform)
-            .GetComponent<CActor>().SetCurrentCell(_cell);
+        CActor actor;
+        actor = Instantiate(_chr, _cell.GetPosition(), Quaternion.identity, transform).GetComponent<CActor>();
+        actor.SetCurrentCell(_cell);
+        return actor;
     }
 }

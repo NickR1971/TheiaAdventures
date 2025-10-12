@@ -9,4 +9,5 @@ public interface ICharacter
     void AddCommand(CharacterCommand _cmd);
     int GetActions(out int[] _cmd);
     void OnClickCell(int _num, int _button);
+    Cell GetPositionCell();
 }
