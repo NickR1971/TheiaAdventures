@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public interface IBattle : IService
 {
-    void SetCharacterSprite(Sprite _sprite);
-    void SetCharacterName(string _name);
+    void ShowCharacterSprite(Sprite _sprite);
+    void ShowCharacterName(string _name);
     void SetCurrentCharacter(ICharacter _charSelected);
     ICharacter GetCurrentCharacter();
 }
@@ -177,12 +177,12 @@ public class CBattle : CUI, IBattle
         CreateCharacter(ECharacterType.knight);
         iCamera.SetViewPoint(cell.GetPosition());
     }
-    public void SetCharacterName(string _name)
+    public void ShowCharacterName(string _name)
     {
         nameChar.text = _name;
     }
 
-    public void SetCharacterSprite(Sprite _sprite)
+    public void ShowCharacterSprite(Sprite _sprite)
     {
         imgChar.sprite = _sprite;
     }

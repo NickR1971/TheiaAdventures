@@ -171,6 +171,54 @@ public abstract class CCharacter : ICharacter
         }
         return _startDir;
     }
+    public void RotateTo(EMapDirection _dir)
+    {
+        EMapDirection sourceDir = actor.GetDirection();
+        if (!CDirControl.IsValidDirection(_dir)) return;
+        if (sourceDir == _dir) return;
+        if (sourceDir == CDirControl.GetBack(_dir))
+        {
+            actor.AddCommand(ActorCommand.turnback);
+            return;
+        }
+        int nLeft, nRight;
+        EMapDirection testDir;
+        nLeft = 0;
+        testDir = sourceDir;
+        do
+        {
+            nLeft++;
+            testDir = CDirControl.GetLeft(testDir);
+        }
+        while (testDir != _dir);
+
+        nRight = 0;
+        testDir = sourceDir;
+        do
+        {
+            nRight++;
+            testDir = CDirControl.GetRight(testDir);
+        }
+        while (testDir != _dir);
+
+        int n;
+        ActorCommand cmd;
+        if (nRight < nLeft)
+        {
+            n = nRight;
+            cmd = ActorCommand.turnright;
+        }
+        else
+        {
+            n = nLeft;
+            cmd = ActorCommand.turnleft;
+        }
+        while (n > 0)
+        {
+            actor.AddCommand(cmd);
+            n--;
+        }
+    }
     protected void CreatePathTo(Cell _cell, int _distance)
     {
         _cell.SetValue(_distance++);

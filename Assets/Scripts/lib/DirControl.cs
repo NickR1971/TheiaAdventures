@@ -14,6 +14,7 @@ public static class CDirControl
     private static EMapDirection[] backDirections = { EMapDirection.center,
         EMapDirection.south, EMapDirection.southwest, EMapDirection.west, EMapDirection.northwest,
         EMapDirection.north, EMapDirection.northeast, EMapDirection.east, EMapDirection.southeast };
+    public static bool IsValidDirection(EMapDirection _dir) => directions[(int)_dir];
     public static void SetHex(bool _f)
     {
         directions[(int)EMapDirection.north] = !_f;
