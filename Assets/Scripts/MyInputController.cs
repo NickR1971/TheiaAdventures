@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 public enum MyButton
 {
-    CrossUp=0, CrossDown=1, CrossLeft=3, CrossRight=4,
+    CrossUp=0, CrossDown=1, CrossLeft=2, CrossRight=3,
     Y=4, A=5, B=6, X=7,
     LStick=8, Rstick=9,
     LBumper=10, RBumper=11,

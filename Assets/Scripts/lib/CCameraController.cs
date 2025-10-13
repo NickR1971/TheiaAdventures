@@ -8,6 +8,7 @@ public class CCameraController : MonoBehaviour
     private IInputController iInputController;
     private float speed = 10.0f;
     private int dir;
+    private float distance = 10.0f;
 
     private   void Start()
     {
@@ -20,17 +21,29 @@ public class CCameraController : MonoBehaviour
     private void Update()
     {
         if (iCamera.IsBusy()) return;
-        if(iInputController.IsPressed(MyButton.LBumper))
+        if(iInputController.IsPressed(MyButton.CrossLeft))
         {
             dir++;
             if (dir == 9) dir = 1;
             iCamera.SetPosition((EMapDirection)dir);
         }
-        if (iInputController.IsPressed(MyButton.RBumper))
+        if (iInputController.IsPressed(MyButton.CrossRight))
         {
             dir--;
             if (dir == 0) dir = 8;
             iCamera.SetPosition((EMapDirection)dir);
+        }
+        if (iInputController.IsPressed(MyButton.CrossUp))
+        {
+            distance = distance + 1.0f;
+            if (distance > 10.0f) distance = 10.0f;
+            iCamera.SetRelativePosition(distance, distance, (EMapDirection)dir);
+        }
+        if (iInputController.IsPressed(MyButton.CrossDown))
+        {
+            distance = distance - 1.0f;
+            if (distance < 1.0f) distance = 1.0f;
+            iCamera.SetRelativePosition(distance, distance, (EMapDirection)dir);
         }
         if (iInputController.IsPressed(MyButton.Rstick))
         {
