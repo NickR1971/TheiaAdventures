@@ -273,12 +273,30 @@ public abstract class CCharacter : ICharacter
         }
         while (cell1.GetValue() > 0);
     }
-    private bool IsAccessCell(Cell _cell)
+    private float abs(float _v)
+    {
+        if (_v < 0.0f) _v = -_v;
+        return _v;
+    }
+    private bool CheckSurface(Cell _cell)
+    {
+        bool f = true;
+        switch(_cell.GetBaseType())
+        {
+            case ECellType.none:
+            case ECellType.water:
+            case ECellType.lava:
+                f = false;
+                break;
+        }
+        return f;
+    }
+    private bool IsAccessCell(Cell _cell, float _h)
     {
         if (_cell == null) return false;
         if (_cell.GetGameObject() != null) return false;
-        if (_cell.GetHeight() > 3.0f) return false;
-        return true;
+        if (abs(_cell.GetHeight()-_h) > 2.0f) return false;
+        return CheckSurface(_cell);
     }
     protected void ActivateAvailableCells(Cell _cell, int _distance)
     {
@@ -299,7 +317,7 @@ public abstract class CCharacter : ICharacter
         {
             cell = gamemap.GetCell(_cell.GetNearNumber(dir));
             dir = CDirControl.GetLeft(dir);
-            if (IsAccessCell(cell))
+            if (IsAccessCell(cell, _cell.GetHeight()))
             {
                 if (cell.GetValue() > d)
                     ActivateAvailableCells(cell, _distance);
