@@ -74,8 +74,14 @@ public class CKnight : CActor
                 animator.SetBool("attack", false);
                 positionControl.Wait(1);
                 break;
+            case ActorCommand.hit:
+                SetState(ActorState.hit);
+                animator.SetBool("gethit", true);
+                positionControl.Wait(1);
+                break;
             case ActorCommand.die:
                 SetState(ActorState.die);
+                animator.SetBool("gethit", true);
                 animator.SetBool("die", true);
                 positionControl.Wait(1);
                 break;
@@ -100,7 +106,11 @@ public class CKnight : CActor
             case ActorState.use:
                 animator.SetBool("attack", false);
                 break;
+            case ActorState.hit:
+                if (_state != ActorState.die) animator.SetBool("gethit", false);
+                break;
             case ActorState.die:
+                animator.SetBool("gethit", false);
                 animator.SetBool("die", false);
                 break;
             default:

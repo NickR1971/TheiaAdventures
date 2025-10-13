@@ -5,7 +5,7 @@ using UnityEngine;
 public enum ActorState { idle, move, melee, range, magic, use, hit, die }
 
 public enum ActorCommand { wait, walk, run, turnleft, turnright, turnback, jump, crouch,
-    melee, heavyattack, range, magic, interact, use, die }
+    melee, heavyattack, range, magic, interact, use, hit, die }
 
 public abstract class CActor : CGameObject
 {

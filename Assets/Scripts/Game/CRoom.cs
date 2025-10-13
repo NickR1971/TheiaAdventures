@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CRoom : MonoBehaviour
 {
+    [SerializeField] private GameObject hideObject;
     private IDungeon dungeon = null;
     private CRand localSequence;
     private int row;
@@ -26,6 +27,7 @@ public class CRoom : MonoBehaviour
     private void Start()
     {
         if (dungeon == null) Debug.Log("Not init CRoom before start!");
+        if (hideObject != null) hideObject.SetActive(false);
     }
 
 

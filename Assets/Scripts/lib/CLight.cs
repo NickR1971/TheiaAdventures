@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum LightPosition { dangeon=0, morning=1, noon=2, evening=3, zenit=4 }
+public enum LightPosition { dark=0, north=1, south=2, east=3, west=4, zenit=5 }
 
 public interface ILight : IService
 {
@@ -19,26 +19,27 @@ public class CLight : ConsoleService, ILight
     private Light mLight;
     private CMove move;
     private const float changeTime = 0.7f; // час в секундах за який змінюється положення джеоела світла
-    private Vector3[] standartPosition = new Vector3[5];
+    private Vector3[] standartPosition = new Vector3[6];
 
     private void Awake()
     {
         AllServices.Container.Register<ILight>(this);
         standartPosition[0] = new Vector3(0, -10, -1);
-        standartPosition[1] = new Vector3(-10, 5, 0);
-        standartPosition[2] = new Vector3(0, 7, -2);
-        standartPosition[3] = new Vector3(10, 5, -1);
-        standartPosition[4] = new Vector3(0, 10, 0);
+        standartPosition[1] = new Vector3(0, 10, 10);
+        standartPosition[2] = new Vector3(0, 10, -10);
+        standartPosition[3] = new Vector3(10, 10, 0);
+        standartPosition[4] = new Vector3(-10, 10, 0);
+        standartPosition[5] = new Vector3(0, 10, 0);
     }
 
     private void Start()
     {
         Init();
-        AddCommand("light", OnConsole,"light morning | noon | evening | zenit");
+        AddCommand("light", OnConsole, "light north | south | east | west | zenit");
         mLight = GetComponent<Light>();
         move = new CMove();
         move.SetActionTime(changeTime);
-        SetInstant(LightPosition.noon);
+        SetInstant(LightPosition.zenit);
     }
 
     private void Update()
@@ -58,9 +59,10 @@ public class CLight : ConsoleService, ILight
     private void OnConsole(string _str)
     {
         _str = CUtil.GetWord(_str);
-        if (_str == "morning") MoveTo(LightPosition.morning);
-        if (_str == "noon") MoveTo(LightPosition.noon);
-        if (_str == "evening") MoveTo(LightPosition.evening);
+        if (_str == "north") MoveTo(LightPosition.north);
+        if (_str == "south") MoveTo(LightPosition.south);
+        if (_str == "east") MoveTo(LightPosition.east);
+        if (_str == "west") MoveTo(LightPosition.west);
         if (_str == "zenit") MoveTo(LightPosition.zenit);
     }
 
