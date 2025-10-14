@@ -19,6 +19,7 @@ public abstract class CActor : CGameObject
     protected float turnAngle;
     protected Sprite charSprite;
     protected CCharacter character;
+    private ICamera iCamera;
 
     private class Command
     {
@@ -32,6 +33,7 @@ public abstract class CActor : CGameObject
     {
         battle = AllServices.Container.Get<IBattle>();
         dungeon = AllServices.Container.Get<IDungeon>();
+        iCamera = AllServices.Container.Get<ICamera>();
         gameMap = dungeon.GetGameMap();
         bool isHex = CGameManager.IsHexCell();
         if (isHex) turnAngle = 60.0f;
@@ -50,6 +52,7 @@ public abstract class CActor : CGameObject
         if (cell == null) return false;
         positionControl.MoveTo(cell.GetPosition(), _speed);
         SetCurrentCell(cell);
+        iCamera.SetViewPoint(cell.GetPosition());
         return true;
     }
     protected void TurnLeft()

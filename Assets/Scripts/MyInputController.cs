@@ -43,7 +43,7 @@ public class MyInputController : MonoBehaviour, IInputController
         Key.UpArrow, Key.DownArrow, Key.LeftArrow, Key.RightArrow,
         Key.Space, Key.Enter, Key.Escape, Key.Backspace,
         Key.LeftShift, Key.Numpad5,
-        Key.Tab, Key.Quote,
+        Key.Tab, Key.Backslash,
         Key.Q, Key.E,
         Key.End, Key.Home
     };

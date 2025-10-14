@@ -36,7 +36,6 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 		SaveData data = CGameManager.GetData();
 
 		AllServices.Container.Register<IMainMenu>(this);
-		AllServices.Container.Register<IGame>(game);
 
 		inputController = GetComponent<IInputController>();
 		AllServices.Container.Register<IInputController>(inputController);
@@ -76,9 +75,16 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	private void OnDestroy()
     {
 		uiManager.CloseUI();
-    }
+		AllServices.Container.UnRegister<IGameConsole>();
+		AllServices.Container.UnRegister<IDialog>();
+		AllServices.Container.UnRegister<ISaveLoad>();
+		AllServices.Container.UnRegister<IUI>();
+		AllServices.Container.UnRegister<IInputController>();
+		AllServices.Container.UnRegister<IMainMenu>();
+		AllServices.Container.UnRegister<IGame>();
+	}
 
-    private void Start()
+	private void Start()
     {
 		localization = AllServices.Container.Get<ILocalization>();
 		localization.LoadLanguage(usedLanguage);
