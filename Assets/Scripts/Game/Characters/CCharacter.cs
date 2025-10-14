@@ -2,6 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EOrigin
+{
+    peasant = 0, artisan = 1, noble = 2, barbarian = 3,
+    animal = 4, demon = 5, elemental = 6, elf = 7,
+    giant = 8, goblin = 9, ogre = 10, orc = 11,
+    monster = 12, dragon=13, undead = 14, vampire = 15
+}
+public enum EClass
+{
+    lumberjack, hunter, pikeman, crossbowman, ranger,
+    guard, blacksmith, engeneer,
+    acolyte, monk, priest, shaman, pilgrim,
+    adept, alchemist, wizard, mage, archmage,
+    sorcerer, elementalist,
+    warrior, knight, duelist, berserker
+}
 public struct CAttributes
 {
     public int might;
@@ -10,14 +26,12 @@ public struct CAttributes
     public int knowledge;
     public int personality;
 }
-
 public struct CSecondaryAttributes
 {
     public int initiative;
     public int speed;
     public int reaction;
 }
-
 public struct CCharactersPoints
 {
     public int redHits;
@@ -31,6 +45,8 @@ public struct CCharactersPoints
 public struct Character
 {
     public string cName;
+    public EOrigin origin;
+    public EClass eClass;
     public ECharacterType cType;
     public CAttributes attributes;
     public CSecondaryAttributes secondaryAttributes;
@@ -55,7 +71,14 @@ public abstract class CCharacter : ICharacter
     protected CActor actor;
     protected Cell selectedCell;
     protected CharacterCommand selectedCommand;
+    protected float threshold = 2.0f; // порогове значення перепаду висот для переміщення
 
+    public CCharacter(Character _character)
+    {
+        character = _character;
+        activeCommandsNum = 0;
+        selectedCell = null;
+    }
     public static CCharacter Create(Character _character)
     {
         CCharacter chr = null;
@@ -78,12 +101,6 @@ public abstract class CCharacter : ICharacter
 
         return chr;
     }
-    public CCharacter(Character _character)
-    {
-        character = _character;
-        activeCommandsNum = 0;
-        selectedCell = null;
-    }
     public void SetActor(CActor _actor)
     {
         actor = _actor;
@@ -98,16 +115,63 @@ public abstract class CCharacter : ICharacter
             gamemap = dungeon.GetGameMap();
         }
     }
-
-    protected void AddActiveCommand(CharacterCommand _cmd)
+    public void RotateTo(EMapDirection _dir)
     {
-        if (activeCommandsNum < maxCommands)
-            activeCommandsList[activeCommandsNum++] = (int)_cmd;
+        EMapDirection sourceDir = actor.GetDirection();
+        if (!CDirControl.IsValidDirection(_dir)) return;
+        if (sourceDir == _dir) return;
+        if (sourceDir == CDirControl.GetBack(_dir))
+        {
+            actor.AddCommand(ActorCommand.turnback);
+            return;
+        }
+        int nLeft, nRight;
+        EMapDirection testDir;
+        nLeft = 0;
+        testDir = sourceDir;
+        do
+        {
+            nLeft++;
+            testDir = CDirControl.GetLeft(testDir);
+        }
+        while (testDir != _dir);
+
+        nRight = 0;
+        testDir = sourceDir;
+        do
+        {
+            nRight++;
+            testDir = CDirControl.GetRight(testDir);
+        }
+        while (testDir != _dir);
+
+        int n;
+        ActorCommand cmd;
+        if (nRight < nLeft)
+        {
+            n = nRight;
+            cmd = ActorCommand.turnright;
+        }
+        else
+        {
+            n = nLeft;
+            cmd = ActorCommand.turnleft;
+        }
+        while (n > 0)
+        {
+            actor.AddCommand(cmd);
+            n--;
+        }
     }
     public int GetCommandsList(out int[] _cmd)
     {
         _cmd = activeCommandsList;
         return activeCommandsNum;
+    }
+    protected void AddActiveCommand(CharacterCommand _cmd)
+    {
+        if (activeCommandsNum < maxCommands)
+            activeCommandsList[activeCommandsNum++] = (int)_cmd;
     }
     private int CheckLeft(Cell _cell, EMapDirection _dir, int _num)
     {
@@ -171,54 +235,6 @@ public abstract class CCharacter : ICharacter
         }
         return _startDir;
     }
-    public void RotateTo(EMapDirection _dir)
-    {
-        EMapDirection sourceDir = actor.GetDirection();
-        if (!CDirControl.IsValidDirection(_dir)) return;
-        if (sourceDir == _dir) return;
-        if (sourceDir == CDirControl.GetBack(_dir))
-        {
-            actor.AddCommand(ActorCommand.turnback);
-            return;
-        }
-        int nLeft, nRight;
-        EMapDirection testDir;
-        nLeft = 0;
-        testDir = sourceDir;
-        do
-        {
-            nLeft++;
-            testDir = CDirControl.GetLeft(testDir);
-        }
-        while (testDir != _dir);
-
-        nRight = 0;
-        testDir = sourceDir;
-        do
-        {
-            nRight++;
-            testDir = CDirControl.GetRight(testDir);
-        }
-        while (testDir != _dir);
-
-        int n;
-        ActorCommand cmd;
-        if (nRight < nLeft)
-        {
-            n = nRight;
-            cmd = ActorCommand.turnright;
-        }
-        else
-        {
-            n = nLeft;
-            cmd = ActorCommand.turnleft;
-        }
-        while (n > 0)
-        {
-            actor.AddCommand(cmd);
-            n--;
-        }
-    }
     protected void CreatePathTo(Cell _cell, int _distance)
     {
         _cell.SetValue(_distance++);
@@ -273,11 +289,6 @@ public abstract class CCharacter : ICharacter
         }
         while (cell1.GetValue() > 0);
     }
-    private float abs(float _v)
-    {
-        if (_v < 0.0f) _v = -_v;
-        return _v;
-    }
     private bool CheckSurface(Cell _cell)
     {
         bool f = true;
@@ -295,7 +306,7 @@ public abstract class CCharacter : ICharacter
     {
         if (_cell == null) return false;
         if (_cell.GetGameObject() != null) return false;
-        if (abs(_cell.GetHeight()-_h) > 2.0f) return false;
+        if (Mathf.Abs(_cell.GetHeight()-_h) > threshold) return false;
         return CheckSurface(_cell);
     }
     protected void ActivateAvailableCells(Cell _cell, int _distance)

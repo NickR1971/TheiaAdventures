@@ -17,15 +17,35 @@ public class CNewGamePanel : CUI
     private ELocalStringID[] origins = {
         ELocalStringID.game_origin_peasant,
         ELocalStringID.game_origin_artisan,
-        ELocalStringID.game_origin_noble };
+        ELocalStringID.game_origin_noble,
+        ELocalStringID.game_const_barbarian,
+        ELocalStringID.game_origin_animal,
+        ELocalStringID.game_origin_demon,
+        ELocalStringID.game_origin_elemental,
+        ELocalStringID.game_origin_elf,
+        ELocalStringID.game_origin_giant,
+        ELocalStringID.game_origin_goblin,
+        ELocalStringID.game_origin_ogre,
+        ELocalStringID.game_origin_orc,
+        ELocalStringID.game_origin_monster,
+        ELocalStringID.core_empty,  // dragon
+        ELocalStringID.game_origin_undead,
+        ELocalStringID.game_origin_vampire
+    };
     private ELocalStringID[] classes = { 
-        ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter, ELocalStringID.game_class_acolyte, ELocalStringID.game_class_adept,
-        ELocalStringID.game_class_pikeman, ELocalStringID.game_class_crossbowman, ELocalStringID.game_class_monk, ELocalStringID.game_class_alchemist,
-        ELocalStringID.game_class_knight, ELocalStringID.game_class_duelist, ELocalStringID.game_class_priest, ELocalStringID.game_class_sorcerer };
+        ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
+        ELocalStringID.game_class_acolyte, ELocalStringID.game_class_adept,
+        ELocalStringID.game_class_pikeman, ELocalStringID.game_class_crossbowman,
+        ELocalStringID.game_class_monk, ELocalStringID.game_class_alchemist,
+        ELocalStringID.game_class_knight, ELocalStringID.game_class_duelist,
+        ELocalStringID.game_class_priest, ELocalStringID.game_class_sorcerer };
 
     private ELocalStringID[] constType = {
-        ELocalStringID.game_const_balanced, ELocalStringID.game_const_scholar, ELocalStringID.game_const_barbarian, ELocalStringID.game_const_leader, ELocalStringID.game_const_agile,
-        ELocalStringID.game_const_goof, ELocalStringID.game_const_orphan, ELocalStringID.game_const_genius, ELocalStringID.game_const_nerd, ELocalStringID.game_const_politician };
+        ELocalStringID.game_const_balanced, ELocalStringID.game_const_scholar,
+        ELocalStringID.game_const_barbarian, ELocalStringID.game_const_leader,
+        ELocalStringID.game_const_agile, ELocalStringID.game_const_goof,
+        ELocalStringID.game_const_orphan, ELocalStringID.game_const_genius,
+        ELocalStringID.game_const_nerd, ELocalStringID.game_const_politician };
 
     private int constSelected = 0;
     private const int maxConst = 9;
