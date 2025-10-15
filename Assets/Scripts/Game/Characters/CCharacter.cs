@@ -413,5 +413,6 @@ public abstract class CCharacter : ICharacter
     {
         return actor.GetCurrentCell();
     }
+    public SAttributes GetAttributes() => character.attributes;
     //======================
 }

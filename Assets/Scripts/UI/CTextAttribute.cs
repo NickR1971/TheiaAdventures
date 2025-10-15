@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CTextAttribute : MonoBehaviour
 {
     private Text textField;
-    [SerializeField] private int value = 0;
+    private int value = 0;
 
     void Start()
     {

@@ -22,6 +22,11 @@ public class CBattle : CUI, IBattle
     private IGameMap gameMap;
     [SerializeField] private GameObject characterImage;
     [SerializeField] private GameObject characterName;
+    [SerializeField] private CTextAttribute Might;
+    [SerializeField] private CTextAttribute Dex;
+    [SerializeField] private CTextAttribute Intel;
+    [SerializeField] private CTextAttribute Pers;
+    [SerializeField] private CTextAttribute Know;
     [SerializeField] private Sprite[] actionSprites = new Sprite[10];
     [SerializeField] private Button[] actionButtons = new Button[10];
     private Image imgChar;
@@ -106,7 +111,7 @@ public class CBattle : CUI, IBattle
                 result = true;
                 break;
             case EActorType.mage:
-                _character.attributes = iCharManager.SetAttributes(EConstitution.genius);
+                _character.attributes = iCharManager.SetAttributes(EConstitution.scholar);
                 result = true;
                 break;
             case EActorType.zombie:
@@ -229,6 +234,12 @@ public class CBattle : CUI, IBattle
             actionButtons[i].image.sprite = actionSprites[charActions[i]];
             SetListener(actionButtons[i], charActions[i]);
         }
+        SAttributes a = currentCharacter.GetAttributes();
+        Might.SetValue(a.might);
+        Dex.SetValue(a.dexterity);
+        Intel.SetValue(a.intelligence);
+        Pers.SetValue(a.personality);
+        Know.SetValue(a.knowledge);
         iCamera.SetViewPoint(currentCharacter.GetPositionCell().GetPosition());
     }
     public ICharacter GetCurrentCharacter() => currentCharacter;

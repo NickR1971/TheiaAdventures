@@ -10,4 +10,5 @@ public interface ICharacter
     int GetActions(out int[] _cmd);
     void OnClickCell(int _num, int _button);
     Cell GetPositionCell();
+    SAttributes GetAttributes();
 }
