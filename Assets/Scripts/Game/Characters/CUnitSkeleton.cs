@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class CUnitSkeleton : CCharacter
 {
-    public CUnitSkeleton(Character _character) : base(_character)
+    public CUnitSkeleton(SCharacter _character) : base(_character)
     {
-        AddActiveCommand(CharacterCommand.move);
-        AddActiveCommand(CharacterCommand.attack);
+        AddActiveCommand(ECharacterCommand.move);
+        AddActiveCommand(ECharacterCommand.attack);
     }
-    public override void DoCommand(CharacterCommand _cmd)
+    public override void DoCommand(ECharacterCommand _cmd)
     {
         switch (_cmd)
         {
-            case CharacterCommand.move:
+            case ECharacterCommand.move:
                 StandartMove();
                 break;
-            case CharacterCommand.attack:
+            case ECharacterCommand.attack:
                 actor.AddCommand(ActorCommand.melee);
                 break;
         }

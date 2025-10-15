@@ -9,16 +9,43 @@ public enum EOrigin
     giant = 8, goblin = 9, ogre = 10, orc = 11,
     monster = 12, dragon=13, undead = 14, vampire = 15
 }
-public enum EClass
+public enum ERegularClass
 {
-    lumberjack, hunter, pikeman, crossbowman, ranger,
-    guard, blacksmith, engeneer,
+    none,
+    savager, herbalist,
+    lumberjack, hunter, pikeman, crossbowman,
+    guard, blacksmith, battlemage, gladiator,
     acolyte, monk, priest, shaman, pilgrim,
-    adept, alchemist, wizard, mage, archmage,
-    sorcerer, elementalist,
-    warrior, knight, duelist, berserker
+    adept, alchemist, wizard, mage, warlock,
+    sorcerer, elementalist, trubadur,
+    warrior, knight, duelist
 }
-public struct CAttributes
+public enum EEliteClass
+{
+    none,
+    ranger, // hunter
+    stalker, // hunter
+    engeneer, // blacksmith
+    technomage, // blacksmith
+    bard, // trubadur
+    inquisitor, // monk
+    blackguard, // guard
+    highpriest, // priest
+    oracle, // priest
+    archmage, // mage
+    necromancer, // wizard
+    demonlord, // warlock
+    enchanter, // alchemist
+    spiritlord, // elementalist
+    weaponmaster, // duelist
+    paladin, // knight
+    champion, // knight
+    templar, // knight
+    spellsword, // warrior
+    warlord, // warrior
+    berserker // warrior
+}
+public struct SAttributes
 {
     public int might;
     public int dexterity;
@@ -26,13 +53,13 @@ public struct CAttributes
     public int knowledge;
     public int personality;
 }
-public struct CSecondaryAttributes
+public struct SSecondaryAttributes
 {
     public int initiative;
     public int speed;
     public int reaction;
 }
-public struct CCharactersPoints
+public struct SCharactersPoints
 {
     public int redHits;
     public int yellowHits;
@@ -42,18 +69,19 @@ public struct CCharactersPoints
     public int mana;
     public int will;
 }
-public struct Character
+public struct SCharacter
 {
     public string cName;
     public EOrigin origin;
-    public EClass eClass;
-    public ECharacterType cType;
-    public CAttributes attributes;
-    public CSecondaryAttributes secondaryAttributes;
-    public CCharactersPoints points;
-    public CCharactersPoints currentPoints;
+    public ERegularClass regularClass;
+    public EEliteClass eliteClass;
+    public EActorType cType;
+    public SAttributes attributes;
+    public SSecondaryAttributes secondaryAttributes;
+    public SCharactersPoints points;
+    public SCharactersPoints currentPoints;
 }
-public enum CharacterCommand
+public enum ECharacterCommand
 {
     wait = 0, move = 1, jump = 2, crouch = 3,
     attack = 4, range=5, magic = 6,
@@ -62,7 +90,7 @@ public enum CharacterCommand
 
 public abstract class CCharacter : ICharacter
 {
-    protected Character character;
+    protected SCharacter character;
     protected const int maxCommands = 10;
     protected int[] activeCommandsList = new int[maxCommands];
     protected int activeCommandsNum;
@@ -70,31 +98,31 @@ public abstract class CCharacter : ICharacter
     protected IGameMap gamemap;
     protected CActor actor;
     protected Cell selectedCell;
-    protected CharacterCommand selectedCommand;
+    protected ECharacterCommand selectedCommand;
     protected float threshold = 2.0f; // порогове значення перепаду висот для переміщення
 
-    public CCharacter(Character _character)
+    public CCharacter(SCharacter _character)
     {
         character = _character;
         activeCommandsNum = 0;
         selectedCell = null;
     }
-    public static CCharacter Create(Character _character)
+    public static CCharacter Create(SCharacter _character)
     {
         CCharacter chr = null;
 
         switch(_character.cType)
         {
-            case ECharacterType.knight:
+            case EActorType.knight:
                 chr = new CUnitKnight(_character);
                 break;
-            case ECharacterType.mage:
+            case EActorType.mage:
                 chr = new CUnitMage(_character);
                 break;
-            case ECharacterType.zombie:
+            case EActorType.zombie:
                 chr = new CUnitZombie(_character);
                 break;
-            case ECharacterType.skeleton:
+            case EActorType.skeleton:
                 chr = new CUnitSkeleton(_character);
                 break;
         }
@@ -168,7 +196,7 @@ public abstract class CCharacter : ICharacter
         _cmd = activeCommandsList;
         return activeCommandsNum;
     }
-    protected void AddActiveCommand(CharacterCommand _cmd)
+    protected void AddActiveCommand(ECharacterCommand _cmd)
     {
         if (activeCommandsNum < maxCommands)
             activeCommandsList[activeCommandsNum++] = (int)_cmd;
@@ -340,7 +368,7 @@ public abstract class CCharacter : ICharacter
     {
         if (selectedCell == null)
         {
-            selectedCommand = CharacterCommand.move;
+            selectedCommand = ECharacterCommand.move;
             ActivateAvailableCells(actor.GetCurrentCell(), character.secondaryAttributes.speed + 1);
         }
         else
@@ -351,12 +379,12 @@ public abstract class CCharacter : ICharacter
             gamemap.ActivateCells(false);
         }
     }
-    public abstract void DoCommand(CharacterCommand _cmd);
+    public abstract void DoCommand(ECharacterCommand _cmd);
 
     //========== ICharacter
     public string GetName() => character.cName;
     public Sprite GetSprite() => actor.GetSprite();
-    public void AddCommand(CharacterCommand _cmd) => DoCommand(_cmd);
+    public void AddCommand(ECharacterCommand _cmd) => DoCommand(_cmd);
     public int GetActions(out int[] _cmd)
     {
         return GetCommandsList(out _cmd);

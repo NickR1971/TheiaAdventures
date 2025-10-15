@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class CUnitZombie : CCharacter
 {
-    public CUnitZombie(Character _character) : base(_character)
+    public CUnitZombie(SCharacter _character) : base(_character)
     {
-        AddActiveCommand(CharacterCommand.move);
-        AddActiveCommand(CharacterCommand.attack);
-        AddActiveCommand(CharacterCommand.interact);
+        AddActiveCommand(ECharacterCommand.move);
+        AddActiveCommand(ECharacterCommand.attack);
+        AddActiveCommand(ECharacterCommand.interact);
     }
-    public override void DoCommand(CharacterCommand _cmd)
+    public override void DoCommand(ECharacterCommand _cmd)
     {
         switch (_cmd)
         {
-            case CharacterCommand.move:
+            case ECharacterCommand.move:
                 StandartMove();
                 break;
-            case CharacterCommand.attack:
+            case ECharacterCommand.attack:
                 actor.AddCommand(ActorCommand.melee);
                 break;
-            case CharacterCommand.interact:
+            case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.melee);
                 break;
         }

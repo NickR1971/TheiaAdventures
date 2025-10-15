@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class CUnitMage : CCharacter
 {
-    public CUnitMage(Character _character) : base(_character)
+    public CUnitMage(SCharacter _character) : base(_character)
     {
-        AddActiveCommand(CharacterCommand.move);
-        AddActiveCommand(CharacterCommand.attack);
-        AddActiveCommand(CharacterCommand.magic);
-        AddActiveCommand(CharacterCommand.interact);
-        AddActiveCommand(CharacterCommand.use);
+        AddActiveCommand(ECharacterCommand.move);
+        AddActiveCommand(ECharacterCommand.attack);
+        AddActiveCommand(ECharacterCommand.magic);
+        AddActiveCommand(ECharacterCommand.interact);
+        AddActiveCommand(ECharacterCommand.use);
     }
-    public override void DoCommand(CharacterCommand _cmd)
+    public override void DoCommand(ECharacterCommand _cmd)
     {
         switch (_cmd)
         {
-            case CharacterCommand.move:
+            case ECharacterCommand.move:
                 StandartMove();
                 break;
-            case CharacterCommand.attack:
+            case ECharacterCommand.attack:
                 actor.AddCommand(ActorCommand.melee);
                 break;
-            case CharacterCommand.magic:
+            case ECharacterCommand.magic:
                 actor.AddCommand(ActorCommand.magic);
                 break;
-            case CharacterCommand.interact:
+            case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.interact);
                 break;
-            case CharacterCommand.use:
+            case ECharacterCommand.use:
                 actor.AddCommand(ActorCommand.use);
                 break;
         }

@@ -17,7 +17,7 @@ public class CBattle : CUI, IBattle
     private IGame game;
     private ICamera iCamera;
     private IGameConsole gameConsole;
-    private ICharacterManager charManager;
+    private ICharacterManager iCharManager;
     private IDungeon dungeon;
     private IGameMap gameMap;
     [SerializeField] private GameObject characterImage;
@@ -46,7 +46,7 @@ public class CBattle : CUI, IBattle
         iCamera = AllServices.Container.Get<ICamera>();
         game = AllServices.Container.Get<IGame>();
         gameConsole = AllServices.Container.Get<IGameConsole>();
-        charManager = AllServices.Container.Get<ICharacterManager>();
+        iCharManager = AllServices.Container.Get<ICharacterManager>();
         dungeon = AllServices.Container.Get<IDungeon>();
         game.CreateGame(CGameManager.GetData());
         CGameManager.GetData().num_scene = 2;
@@ -90,44 +90,32 @@ public class CBattle : CUI, IBattle
 
         return cell;
     }
-    private bool CreateCharacterTemplate(ECharacterType _ctype, string _cName, out Character _character)
+    private bool CreateCharacterTemplate(EActorType _ctype, string _cName, out SCharacter _character)
     {
         bool result = false;
-        _character = new Character();
+        _character = new SCharacter();
 
         _character.cType = _ctype;
         _character.cName = _cName;
         switch (_ctype)
         {
-            case ECharacterType.knight:
-                _character.attributes.might = 4;
-                _character.attributes.dexterity = 3;
-                _character.attributes.intelligence = 2;
-                _character.attributes.knowledge = 3;
-                _character.attributes.personality = 3;
+            case EActorType.knight:
+                _character.attributes = iCharManager.SetAttributes(EConstitution.balanced);
+                _character.attributes.might++;
+                _character.attributes.intelligence--;
                 result = true;
                 break;
-            case ECharacterType.mage:
-                _character.attributes.might = 2;
-                _character.attributes.dexterity = 3;
-                _character.attributes.intelligence = 4;
-                _character.attributes.knowledge = 3;
-                _character.attributes.personality = 3;
+            case EActorType.mage:
+                _character.attributes = iCharManager.SetAttributes(EConstitution.genius);
                 result = true;
                 break;
-            case ECharacterType.zombie:
-                _character.attributes.might = 6;
-                _character.attributes.dexterity = 2;
-                _character.attributes.intelligence = 1;
-                _character.attributes.knowledge = 1;
+            case EActorType.zombie:
+                _character.attributes = iCharManager.SetAttributes(EConstitution.goof);
                 _character.attributes.personality = 1;
                 result = true;
                 break;
-            case ECharacterType.skeleton:
-                _character.attributes.might = 3;
-                _character.attributes.dexterity = 3;
-                _character.attributes.intelligence = 1;
-                _character.attributes.knowledge = 1;
+            case EActorType.skeleton:
+                _character.attributes = iCharManager.SetAttributes(EConstitution.agile);
                 _character.attributes.personality = 1;
                 result = true;
                 break;
@@ -150,15 +138,15 @@ public class CBattle : CUI, IBattle
 
         return result;
     }
-    private CActor CreateCharacter(ECharacterType _charType)
+    private CActor CreateCharacter(EActorType _charType)
     {
         Cell cell;
         Sprite spr;
         GameObject prefab;
-        Character chrTemp;
+        SCharacter chrTemp;
         CActor actor;
  
-        if (!charManager.GetCharacter(_charType, out spr, out prefab))
+        if (!iCharManager.GetCharacter(_charType, out spr, out prefab))
             return null;
         cell = GetStartCell();
 
@@ -171,10 +159,10 @@ public class CBattle : CUI, IBattle
    }
     private void CreateTestCharacter()
     {
-        Cell cell = CreateCharacter(ECharacterType.zombie).GetCurrentCell();
-        CreateCharacter(ECharacterType.mage);
-        CreateCharacter(ECharacterType.skeleton);
-        CreateCharacter(ECharacterType.knight);
+        Cell cell = CreateCharacter(EActorType.zombie).GetCurrentCell();
+        CreateCharacter(EActorType.mage);
+        CreateCharacter(EActorType.skeleton);
+        CreateCharacter(EActorType.knight);
         iCamera.SetViewPoint(cell.GetPosition());
     }
     public void ShowCharacterName(string _name)
@@ -246,9 +234,9 @@ public class CBattle : CUI, IBattle
     public ICharacter GetCurrentCharacter() => currentCharacter;
     public void CharCommand(int _cmd)
     {
-        CharCommand((CharacterCommand)_cmd);
+        CharCommand((ECharacterCommand)_cmd);
     }
-    public void CharCommand(CharacterCommand _cmd)
+    public void CharCommand(ECharacterCommand _cmd)
     {
         if (currentCharacter == null) return;
         currentCharacter.AddCommand(_cmd);
