@@ -59,7 +59,14 @@ public class CNewGamePanel : CUI
         CGameManager.SetGameData(null);
         SceneManager.LoadScene("SceneLogo");
     }
-
+    public void OnCreateKnight()
+    {
+        iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight);
+    }
+    public void OnCreateMage()
+    {
+        iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage);
+    }
     // on select origin
     public void OnOrigin(int _id)
     {

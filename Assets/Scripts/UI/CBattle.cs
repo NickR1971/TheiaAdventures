@@ -17,11 +17,13 @@ public class CBattle : CUI, IBattle
     private IGame game;
     private ICamera iCamera;
     private IGameConsole gameConsole;
-    private ICharacterManager iCharManager;
+    private ICharacterManager iCharacterManager;
     private IDungeon dungeon;
     private IGameMap gameMap;
     [SerializeField] private GameObject characterImage;
     [SerializeField] private GameObject characterName;
+    [SerializeField] private CTextLocalize characterOrigin;
+    [SerializeField] private CTextLocalize characterClass;
     [SerializeField] private CTextAttribute Might;
     [SerializeField] private CTextAttribute Dex;
     [SerializeField] private CTextAttribute Intel;
@@ -51,7 +53,7 @@ public class CBattle : CUI, IBattle
         iCamera = AllServices.Container.Get<ICamera>();
         game = AllServices.Container.Get<IGame>();
         gameConsole = AllServices.Container.Get<IGameConsole>();
-        iCharManager = AllServices.Container.Get<ICharacterManager>();
+        iCharacterManager = AllServices.Container.Get<ICharacterManager>();
         dungeon = AllServices.Container.Get<IDungeon>();
         game.CreateGame(CGameManager.GetData());
         CGameManager.GetData().num_scene = 2;
@@ -103,7 +105,7 @@ public class CBattle : CUI, IBattle
         CActor actor;
 
         if (_chrTemp.regularClass == ERegularClass.none) return null;
-        if (!iCharManager.GetCharacter(_chrTemp.cType, out spr, out prefab))
+        if (!iCharacterManager.GetCharacter(_chrTemp.cType, out spr, out prefab))
             return null;
         cell = GetStartCell();
         _chrTemp.cName = _chrTemp.regularClass.ToString();
@@ -113,10 +115,10 @@ public class CBattle : CUI, IBattle
     }
     private void CreateTestCharacter()
     {
-        Cell cell = CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight)).GetCurrentCell();
-        CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage));
-        CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.skeleton));
-        CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
+        Cell cell = CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight)).GetCurrentCell();
+        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage));
+        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.skeleton));
+        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
         iCamera.SetViewPoint(cell.GetPosition());
     }
     public void ShowCharacterName(string _name)
@@ -189,6 +191,11 @@ public class CBattle : CUI, IBattle
         Intel.SetValue(a.intelligence);
         Pers.SetValue(a.personality);
         Know.SetValue(a.knowledge);
+
+        characterOrigin.SetText(iCharacterManager.GetOriginName(currentCharacter.GetOrigin()));
+        characterOrigin.RefreshText();
+        characterClass.SetText(iCharacterManager.GetClassName(currentCharacter.GetClass()));
+        characterClass.RefreshText();
         iCamera.SetViewPoint(currentCharacter.GetPositionCell().GetPosition());
     }
     public ICharacter GetCurrentCharacter() => currentCharacter;

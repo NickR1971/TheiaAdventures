@@ -11,4 +11,7 @@ public interface ICharacter
     void OnClickCell(int _num, int _button);
     Cell GetPositionCell();
     SAttributes GetAttributes();
+    EOrigin GetOrigin();
+    ERegularClass GetClass();
+    EEliteClass GetEliteClass();
 }

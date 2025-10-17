@@ -2,25 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EOrigin
-{
-    peasant = 0, artisan = 1, noble = 2, barbarian = 3,
-    animal = 4, demon = 5, elemental = 6, elf = 7,
-    giant = 8, goblin = 9, ogre = 10, orc = 11,
-    monster = 12, dragon=13, undead = 14, vampire = 15
-}
-public enum ERegularClass
-{
-    none,
-    knight, mage, zombie, skeleton,
-    savager, herbalist,
-    lumberjack, hunter, pikeman, crossbowman,
-    guard, blacksmith, battlemage, gladiator,
-    acolyte, monk, priest, shaman, pilgrim,
-    adept, alchemist, wizard, warlock,
-    sorcerer, elementalist, minstrel,
-    warrior, duelist
-}
 public enum EEliteClass
 {
     none,
@@ -415,5 +396,11 @@ public abstract class CCharacter : ICharacter
         return actor.GetCurrentCell();
     }
     public SAttributes GetAttributes() => character.attributes;
+
+    public EOrigin GetOrigin() => character.origin;
+
+    public ERegularClass GetClass() => character.regularClass;
+
+    public EEliteClass GetEliteClass() => character.eliteClass;
     //======================
 }

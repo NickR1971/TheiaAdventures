@@ -12,12 +12,33 @@ public enum EConstitution
     balanced = 0, scholar = 1, barbarian = 2, leader = 3, agile = 4,
     goof = 5, orphan = 6, genius = 7, nerd = 8, politician = 9
 }
+public enum EOrigin
+{
+    peasant = 0, artisan = 1, noble = 2, barbarian = 3,
+    animal = 4, demon = 5, elemental = 6, elf = 7,
+    giant = 8, goblin = 9, ogre = 10, orc = 11,
+    monster = 12, dragon = 13, undead = 14, vampire = 15
+}
+public enum ERegularClass
+{
+    none = 0,
+    knight = 1, mage = 2, zombie = 3, skeleton = 4,
+    adept = 5, alchemist = 6, wizard = 7, warlock = 8,
+    sorcerer = 9, elementalist = 10,
+    savager, herbalist,
+    lumberjack, hunter, pikeman, crossbowman,
+    guard, blacksmith, battlemage, gladiator,
+    acolyte, monk, priest, shaman, pilgrim,
+    minstrel, warrior, duelist
+}
+
 public interface ICharacterManager : IService
 {
     bool GetCharacter(EActorType _ctype, out Sprite _spr, out GameObject _prefab);
     SAttributes SetAttributes(EConstitution _cons);
     ELocalStringID GetConstTypeName(EConstitution _cons);
     ELocalStringID GetOriginName(EOrigin _origin);
+    ELocalStringID GetClassName(ERegularClass _rClass);
     SCharacter CreateCharacterTemplate(EOrigin _origin, ERegularClass _rClass);
 }
 public class CharacterManager : MonoBehaviour, ICharacterManager
@@ -53,6 +74,19 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     private readonly int[] intValues =   { 3, 4, 3, 2, 4, 1, 2, 5, 2, 3 };
     private readonly int[] persValues =  { 3, 4, 3, 4, 2, 3, 2, 3, 3, 5 };
     private readonly int[] knowValues =  { 3, 4, 1, 2, 3, 1, 2, 4, 5, 1 };
+    private ELocalStringID[] classes = {
+        ELocalStringID.core_empty, ELocalStringID.game_class_knight, ELocalStringID.game_class_wizard,
+        ELocalStringID.game_class_zombie, ELocalStringID.game_class_zombie,
+        ELocalStringID.game_class_adept, ELocalStringID.game_class_alchemist,
+        ELocalStringID.game_class_wizard, ELocalStringID.game_class_warlock,
+        ELocalStringID.game_class_sorcerer, ELocalStringID.game_class_sorcerer,
+        //////////////////////////////
+        ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
+        ELocalStringID.game_class_acolyte, ELocalStringID.game_class_pikeman,
+        ELocalStringID.game_class_crossbowman,
+        ELocalStringID.game_class_monk, ELocalStringID.game_class_duelist,
+        ELocalStringID.game_class_priest, ELocalStringID.game_class_sorcerer
+    };
 
     private void Awake()
     {
@@ -94,6 +128,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     public ELocalStringID GetConstTypeName(EConstitution _cons) => constType[(int)_cons];
 
     public ELocalStringID GetOriginName(EOrigin _origin) => origins[(int)_origin];
+    public ELocalStringID GetClassName(ERegularClass _rClass) => classes[(int)_rClass];
 
     public SCharacter CreateCharacterTemplate(EOrigin _origin, ERegularClass _rClass)
     {
@@ -105,7 +140,16 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         switch(_rClass)
         {
             case ERegularClass.knight:
-                tempCharacter.attributes = SetAttributes(EConstitution.leader);
+                if (_origin == EOrigin.noble)
+                {
+                    tempCharacter.attributes = SetAttributes(EConstitution.leader);
+                }
+                else
+                {
+                    tempCharacter.attributes = SetAttributes(EConstitution.balanced);
+                    tempCharacter.attributes.might++;
+                    tempCharacter.attributes.intelligence--;
+                }
                 tempCharacter.cType = EActorType.knight;
                 break;
             case ERegularClass.mage:
@@ -146,9 +190,14 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 break;
         }
 
-        if (tempCharacter.origin == EOrigin.undead)
+        switch (tempCharacter.origin)
         {
-            tempCharacter.attributes.personality = 1;
+            case EOrigin.undead:
+                tempCharacter.attributes.personality = 1;
+                break;
+            case EOrigin.animal:
+                tempCharacter.attributes.intelligence = 1;
+                break;
         }
 
         tempCharacter.secondaryAttributes.speed = tempCharacter.attributes.dexterity;
