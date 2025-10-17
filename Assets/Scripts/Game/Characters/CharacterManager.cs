@@ -142,38 +142,45 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
             case ERegularClass.knight:
                 if (_origin == EOrigin.noble)
                 {
-                    tempCharacter.attributes = SetAttributes(EConstitution.leader);
+                    tempCharacter.typeConstitution = EConstitution.leader;
+                    tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 }
                 else
                 {
-                    tempCharacter.attributes = SetAttributes(EConstitution.balanced);
+                    tempCharacter.typeConstitution = EConstitution.balanced;
+                    tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                     tempCharacter.attributes.might++;
                     tempCharacter.attributes.intelligence--;
                 }
                 tempCharacter.cType = EActorType.knight;
                 break;
             case ERegularClass.mage:
-                tempCharacter.attributes = SetAttributes(EConstitution.genius);
+                tempCharacter.typeConstitution = EConstitution.genius;    
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.cType = EActorType.mage;
                 break;
             case ERegularClass.wizard:
-                tempCharacter.attributes = SetAttributes(EConstitution.scholar);
+                tempCharacter.typeConstitution = EConstitution.scholar;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.cType = EActorType.mage;
                 break;
             case ERegularClass.sorcerer:
-                tempCharacter.attributes = SetAttributes(EConstitution.balanced);
+                tempCharacter.typeConstitution = EConstitution.balanced;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.attributes.might--;
                 tempCharacter.attributes.intelligence++;
                 tempCharacter.cType = EActorType.mage;
                 break;
             case ERegularClass.elementalist:
-                tempCharacter.attributes = SetAttributes(EConstitution.balanced);
+                tempCharacter.typeConstitution = EConstitution.balanced;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.attributes.might--;
                 tempCharacter.attributes.personality++;
                 tempCharacter.cType = EActorType.mage;
                 break;
             case ERegularClass.zombie:
-                tempCharacter.attributes = SetAttributes(EConstitution.goof);
+                tempCharacter.typeConstitution = EConstitution.goof;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 if (tempCharacter.origin != EOrigin.undead)
                 {
                     tempCharacter.origin = EOrigin.undead;
@@ -182,7 +189,8 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.cType = EActorType.zombie;
                 break;
             case ERegularClass.skeleton:
-                tempCharacter.attributes = SetAttributes(EConstitution.agile);
+                tempCharacter.typeConstitution = EConstitution.agile;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 if (tempCharacter.origin != EOrigin.undead)
                 {
                     tempCharacter.origin = EOrigin.undead;
@@ -191,7 +199,8 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.cType = EActorType.skeleton;
                 break;
             default:
-                tempCharacter.attributes = SetAttributes(EConstitution.balanced);
+                tempCharacter.typeConstitution = EConstitution.balanced;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.cType = EActorType.hero;
                 break;
         }

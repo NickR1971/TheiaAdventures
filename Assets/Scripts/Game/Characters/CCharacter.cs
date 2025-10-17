@@ -58,6 +58,7 @@ public struct SCharacter
     public ERegularClass regularClass;
     public EEliteClass eliteClass;
     public EActorType cType;
+    public EConstitution typeConstitution;
     public SAttributes attributes;
     public SSecondaryAttributes secondaryAttributes;
     public SCharactersPoints points;
