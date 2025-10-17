@@ -116,7 +116,7 @@ public class CBattle : CUI, IBattle
     private void CreateTestCharacter()
     {
         Cell cell = CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight)).GetCurrentCell();
-        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage));
+        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.elementalist));
         CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.skeleton));
         CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
         iCamera.SetViewPoint(cell.GetPosition());

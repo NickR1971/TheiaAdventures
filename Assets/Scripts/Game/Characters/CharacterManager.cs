@@ -59,7 +59,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_origin_ogre,
         ELocalStringID.game_origin_orc,
         ELocalStringID.game_origin_monster,
-        ELocalStringID.core_empty,  // dragon
+        ELocalStringID.game_origin_dragon,
         ELocalStringID.game_origin_undead,
         ELocalStringID.game_origin_vampire
     };
@@ -75,11 +75,11 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     private readonly int[] persValues =  { 3, 4, 3, 4, 2, 3, 2, 3, 3, 5 };
     private readonly int[] knowValues =  { 3, 4, 1, 2, 3, 1, 2, 4, 5, 1 };
     private ELocalStringID[] classes = {
-        ELocalStringID.core_empty, ELocalStringID.game_class_knight, ELocalStringID.game_class_wizard,
-        ELocalStringID.game_class_zombie, ELocalStringID.game_class_zombie,
+        ELocalStringID.core_empty, ELocalStringID.game_class_knight, ELocalStringID.game_class_mage,
+        ELocalStringID.game_class_zombie, ELocalStringID.game_class_skeleton,
         ELocalStringID.game_class_adept, ELocalStringID.game_class_alchemist,
         ELocalStringID.game_class_wizard, ELocalStringID.game_class_warlock,
-        ELocalStringID.game_class_sorcerer, ELocalStringID.game_class_sorcerer,
+        ELocalStringID.game_class_sorcerer, ELocalStringID.game_class_elementalist,
         //////////////////////////////
         ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
         ELocalStringID.game_class_acolyte, ELocalStringID.game_class_pikeman,
@@ -164,6 +164,12 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.attributes = SetAttributes(EConstitution.balanced);
                 tempCharacter.attributes.might--;
                 tempCharacter.attributes.intelligence++;
+                tempCharacter.cType = EActorType.mage;
+                break;
+            case ERegularClass.elementalist:
+                tempCharacter.attributes = SetAttributes(EConstitution.balanced);
+                tempCharacter.attributes.might--;
+                tempCharacter.attributes.personality++;
                 tempCharacter.cType = EActorType.mage;
                 break;
             case ERegularClass.zombie:
