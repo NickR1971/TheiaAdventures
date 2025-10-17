@@ -12,13 +12,14 @@ public enum EOrigin
 public enum ERegularClass
 {
     none,
+    knight, mage, zombie, skeleton,
     savager, herbalist,
     lumberjack, hunter, pikeman, crossbowman,
     guard, blacksmith, battlemage, gladiator,
     acolyte, monk, priest, shaman, pilgrim,
-    adept, alchemist, wizard, mage, warlock,
-    sorcerer, elementalist, trubadur,
-    warrior, knight, duelist
+    adept, alchemist, wizard, warlock,
+    sorcerer, elementalist, minstrel,
+    warrior, duelist
 }
 public enum EEliteClass
 {
@@ -27,7 +28,7 @@ public enum EEliteClass
     stalker, // hunter
     engeneer, // blacksmith
     technomage, // blacksmith
-    bard, // trubadur
+    bard, // minstrel
     inquisitor, // monk
     blackguard, // guard
     highpriest, // priest

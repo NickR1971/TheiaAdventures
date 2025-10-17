@@ -13,25 +13,8 @@ public class CNewGamePanel : CUI
     [SerializeField] private CTextAttribute Intel;
     [SerializeField] private CTextAttribute Pers;
     [SerializeField] private CTextAttribute Know;
+    ICharacterManager iCharacterManager;
     private int origin;
-    private ELocalStringID[] origins = {
-        ELocalStringID.game_origin_peasant,
-        ELocalStringID.game_origin_artisan,
-        ELocalStringID.game_origin_noble,
-        ELocalStringID.game_const_barbarian,
-        ELocalStringID.game_origin_animal,
-        ELocalStringID.game_origin_demon,
-        ELocalStringID.game_origin_elemental,
-        ELocalStringID.game_origin_elf,
-        ELocalStringID.game_origin_giant,
-        ELocalStringID.game_origin_goblin,
-        ELocalStringID.game_origin_ogre,
-        ELocalStringID.game_origin_orc,
-        ELocalStringID.game_origin_monster,
-        ELocalStringID.core_empty,  // dragon
-        ELocalStringID.game_origin_undead,
-        ELocalStringID.game_origin_vampire
-    };
     private ELocalStringID[] classes = { 
         ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
         ELocalStringID.game_class_acolyte, ELocalStringID.game_class_adept,
@@ -39,13 +22,6 @@ public class CNewGamePanel : CUI
         ELocalStringID.game_class_monk, ELocalStringID.game_class_alchemist,
         ELocalStringID.game_class_knight, ELocalStringID.game_class_duelist,
         ELocalStringID.game_class_priest, ELocalStringID.game_class_sorcerer };
-
-    private ELocalStringID[] constType = {
-        ELocalStringID.game_const_balanced, ELocalStringID.game_const_scholar,
-        ELocalStringID.game_const_barbarian, ELocalStringID.game_const_leader,
-        ELocalStringID.game_const_agile, ELocalStringID.game_const_goof,
-        ELocalStringID.game_const_orphan, ELocalStringID.game_const_genius,
-        ELocalStringID.game_const_nerd, ELocalStringID.game_const_politician };
 
     private int constSelected = 0;
     private const int maxConst = 9;
@@ -60,6 +36,7 @@ public class CNewGamePanel : CUI
     {
         InitUI();
         SetAttributes();
+        iCharacterManager = AllServices.Container.Get<ICharacterManager>();
     }
 
     private void SetAttributes()
@@ -89,7 +66,7 @@ public class CNewGamePanel : CUI
         int n;
 
         origin = _id / 10;
-        textOrigin.SetText(origins[origin]);
+        textOrigin.SetText(iCharacterManager.GetOriginName((EOrigin)origin));
         n = _id % 10; n--;  n += origin * 4;
         textClass.SetText(classes[n]);
 
@@ -103,7 +80,7 @@ public class CNewGamePanel : CUI
         if (_n > maxConst) _n = maxConst;
         constSelected = _n;
 
-        textConst.SetText(constType[constSelected]);
+        textConst.SetText(iCharacterManager.GetConstTypeName((EConstitution)constSelected));
         textConst.RefreshText();
         SetAttributes();
     }

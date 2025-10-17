@@ -95,79 +95,28 @@ public class CBattle : CUI, IBattle
 
         return cell;
     }
-    private bool CreateCharacterTemplate(EActorType _ctype, string _cName, out SCharacter _character)
-    {
-        bool result = false;
-        _character = new SCharacter();
-
-        _character.cType = _ctype;
-        _character.cName = _cName;
-        switch (_ctype)
-        {
-            case EActorType.knight:
-                _character.attributes = iCharManager.SetAttributes(EConstitution.balanced);
-                _character.attributes.might++;
-                _character.attributes.intelligence--;
-                result = true;
-                break;
-            case EActorType.mage:
-                _character.attributes = iCharManager.SetAttributes(EConstitution.scholar);
-                result = true;
-                break;
-            case EActorType.zombie:
-                _character.attributes = iCharManager.SetAttributes(EConstitution.goof);
-                _character.attributes.personality = 1;
-                result = true;
-                break;
-            case EActorType.skeleton:
-                _character.attributes = iCharManager.SetAttributes(EConstitution.agile);
-                _character.attributes.personality = 1;
-                result = true;
-                break;
-        }
-
-        if (result)
-        {
-            _character.secondaryAttributes.speed = _character.attributes.dexterity;
-            _character.secondaryAttributes.initiative = _character.attributes.dexterity;
-            _character.secondaryAttributes.reaction = 1;
-            _character.points.redHits = CScale.GetEValue(_character.attributes.might);
-            _character.points.yellowHits = _character.points.redHits / 2;
-            _character.points.blueHits = 0;
-            _character.points.greenHits = 0;
-            _character.points.actions = CScale.GetEValue(_character.secondaryAttributes.initiative);
-            _character.points.mana = CScale.GetEValue(_character.attributes.intelligence);
-            _character.points.will = CScale.GetEValue(_character.attributes.personality);
-            _character.currentPoints = _character.points;
-        }
-
-        return result;
-    }
-    private CActor CreateCharacter(EActorType _charType)
+    private CActor CreateCharacter(SCharacter _chrTemp)
     {
         Cell cell;
         Sprite spr;
         GameObject prefab;
-        SCharacter chrTemp;
         CActor actor;
- 
-        if (!iCharManager.GetCharacter(_charType, out spr, out prefab))
+
+        if (_chrTemp.regularClass == ERegularClass.none) return null;
+        if (!iCharManager.GetCharacter(_chrTemp.cType, out spr, out prefab))
             return null;
         cell = GetStartCell();
-
-        if (!CreateCharacterTemplate(_charType, _charType.ToString() + cell.GetNumber(), out chrTemp))
-            return null;
-
+        _chrTemp.cName = _chrTemp.regularClass.ToString();
         actor = dungeon.CreateCharacter(prefab, cell).SetSprite(spr);
-        actor.SetCharacter(CCharacter.Create(chrTemp));
+        actor.SetCharacter(CCharacter.Create(_chrTemp));
         return actor;
-   }
+    }
     private void CreateTestCharacter()
     {
-        Cell cell = CreateCharacter(EActorType.zombie).GetCurrentCell();
-        CreateCharacter(EActorType.mage);
-        CreateCharacter(EActorType.skeleton);
-        CreateCharacter(EActorType.knight);
+        Cell cell = CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight)).GetCurrentCell();
+        CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage));
+        CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.skeleton));
+        CreateCharacter(iCharManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
         iCamera.SetViewPoint(cell.GetPosition());
     }
     public void ShowCharacterName(string _name)
