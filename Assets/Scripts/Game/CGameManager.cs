@@ -19,7 +19,20 @@ public class SaveData
     public int versionPatch;
     public string comment;
     public uint num_scene;
-    public string data;
+    public const int maxCharacters = 30;
+    public SCharacter[] charList;
+    public int numCharacters;
+    public SaveData()
+    {
+        charList = new SCharacter[maxCharacters];
+        numCharacters = 0;
+    }
+    public int AddCharacter(SCharacter _character)
+    {
+        if (numCharacters == maxCharacters) return -1;
+        charList[numCharacters] = _character;
+        return numCharacters++;
+    }
 }
 
 
@@ -27,14 +40,14 @@ public static class CGameManager
 {
 	private static event Action onSave;
     public const int versionMajor=0;
-    public const int versionMinor=1;
+    public const int versionMinor=2;
     public const int versionPatch=0;
     private static SaveData gameData = null;
-    private static ICharacterManager characterManager = null;
+    private static ICharacterManager iCharacterManager = null;
 
     public static void SetCharacterInterface(ICharacterManager _characterManager)
     {
-        characterManager = _characterManager;
+        iCharacterManager = _characterManager;
     }
 
 	public static void SetGameData(SaveData _data)

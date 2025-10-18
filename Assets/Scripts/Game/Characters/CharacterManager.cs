@@ -24,12 +24,12 @@ public enum ERegularClass
     none = 0,
     knight = 1, mage = 2, zombie = 3, skeleton = 4,
     adept = 5, alchemist = 6, wizard = 7, warlock = 8,
-    sorcerer = 9, elementalist = 10,
+    sorcerer = 9, elementalist = 10, warrior = 11,
     savager, herbalist,
     lumberjack, hunter, pikeman, crossbowman,
     guard, blacksmith, battlemage, gladiator,
     acolyte, monk, priest, shaman, pilgrim,
-    minstrel, warrior, duelist
+    minstrel, duelist
 }
 
 public interface ICharacterManager : IService
@@ -40,6 +40,7 @@ public interface ICharacterManager : IService
     ELocalStringID GetOriginName(EOrigin _origin);
     ELocalStringID GetClassName(ERegularClass _rClass);
     SCharacter CreateCharacterTemplate(EOrigin _origin, ERegularClass _rClass);
+    void AddCharacter(SCharacter _character);
 }
 public class CharacterManager : MonoBehaviour, ICharacterManager
 {
@@ -80,6 +81,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_class_adept, ELocalStringID.game_class_alchemist,
         ELocalStringID.game_class_wizard, ELocalStringID.game_class_warlock,
         ELocalStringID.game_class_sorcerer, ELocalStringID.game_class_elementalist,
+        ELocalStringID.game_class_warrior,
         //////////////////////////////
         ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
         ELocalStringID.game_class_acolyte, ELocalStringID.game_class_pikeman,
@@ -154,6 +156,13 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 }
                 tempCharacter.cType = EActorType.knight;
                 break;
+            case ERegularClass.warrior:
+                tempCharacter.typeConstitution = EConstitution.balanced;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
+                tempCharacter.attributes.might++;
+                tempCharacter.attributes.personality--;
+                tempCharacter.cType = EActorType.knight;
+                break;
             case ERegularClass.mage:
                 tempCharacter.typeConstitution = EConstitution.genius;    
                 tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
@@ -207,6 +216,10 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
 
         switch (tempCharacter.origin)
         {
+            case EOrigin.barbarian:
+                tempCharacter.typeConstitution = EConstitution.barbarian;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
+                break;
             case EOrigin.undead:
                 tempCharacter.attributes.personality = 1;
                 break;
@@ -228,5 +241,11 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         tempCharacter.currentPoints = tempCharacter.points;
 
         return tempCharacter;
+    }
+
+    public void AddCharacter(SCharacter _character)
+    {
+        if (string.IsNullOrEmpty(_character.cName)) _character.cName = _character.regularClass.ToString();
+        CGameManager.GetData().AddCharacter(_character);
     }
 }

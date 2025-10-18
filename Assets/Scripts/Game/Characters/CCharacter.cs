@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +28,8 @@ public enum EEliteClass
     warlord, // warrior
     berserker // warrior
 }
+
+[Serializable]
 public struct SAttributes
 {
     public int might;
@@ -35,12 +38,14 @@ public struct SAttributes
     public int knowledge;
     public int personality;
 }
+[Serializable]
 public struct SSecondaryAttributes
 {
     public int initiative;
     public int speed;
     public int reaction;
 }
+[Serializable]
 public struct SCharactersPoints
 {
     public int redHits;
@@ -51,6 +56,7 @@ public struct SCharactersPoints
     public int mana;
     public int will;
 }
+[Serializable]
 public struct SCharacter
 {
     public string cName;
@@ -63,6 +69,11 @@ public struct SCharacter
     public SSecondaryAttributes secondaryAttributes;
     public SCharactersPoints points;
     public SCharactersPoints currentPoints;
+    public SCharacter SetName(string _cName)
+    {
+        cName = _cName;
+        return this;
+    }
 }
 public enum ECharacterCommand
 {

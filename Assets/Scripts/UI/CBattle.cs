@@ -108,18 +108,23 @@ public class CBattle : CUI, IBattle
         if (!iCharacterManager.GetCharacter(_chrTemp.cType, out spr, out prefab))
             return null;
         cell = GetStartCell();
-        _chrTemp.cName = _chrTemp.regularClass.ToString();
+        //_chrTemp.cName = _chrTemp.regularClass.ToString();
         actor = dungeon.CreateCharacter(prefab, cell).SetSprite(spr);
         actor.SetCharacter(CCharacter.Create(_chrTemp));
         return actor;
     }
     private void CreateTestCharacter()
     {
-        Cell cell = CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight)).GetCurrentCell();
-        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.elementalist));
-        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.skeleton));
-        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
+        Cell cell = CreateCharacter(CGameManager.GetData().charList[0]).GetCurrentCell();
         iCamera.SetViewPoint(cell.GetPosition());
+        int i;
+        for (i = 1; i < CGameManager.GetData().numCharacters; i++)
+        {
+            CreateCharacter(CGameManager.GetData().charList[i]);
+        }
+        /*CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.sorcerer));
+        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.skeleton));
+        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));*/
     }
     public void ShowCharacterName(string _name)
     {

@@ -118,15 +118,10 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 	public void NewGame()
 	{
-		SaveData data = CGameManager.GetData();
-		if (data == null)
-		{
-			data = new SaveData();
-			CGameManager.SetGameData(data); // ??
-		}
-
+		SaveData data = new SaveData();
 		data.id = (uint)UnityEngine.Random.Range(100, 10000000);
 		data.num_scene = 0;
+		CGameManager.SetGameData(data);
 		GoToMainScene();
 	}
 

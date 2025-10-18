@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CNewGamePanel : CUI
 {
+    [SerializeField] private Button buttonOk;
     [SerializeField] private CTextLocalize textOrigin;
     [SerializeField] private CTextLocalize textClass;
     [SerializeField] private CTextLocalize textConst;
@@ -15,7 +17,6 @@ public class CNewGamePanel : CUI
     [SerializeField] private CTextAttribute Know;
     private ICharacterManager iCharacterManager;
     private SCharacter character;
-    private bool isSelected;
     private void Start()
     {
         InitUI();
@@ -24,13 +25,12 @@ public class CNewGamePanel : CUI
         Intel.SetValue(0);
         Pers.SetValue(0);
         Know.SetValue(0);
-        isSelected = false;
         iCharacterManager = AllServices.Container.Get<ICharacterManager>();
     }
     private void ShowSelected(SCharacter _character)
     {
         character = _character;
-        isSelected = true;
+        buttonOk.interactable = true;
         textOrigin.SetText(iCharacterManager.GetOriginName(_character.origin));
         textClass.SetText(iCharacterManager.GetClassName(_character.regularClass));
         textConst.SetText(iCharacterManager.GetConstTypeName(_character.typeConstitution));
@@ -45,9 +45,14 @@ public class CNewGamePanel : CUI
     }
     public void ToGame()
     {
-        if (isSelected) SceneManager.LoadScene("SceneBase");
+        SceneManager.LoadScene("SceneBase");
+        iCharacterManager.AddCharacter(character);
+        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.barbarian, ERegularClass.warrior));
+        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.wizard));
+        if (character.regularClass == ERegularClass.mage)
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
     }
-    
+
     // cancel create new game
     public void ToLogo()
     {
@@ -56,10 +61,14 @@ public class CNewGamePanel : CUI
     }
     public void OnCreateKnight()
     {
-        ShowSelected(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight));
+        SCharacter chr = iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight);
+        chr.cName = "sir Marcus";
+        ShowSelected(chr);
     }
     public void OnCreateMage()
     {
-        ShowSelected(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage));
+        SCharacter chr = iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage);
+        chr.cName = "Henner";
+        ShowSelected(chr);
     }
 }
