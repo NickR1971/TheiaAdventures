@@ -94,4 +94,5 @@ public class CSkeleton : CActor
     {
         SetState(ActorState.idle);
     }
+    protected override void Adjust() {  }
 }

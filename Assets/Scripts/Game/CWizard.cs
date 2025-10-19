@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CWizard : CActor
 {
+    [SerializeField] private SkinnedMeshRenderer rend;
     private Animator animator;
     void Start()
     {
@@ -11,6 +12,30 @@ public class CWizard : CActor
         animator = GetComponent<Animator>();
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
+    }
+    protected override void Adjust()
+    {
+        switch(character.GetClass())
+        {
+            case ERegularClass.wizard:
+                rend.material.color = Color.blue;
+                break;
+            case ERegularClass.sorcerer:
+                rend.material.color = Color.magenta;
+                break;
+            case ERegularClass.adept:
+                rend.material.color = Color.gray;
+                break;
+            case ERegularClass.alchemist:
+                rend.material.color = Color.gray;
+                break;
+            case ERegularClass.warlock:
+                rend.material.color = Color.red;
+                break;
+            case ERegularClass.elementalist:
+                rend.material.color = Color.yellow;
+                break;
+        }
     }
     public override void Idle()
     {

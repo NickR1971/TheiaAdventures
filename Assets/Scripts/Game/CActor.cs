@@ -84,10 +84,12 @@ public abstract class CActor : CGameObject
         Command cmd = cmdList.Dequeue();
         DoCommand(cmd.command);
     }
+    protected abstract void Adjust();
     public void SetCharacter(CCharacter _character)
     {
         character = _character;
         character.SetActor(this);
+        Adjust();
     }
     public CCharacter GetGaracter() => character;
     public EMapDirection GetDirection() => dir;

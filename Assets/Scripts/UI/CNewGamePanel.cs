@@ -50,7 +50,18 @@ public class CNewGamePanel : CUI
         iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.barbarian, ERegularClass.warrior));
         iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.wizard));
         if (character.regularClass == ERegularClass.mage)
+        {
             iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.alchemist));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.sorcerer));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.adept));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.elementalist));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.warlock));
+        }
+        else
+        {
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.warrior));
+        }
     }
 
     // cancel create new game

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CKnight : CActor
 {
+    [SerializeField] private SkinnedMeshRenderer rend;
     private Animator animator;
     void Start()
     {
@@ -12,7 +13,19 @@ public class CKnight : CActor
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
     }
-
+    protected override void Adjust()
+    {
+        switch (character.GetClass())
+        {
+            case ERegularClass.knight:
+                rend.material.color = Color.yellow;
+                break;
+            case ERegularClass.warrior:
+                if (character.GetOrigin() == EOrigin.barbarian) rend.material.color = Color.cyan;
+                else rend.material.color = Color.blue;
+                break;
+        }
+    }
     public override void Idle()
     {
         SetState(ActorState.idle);

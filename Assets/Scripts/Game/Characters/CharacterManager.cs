@@ -87,7 +87,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_class_acolyte, ELocalStringID.game_class_pikeman,
         ELocalStringID.game_class_crossbowman,
         ELocalStringID.game_class_monk, ELocalStringID.game_class_duelist,
-        ELocalStringID.game_class_priest, ELocalStringID.game_class_sorcerer
+        ELocalStringID.game_class_priest
     };
 
     private void Awake()
@@ -169,6 +169,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.cType = EActorType.mage;
                 break;
             case ERegularClass.wizard:
+            case ERegularClass.adept:
                 tempCharacter.typeConstitution = EConstitution.scholar;
                 tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.cType = EActorType.mage;
@@ -181,6 +182,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.cType = EActorType.mage;
                 break;
             case ERegularClass.elementalist:
+            case ERegularClass.warlock:
                 tempCharacter.typeConstitution = EConstitution.balanced;
                 tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.attributes.might--;
