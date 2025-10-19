@@ -46,6 +46,10 @@ public abstract class CActor : CGameObject
         dir = EMapDirection.east;
         positionControl.Rotate(90.0f); // turn model to east
     }
+    protected override void CheckUnhide(CRoom _room)
+    {
+        _room.Unhide();
+    }
     protected bool MoveForward(float _speed)
     {
         Cell cell = gameMap.GetCell(currentCell.GetNearNumber(dir));

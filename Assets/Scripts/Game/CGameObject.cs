@@ -24,11 +24,17 @@ public abstract class CGameObject : MonoBehaviour, IPointerClickHandler
     protected abstract void OnLeftClick();
     protected abstract void OnRightClick();
     protected abstract void OnMiddleClick();
+    protected abstract void CheckUnhide(CRoom _room);
     public CGameObject SetCurrentCell(Cell _cell)
     {
         if (currentCell != null) currentCell.ResetGameObject();
         currentCell = _cell;
         currentCell.SetGameObject(this);
+        CRoom room = currentCell.GetRoom();
+        if (room.IsHidden())
+        {
+            CheckUnhide(room);
+        }
         return this;
     }
     public Cell GetCurrentCell() => currentCell;

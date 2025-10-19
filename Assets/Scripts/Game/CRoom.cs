@@ -6,6 +6,7 @@ using UnityEngine;
 public class CRoom : MonoBehaviour
 {
     [SerializeField] private GameObject hideObject;
+    private bool hidden;
     private IDungeon dungeon = null;
     private CRand localSequence;
     private int row;
@@ -18,7 +19,12 @@ public class CRoom : MonoBehaviour
     private bool isFreeSouth = true;
     private bool isFreeWest = true;
     private bool isFreeEast = true;
-
+    public bool IsHidden() => hidden;
+    public void Unhide()
+    {
+        if (hideObject != null) hideObject.SetActive(false);
+        hidden = false;
+    }
     public bool IsFreeNorth() { return isFreeNorth; }
     public bool IsFreeSouth() { return isFreeSouth; }
     public bool IsFreeWest() { return isFreeWest; }
@@ -27,7 +33,8 @@ public class CRoom : MonoBehaviour
     private void Start()
     {
         if (dungeon == null) Debug.Log("Not init CRoom before start!");
-        if (hideObject != null) hideObject.SetActive(false);
+        if (hideObject == null) hidden = false;
+        else hidden = hideObject.activeSelf;
     }
 
 

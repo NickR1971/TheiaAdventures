@@ -142,7 +142,7 @@ public class CDungeon : MonoBehaviour, IDungeon
 
             // шанс на кімнату без стін
             if (n < 4) _north = _south = _west = _east = false;
-            else if (n < 97) // шанс гарантованого тупика
+            else //if (n < 97) // шанс гарантованого тупика
             {
                 if(!_north)
                 {
