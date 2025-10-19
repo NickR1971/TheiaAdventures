@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EActorType
 {
-    hero=0, knight=1, mage=2, cleric=3, barbarian=4,
+    none=-1, knight=0, mage=1, hunter=2, cleric=3, barbarian=4,
     zombie=5, skeleton=6
 }
 public enum EConstitution
@@ -25,16 +25,17 @@ public enum ERegularClass
     knight = 1, mage = 2, zombie = 3, skeleton = 4,
     adept = 5, alchemist = 6, wizard = 7, warlock = 8,
     sorcerer = 9, elementalist = 10, warrior = 11,
+    guard=12,
     savager, herbalist,
     lumberjack, hunter, pikeman, crossbowman,
-    guard, blacksmith, battlemage, gladiator,
+     blacksmith, battlemage, gladiator,
     acolyte, monk, priest, shaman, pilgrim,
     minstrel, duelist
 }
 
 public interface ICharacterManager : IService
 {
-    bool GetCharacter(EActorType _ctype, out Sprite _spr, out GameObject _prefab);
+    bool GetCharacter(SCharacter _character, out Sprite _spr, out GameObject _prefab);
     SAttributes SetAttributes(EConstitution _cons);
     ELocalStringID GetConstTypeName(EConstitution _cons);
     ELocalStringID GetOriginName(EOrigin _origin);
@@ -81,7 +82,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_class_adept, ELocalStringID.game_class_alchemist,
         ELocalStringID.game_class_wizard, ELocalStringID.game_class_warlock,
         ELocalStringID.game_class_sorcerer, ELocalStringID.game_class_elementalist,
-        ELocalStringID.game_class_warrior,
+        ELocalStringID.game_class_warrior, ELocalStringID.game_class_guard,
         //////////////////////////////
         ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
         ELocalStringID.game_class_acolyte, ELocalStringID.game_class_pikeman,
@@ -104,16 +105,16 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         CGameManager.SetCharacterInterface(null);
     }
     /////// ======= ICharacterManager ==========
-    public bool GetCharacter(EActorType _ctype, out Sprite _spr, out GameObject _prefab)
+    public bool GetCharacter(SCharacter _character, out Sprite _spr, out GameObject _prefab)
     {
-        int i = ((int)_ctype);
+        int i = (int)_character.cType;
+        if (i < 0) { _prefab = null; _spr = null; return false; }
 
         _prefab = prefabs[i];
-        _spr = sprites[i];
+        _spr = sprites[_character.portraitIndex];
         if (_prefab == null) return false;
         return true;
     }
-
     public SAttributes SetAttributes(EConstitution _cons)
     {
         SAttributes a;
@@ -128,7 +129,6 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         return a;
     }
     public ELocalStringID GetConstTypeName(EConstitution _cons) => constType[(int)_cons];
-
     public ELocalStringID GetOriginName(EOrigin _origin) => origins[(int)_origin];
     public ELocalStringID GetClassName(ERegularClass _rClass) => classes[(int)_rClass];
 
@@ -161,6 +161,13 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.attributes.might++;
                 tempCharacter.attributes.personality--;
+                tempCharacter.cType = EActorType.knight;
+                break;
+            case ERegularClass.guard:
+                tempCharacter.typeConstitution = EConstitution.balanced;
+                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
+                tempCharacter.attributes.might++;
+                tempCharacter.attributes.knowledge--;
                 tempCharacter.cType = EActorType.knight;
                 break;
             case ERegularClass.mage:
@@ -212,7 +219,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
             default:
                 tempCharacter.typeConstitution = EConstitution.balanced;
                 tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.cType = EActorType.hero;
+                tempCharacter.cType = EActorType.none;
                 break;
         }
 
@@ -229,6 +236,8 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.attributes.intelligence = 1;
                 break;
         }
+
+        tempCharacter.portraitIndex = (int)tempCharacter.cType;
 
         tempCharacter.secondaryAttributes.speed = tempCharacter.attributes.dexterity;
         tempCharacter.secondaryAttributes.initiative = tempCharacter.attributes.dexterity;

@@ -104,11 +104,10 @@ public class CBattle : CUI, IBattle
         GameObject prefab;
         CActor actor;
 
-        if (_chrTemp.regularClass == ERegularClass.none) return null;
-        if (!iCharacterManager.GetCharacter(_chrTemp.cType, out spr, out prefab))
+        if (_chrTemp.cType == EActorType.none) return null;
+        if (!iCharacterManager.GetCharacter(_chrTemp, out spr, out prefab))
             return null;
         cell = GetStartCell();
-        //_chrTemp.cName = _chrTemp.regularClass.ToString();
         actor = dungeon.CreateCharacter(prefab, cell).SetSprite(spr);
         actor.SetCharacter(CCharacter.Create(_chrTemp));
         return actor;
@@ -122,9 +121,6 @@ public class CBattle : CUI, IBattle
         {
             CreateCharacter(CGameManager.GetData().charList[i]);
         }
-        /*CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.sorcerer));
-        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.skeleton));
-        CreateCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));*/
     }
     public void ShowCharacterName(string _name)
     {

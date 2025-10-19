@@ -20,9 +20,11 @@ public class CKnight : CActor
             case ERegularClass.knight:
                 rend.material.color = Color.yellow;
                 break;
+            case ERegularClass.guard:
+                rend.material.color = Color.green;
+                break;
             case ERegularClass.warrior:
                 if (character.GetOrigin() == EOrigin.barbarian) rend.material.color = Color.cyan;
-                else rend.material.color = Color.blue;
                 break;
         }
     }

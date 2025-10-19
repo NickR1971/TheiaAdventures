@@ -47,20 +47,16 @@ public class CNewGamePanel : CUI
     {
         SceneManager.LoadScene("SceneBase");
         iCharacterManager.AddCharacter(character);
-        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.barbarian, ERegularClass.warrior));
-        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.wizard));
+        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.guard));
         if (character.regularClass == ERegularClass.mage)
         {
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.undead, ERegularClass.zombie));
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.alchemist));
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.sorcerer));
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.adept));
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.elementalist));
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.warlock));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.warrior));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.peasant, ERegularClass.adept));
         }
         else
         {
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.warrior));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.wizard));
+            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.barbarian, ERegularClass.warrior));
         }
     }
 

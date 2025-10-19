@@ -64,6 +64,7 @@ public struct SCharacter
     public ERegularClass regularClass;
     public EEliteClass eliteClass;
     public EActorType cType;
+    public int portraitIndex;
     public EConstitution typeConstitution;
     public SAttributes attributes;
     public SSecondaryAttributes secondaryAttributes;
@@ -408,11 +409,9 @@ public abstract class CCharacter : ICharacter
         return actor.GetCurrentCell();
     }
     public SAttributes GetAttributes() => character.attributes;
-
     public EOrigin GetOrigin() => character.origin;
-
     public ERegularClass GetClass() => character.regularClass;
-
     public EEliteClass GetEliteClass() => character.eliteClass;
+    public EActorType GetActorType() => character.cType;
     //======================
 }

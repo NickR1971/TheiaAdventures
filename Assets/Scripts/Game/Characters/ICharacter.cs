@@ -12,6 +12,7 @@ public interface ICharacter
     Cell GetPositionCell();
     SAttributes GetAttributes();
     EOrigin GetOrigin();
+    EActorType GetActorType();
     ERegularClass GetClass();
     EEliteClass GetEliteClass();
 }

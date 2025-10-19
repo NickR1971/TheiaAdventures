@@ -27,7 +27,7 @@ public class CWizard : CActor
                 rend.material.color = Color.gray;
                 break;
             case ERegularClass.alchemist:
-                rend.material.color = Color.gray;
+                rend.material.color = Color.cyan;
                 break;
             case ERegularClass.warlock:
                 rend.material.color = Color.red;
