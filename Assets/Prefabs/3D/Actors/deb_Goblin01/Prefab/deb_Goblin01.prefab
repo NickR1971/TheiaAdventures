@@ -72,5 +72,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: deb_Goblin01
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6425813960623013685, guid: 01cc9560b9a9cbd49aefeabb54165709, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 01cc9560b9a9cbd49aefeabb54165709, type: 3}
