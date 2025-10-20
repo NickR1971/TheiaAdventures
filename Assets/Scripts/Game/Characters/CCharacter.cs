@@ -114,6 +114,9 @@ public abstract class CCharacter : ICharacter
             case EActorType.mage:
                 chr = new CUnitMage(_character);
                 break;
+            case EActorType.goblin:
+                chr = new CUnitGoblin(_character);
+                break;
             case EActorType.zombie:
                 chr = new CUnitZombie(_character);
                 break;

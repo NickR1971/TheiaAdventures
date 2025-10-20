@@ -58,6 +58,7 @@ public class CNewGamePanel : CUI
             iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.wizard));
             iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.barbarian, ERegularClass.warrior));
         }
+        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.goblin, ERegularClass.warrior));
     }
 
     // cancel create new game

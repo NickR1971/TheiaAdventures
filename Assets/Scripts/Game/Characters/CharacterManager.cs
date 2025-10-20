@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EActorType
 {
-    none=-1, knight=0, mage=1, hunter=2, cleric=3, barbarian=4,
+    none=-1, knight=0, mage=1, goblin=2, cleric=3, barbarian=4,
     zombie=5, skeleton=6
 }
 public enum EConstitution
@@ -161,7 +161,8 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
                 tempCharacter.attributes.might++;
                 tempCharacter.attributes.personality--;
-                tempCharacter.cType = EActorType.knight;
+                if (_origin == EOrigin.goblin) tempCharacter.cType = EActorType.goblin;
+                else tempCharacter.cType = EActorType.knight;
                 break;
             case ERegularClass.guard:
                 tempCharacter.typeConstitution = EConstitution.balanced;
