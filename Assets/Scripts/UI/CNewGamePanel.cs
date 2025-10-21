@@ -47,18 +47,30 @@ public class CNewGamePanel : CUI
     {
         SceneManager.LoadScene("SceneBase");
         iCharacterManager.AddCharacter(character);
-        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.guard));
+        iCharacterManager.AddCharacter(
+            iCharacterManager.CreateCharacterTemplate(
+                EOrigin.artisan, ERegularClass.guard,EConstitution.balanced,EActorType.knight));
         if (character.regularClass == ERegularClass.mage)
         {
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.warrior));
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.peasant, ERegularClass.adept));
+            iCharacterManager.AddCharacter(
+                iCharacterManager.CreateCharacterTemplate(
+                    EOrigin.artisan, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
+            iCharacterManager.AddCharacter(
+                iCharacterManager.CreateCharacterTemplate(
+                    EOrigin.peasant, ERegularClass.adept, EConstitution.balanced, EActorType.mage));
         }
         else
         {
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.artisan, ERegularClass.wizard));
-            iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.barbarian, ERegularClass.warrior));
+            iCharacterManager.AddCharacter(
+                iCharacterManager.CreateCharacterTemplate(
+                    EOrigin.artisan, ERegularClass.wizard, EConstitution.scholar, EActorType.mage));
+            iCharacterManager.AddCharacter(
+                iCharacterManager.CreateCharacterTemplate(
+                    EOrigin.barbarian, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
         }
-        iCharacterManager.AddCharacter(iCharacterManager.CreateCharacterTemplate(EOrigin.goblin, ERegularClass.warrior));
+        iCharacterManager.AddCharacter(
+            iCharacterManager.CreateCharacterTemplate(
+                EOrigin.goblin, ERegularClass.warrior, EConstitution.balanced, EActorType.goblin));
     }
 
     // cancel create new game
@@ -69,13 +81,15 @@ public class CNewGamePanel : CUI
     }
     public void OnCreateKnight()
     {
-        SCharacter chr = iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.knight);
+        SCharacter chr = iCharacterManager.CreateCharacterTemplate(
+            EOrigin.noble, ERegularClass.knight, EConstitution.leader, EActorType.knight);
         chr.cName = "sir Marcus";
         ShowSelected(chr);
     }
     public void OnCreateMage()
     {
-        SCharacter chr = iCharacterManager.CreateCharacterTemplate(EOrigin.noble, ERegularClass.mage);
+        SCharacter chr = iCharacterManager.CreateCharacterTemplate(
+            EOrigin.noble, ERegularClass.mage, EConstitution.genius, EActorType.mage);
         chr.cName = "Henner";
         ShowSelected(chr);
     }

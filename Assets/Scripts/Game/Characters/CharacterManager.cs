@@ -40,7 +40,9 @@ public interface ICharacterManager : IService
     ELocalStringID GetConstTypeName(EConstitution _cons);
     ELocalStringID GetOriginName(EOrigin _origin);
     ELocalStringID GetClassName(ERegularClass _rClass);
-    SCharacter CreateCharacterTemplate(EOrigin _origin, ERegularClass _rClass);
+    SCharacter SetStandartName(SCharacter _character);
+    SCharacter CreateCharacterTemplate(
+        EOrigin _origin, ERegularClass _rClass, EConstitution _constitution, EActorType _actor);
     void AddCharacter(SCharacter _character);
 }
 public class CharacterManager : MonoBehaviour, ICharacterManager
@@ -131,133 +133,114 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     public ELocalStringID GetConstTypeName(EConstitution _cons) => constType[(int)_cons];
     public ELocalStringID GetOriginName(EOrigin _origin) => origins[(int)_origin];
     public ELocalStringID GetClassName(ERegularClass _rClass) => classes[(int)_rClass];
-
-    public SCharacter CreateCharacterTemplate(EOrigin _origin, ERegularClass _rClass)
+    public SCharacter CreateCharacterTemplate(EOrigin _origin,
+        ERegularClass _rClass,
+        EConstitution _constitution,
+        EActorType _actor)
     {
-        SCharacter tempCharacter = new SCharacter();
+        SCharacter templateCharacter = new SCharacter();
 
-        tempCharacter.origin = _origin;
-        tempCharacter.regularClass = _rClass;
+        templateCharacter.origin = _origin;
+        templateCharacter.regularClass = _rClass;
+        templateCharacter.typeConstitution = _constitution;
+        templateCharacter.attributes = SetAttributes(templateCharacter.typeConstitution);
+        templateCharacter.cType = _actor;
 
-        switch(_rClass)
+        switch (_rClass)
         {
             case ERegularClass.knight:
-                if (_origin == EOrigin.noble)
+                if (templateCharacter.typeConstitution == EConstitution.balanced)
                 {
-                    tempCharacter.typeConstitution = EConstitution.leader;
-                    tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
+                    templateCharacter.attributes.might++;
+                    templateCharacter.attributes.intelligence--;
                 }
-                else
-                {
-                    tempCharacter.typeConstitution = EConstitution.balanced;
-                    tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                    tempCharacter.attributes.might++;
-                    tempCharacter.attributes.intelligence--;
-                }
-                tempCharacter.cType = EActorType.knight;
                 break;
             case ERegularClass.warrior:
-                tempCharacter.typeConstitution = EConstitution.balanced;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.attributes.might++;
-                tempCharacter.attributes.personality--;
-                if (_origin == EOrigin.goblin) tempCharacter.cType = EActorType.goblin;
-                else tempCharacter.cType = EActorType.knight;
+                if (templateCharacter.typeConstitution == EConstitution.balanced)
+                {
+                    templateCharacter.attributes.might++;
+                    templateCharacter.attributes.personality--;
+                }
                 break;
             case ERegularClass.guard:
-                tempCharacter.typeConstitution = EConstitution.balanced;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.attributes.might++;
-                tempCharacter.attributes.knowledge--;
-                tempCharacter.cType = EActorType.knight;
+                if (templateCharacter.typeConstitution == EConstitution.balanced)
+                {
+                    templateCharacter.attributes.might++;
+                    templateCharacter.attributes.knowledge--;
+                }
                 break;
             case ERegularClass.mage:
-                tempCharacter.typeConstitution = EConstitution.genius;    
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.cType = EActorType.mage;
+                if (templateCharacter.typeConstitution == EConstitution.balanced)
+                {
+                    templateCharacter.attributes.might--;
+                    templateCharacter.attributes.knowledge++;
+                }
                 break;
             case ERegularClass.wizard:
             case ERegularClass.adept:
-                tempCharacter.typeConstitution = EConstitution.scholar;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.cType = EActorType.mage;
+                if (templateCharacter.typeConstitution == EConstitution.balanced)
+                {
+                    templateCharacter.attributes.might--;
+                    templateCharacter.attributes.intelligence++;
+                }
                 break;
             case ERegularClass.sorcerer:
-                tempCharacter.typeConstitution = EConstitution.balanced;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.attributes.might--;
-                tempCharacter.attributes.intelligence++;
-                tempCharacter.cType = EActorType.mage;
-                break;
             case ERegularClass.elementalist:
             case ERegularClass.warlock:
-                tempCharacter.typeConstitution = EConstitution.balanced;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.attributes.might--;
-                tempCharacter.attributes.personality++;
-                tempCharacter.cType = EActorType.mage;
+                if (templateCharacter.typeConstitution == EConstitution.balanced)
+                {
+                    templateCharacter.attributes.might--;
+                    templateCharacter.attributes.personality++;
+                }
                 break;
             case ERegularClass.zombie:
-                tempCharacter.typeConstitution = EConstitution.goof;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                if (tempCharacter.origin != EOrigin.undead)
-                {
-                    tempCharacter.origin = EOrigin.undead;
-                    Debug.Log("origin turn to undead for " + _rClass.ToString());
-                }
-                tempCharacter.cType = EActorType.zombie;
-                break;
             case ERegularClass.skeleton:
-                tempCharacter.typeConstitution = EConstitution.agile;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                if (tempCharacter.origin != EOrigin.undead)
+                if (templateCharacter.origin != EOrigin.undead)
                 {
-                    tempCharacter.origin = EOrigin.undead;
+                    templateCharacter.origin = EOrigin.undead;
                     Debug.Log("origin turn to undead for " + _rClass.ToString());
                 }
-                tempCharacter.cType = EActorType.skeleton;
-                break;
-            default:
-                tempCharacter.typeConstitution = EConstitution.balanced;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
-                tempCharacter.cType = EActorType.none;
                 break;
         }
 
-        switch (tempCharacter.origin)
+        switch (templateCharacter.origin)
         {
             case EOrigin.barbarian:
-                tempCharacter.typeConstitution = EConstitution.barbarian;
-                tempCharacter.attributes = SetAttributes(tempCharacter.typeConstitution);
+                templateCharacter.typeConstitution = EConstitution.barbarian;
+                templateCharacter.attributes = SetAttributes(templateCharacter.typeConstitution);
                 break;
             case EOrigin.undead:
-                tempCharacter.attributes.personality = 1;
+                templateCharacter.attributes.personality = 1;
                 break;
             case EOrigin.animal:
-                tempCharacter.attributes.intelligence = 1;
+                templateCharacter.attributes.intelligence = 1;
                 break;
         }
 
-        tempCharacter.portraitIndex = (int)tempCharacter.cType;
+        templateCharacter.portraitIndex = (int)templateCharacter.cType;
 
-        tempCharacter.secondaryAttributes.speed = tempCharacter.attributes.dexterity;
-        tempCharacter.secondaryAttributes.initiative = tempCharacter.attributes.dexterity;
-        tempCharacter.secondaryAttributes.reaction = 1;
-        tempCharacter.points.redHits = CScale.GetEValue(tempCharacter.attributes.might);
-        tempCharacter.points.yellowHits = tempCharacter.points.redHits / 2;
-        tempCharacter.points.blueHits = 0;
-        tempCharacter.points.greenHits = 0;
-        tempCharacter.points.actions = CScale.GetEValue(tempCharacter.secondaryAttributes.initiative);
-        tempCharacter.points.mana = CScale.GetEValue(tempCharacter.attributes.intelligence);
-        tempCharacter.points.will = CScale.GetEValue(tempCharacter.attributes.personality);
-        tempCharacter.currentPoints = tempCharacter.points;
+        templateCharacter.secondaryAttributes.speed = templateCharacter.attributes.dexterity;
+        templateCharacter.secondaryAttributes.initiative = templateCharacter.attributes.dexterity;
+        templateCharacter.secondaryAttributes.reaction = 1;
+        templateCharacter.points.redHits = CScale.GetEValue(templateCharacter.attributes.might);
+        templateCharacter.points.yellowHits = templateCharacter.points.redHits / 2;
+        templateCharacter.points.blueHits = 0;
+        templateCharacter.points.greenHits = 0;
+        templateCharacter.points.actions = CScale.GetEValue(templateCharacter.secondaryAttributes.initiative);
+        templateCharacter.points.mana = CScale.GetEValue(templateCharacter.attributes.intelligence);
+        templateCharacter.points.will = CScale.GetEValue(templateCharacter.attributes.personality);
+        templateCharacter.currentPoints = templateCharacter.points;
 
-        return tempCharacter;
+        return templateCharacter;
     }
-
+    public SCharacter SetStandartName(SCharacter _character)
+    {
+        _character.cName = _character.regularClass.ToString();
+        return _character;
+    }
     public void AddCharacter(SCharacter _character)
     {
-        if (string.IsNullOrEmpty(_character.cName)) _character.cName = _character.regularClass.ToString();
+        if (string.IsNullOrEmpty(_character.cName)) SetStandartName(_character);
         CGameManager.GetData().AddCharacter(_character);
     }
 }
