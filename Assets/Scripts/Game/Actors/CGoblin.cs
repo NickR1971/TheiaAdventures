@@ -101,5 +101,4 @@ public class CGoblin : CActor
         }
         state = _state;
     }
-    protected override void Adjust() { }
 }

@@ -88,14 +88,14 @@ public abstract class CActor : CGameObject
         Command cmd = cmdList.Dequeue();
         DoCommand(cmd.command);
     }
-    protected abstract void Adjust();
+    protected virtual void Adjust() { }
     public void SetCharacter(CCharacter _character)
     {
         character = _character;
         character.SetActor(this);
         Adjust();
     }
-    public CCharacter GetGaracter() => character;
+    public CCharacter GetCharacter() => character;
     public EMapDirection GetDirection() => dir;
     public string GetName() => character.GetName();
     public CActor SetSprite(Sprite _spr) { charSprite = _spr; return this; }

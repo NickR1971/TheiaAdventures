@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/******************************************
+ * Basic algorithms for moving characters
+ ******************************************/
 public abstract class CMovable
 {
     protected IDungeon dungeon;

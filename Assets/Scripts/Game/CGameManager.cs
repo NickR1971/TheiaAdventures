@@ -31,6 +31,7 @@ public class SaveData
     {
         if (numCharacters == maxCharacters) return -1;
         charList[numCharacters] = _character;
+        charList[numCharacters].numPC = numCharacters;
         return numCharacters++;
     }
 }

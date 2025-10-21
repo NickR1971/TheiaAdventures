@@ -105,5 +105,4 @@ public class CZombie : CActor
     {
         SetState(ActorState.idle);
     }
-    protected override void Adjust() { }
 }

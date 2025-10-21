@@ -172,6 +172,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         templateCharacter.typeConstitution = _constitution;
         templateCharacter.attributes = SetAttributes(templateCharacter.typeConstitution);
         templateCharacter.cType = _actor;
+        templateCharacter.numPC = -1;
 
         switch (_rClass)
         {

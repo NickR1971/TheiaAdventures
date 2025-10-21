@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using UnityEngine.InputSystem;
 
 public interface IBattle : IService
 {
@@ -14,9 +13,9 @@ public interface IBattle : IService
 
 public class CBattle : CUI, IBattle
 {
-    private IGame game;
+    private IGame iGame;
     private ICamera iCamera;
-    private IGameConsole gameConsole;
+    private IInputController iInputController;
     private ICharacterManager iCharacterManager;
     private IDungeon dungeon;
     private IGameMap gameMap;
@@ -34,6 +33,9 @@ public class CBattle : CUI, IBattle
     private Image imgChar;
     private Text nameChar;
     private ICharacter currentCharacter;
+    private const int maxPC = 10;
+    private ICharacter[] listPC = new ICharacter[maxPC];
+    private int numPC = 0;
     private const int startCellsSize = 100;
     private Cell[] startSells = new Cell[startCellsSize];
     private int countStartCells = 0;
@@ -51,11 +53,11 @@ public class CBattle : CUI, IBattle
     {
         InitUI();
         iCamera = AllServices.Container.Get<ICamera>();
-        game = AllServices.Container.Get<IGame>();
-        gameConsole = AllServices.Container.Get<IGameConsole>();
+        iGame = AllServices.Container.Get<IGame>();
+        iInputController = AllServices.Container.Get<IInputController>();
         iCharacterManager = AllServices.Container.Get<ICharacterManager>();
         dungeon = AllServices.Container.Get<IDungeon>();
-        game.CreateGame(CGameManager.GetData());
+        iGame.CreateGame(CGameManager.GetData());
         CGameManager.GetData().num_scene = 2;
         imgChar = characterImage.GetComponent<Image>();
         nameChar = characterName.GetComponent<Text>();
@@ -63,6 +65,33 @@ public class CBattle : CUI, IBattle
         gameMap = dungeon.GetGameMap();
         SelectStartCells();
         CreateTestCharacter();
+    }
+    protected override void OnUpdate()
+    {
+        int n;
+
+        if (iInputController.IsPressed(MyButton.LBumper))
+        {
+            if (currentCharacter == null) SetCurrentCharacter(listPC[0]);
+            else
+            {
+                n = currentCharacter.GetNumInParty();
+                n++;
+                if (n == numPC) n = 0;
+                SetCurrentCharacter(listPC[n]);
+            }
+        }
+        if (iInputController.IsPressed(MyButton.RBumper))
+        {
+            if (currentCharacter == null) SetCurrentCharacter(listPC[0]);
+            else
+            {
+                n = currentCharacter.GetNumInParty();
+                n--;
+                if (n < 0) n = numPC - 1;
+                SetCurrentCharacter(listPC[n]);
+            }
+        }
     }
     private void OnDestroy()
     {
@@ -114,13 +143,17 @@ public class CBattle : CUI, IBattle
     }
     private void CreateTestCharacter()
     {
-        Cell cell = CreateCharacter(CGameManager.GetData().charList[0]).GetCurrentCell();
-        iCamera.SetViewPoint(cell.GetPosition());
         int i;
-        for (i = 1; i < CGameManager.GetData().numCharacters; i++)
+
+        for (i = 0; i < CGameManager.GetData().numCharacters; i++)
         {
-            CreateCharacter(CGameManager.GetData().charList[i]);
+            if (numPC == maxPC) break;
+            listPC[numPC] = CreateCharacter(CGameManager.GetData().charList[i]).GetCharacter();
+            listPC[numPC].SetNumInParty(numPC);
+            numPC++;
         }
+        Cell cell = listPC[0].GetPositionCell();
+        iCamera.SetViewPoint(cell.GetPosition());
     }
     public void ShowCharacterName(string _name)
     {

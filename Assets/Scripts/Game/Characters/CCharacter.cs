@@ -39,6 +39,7 @@ public struct SCharacter
     public EEliteClass eliteClass;
     public EActorType cType;
     public int portraitIndex;
+    public int numPC;
     public EConstitution typeConstitution;
     public SAttributes attributes;
     public SSecondaryAttributes secondaryAttributes;
@@ -63,6 +64,7 @@ public abstract class CCharacter : CMovable, ICharacter
     protected const int maxCommands = 10;
     protected int[] activeCommandsList = new int[maxCommands];
     protected int activeCommandsNum;
+    private int numInParty;
 
     protected CCharacter(SCharacter _character)
     {
@@ -145,5 +147,9 @@ public abstract class CCharacter : CMovable, ICharacter
     public ERegularClass GetClass() => character.regularClass;
     public EEliteClass GetEliteClass() => character.eliteClass;
     public EActorType GetActorType() => character.cType;
+
+    public void SetNumInParty(int _num) => numInParty = _num;
+
+    public int GetNumInParty() => numInParty;
     //======================
 }

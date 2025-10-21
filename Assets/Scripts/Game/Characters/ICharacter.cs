@@ -15,4 +15,6 @@ public interface ICharacter
     EActorType GetActorType();
     ERegularClass GetClass();
     EEliteClass GetEliteClass();
+    void SetNumInParty(int _num);
+    int GetNumInParty();
 }
