@@ -32,6 +32,32 @@ public enum ERegularClass
     acolyte, monk, priest, shaman, pilgrim,
     minstrel, duelist
 }
+public enum EEliteClass
+{
+    none,
+    ranger, // hunter
+    stalker, // hunter
+    engeneer, // blacksmith
+    technomage, // blacksmith
+    bard, // minstrel
+    inquisitor, // monk
+    blackguard, // guard
+    eliteguard, // guard
+    highpriest, // priest
+    oracle, // priest
+    archmage, // mage
+    necromancer, // wizard
+    demonlord, // warlock
+    enchanter, // alchemist
+    spiritlord, // elementalist
+    weaponmaster, // duelist
+    paladin, // knight
+    champion, // knight
+    templar, // knight
+    spellsword, // warrior
+    warlord, // warrior
+    berserker // warrior
+}
 
 public interface ICharacterManager : IService
 {
@@ -133,7 +159,8 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     public ELocalStringID GetConstTypeName(EConstitution _cons) => constType[(int)_cons];
     public ELocalStringID GetOriginName(EOrigin _origin) => origins[(int)_origin];
     public ELocalStringID GetClassName(ERegularClass _rClass) => classes[(int)_rClass];
-    public SCharacter CreateCharacterTemplate(EOrigin _origin,
+    public SCharacter CreateCharacterTemplate(
+        EOrigin _origin,
         ERegularClass _rClass,
         EConstitution _constitution,
         EActorType _actor)
@@ -200,6 +227,9 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                     templateCharacter.origin = EOrigin.undead;
                     Debug.Log("origin turn to undead for " + _rClass.ToString());
                 }
+                break;
+            default:
+                Debug.Log("Class not corrected " + _rClass.ToString());
                 break;
         }
 
