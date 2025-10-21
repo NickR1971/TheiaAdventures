@@ -66,7 +66,7 @@ public interface ICharacterManager : IService
     ELocalStringID GetConstTypeName(EConstitution _cons);
     ELocalStringID GetOriginName(EOrigin _origin);
     ELocalStringID GetClassName(ERegularClass _rClass);
-    SCharacter SetStandartName(SCharacter _character);
+    SCharacter SetStandartName(ref SCharacter _character);
     SCharacter CreateCharacterTemplate(
         EOrigin _origin, ERegularClass _rClass, EConstitution _constitution, EActorType _actor);
     void AddCharacter(SCharacter _character);
@@ -263,14 +263,26 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
 
         return templateCharacter;
     }
-    public SCharacter SetStandartName(SCharacter _character)
+    public SCharacter SetStandartName(ref SCharacter _character)
     {
-        _character.cName = _character.regularClass.ToString();
+        string chrName;
+        switch(_character.origin)
+        {
+            case EOrigin.artisan:
+            case EOrigin.peasant:
+            case EOrigin.noble:
+                chrName = _character.regularClass.ToString();
+                break;
+            default:
+                chrName = _character.origin.ToString();
+                break;
+        }
+        _character.cName = chrName;
         return _character;
     }
     public void AddCharacter(SCharacter _character)
     {
-        if (string.IsNullOrEmpty(_character.cName)) SetStandartName(_character);
+        if (string.IsNullOrEmpty(_character.cName)) SetStandartName(ref _character);
         CGameManager.GetData().AddCharacter(_character);
     }
 }
