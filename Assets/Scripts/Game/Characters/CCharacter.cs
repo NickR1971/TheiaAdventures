@@ -87,6 +87,9 @@ public abstract class CCharacter : CMovable, ICharacter
             case EActorType.goblin:
                 chr = new CUnitGoblin(_character);
                 break;
+            case EActorType.priest:
+                chr = new CUnitPriest(_character);
+                break;
             case EActorType.zombie:
                 chr = new CUnitZombie(_character);
                 break;

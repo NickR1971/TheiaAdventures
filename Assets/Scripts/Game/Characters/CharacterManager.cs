@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EActorType
 {
-    none=-1, knight=0, mage=1, goblin=2, cleric=3, barbarian=4,
+    none=-1, knight=0, mage=1, goblin=2, priest=3, barbarian=4,
     zombie=5, skeleton=6
 }
 public enum EConstitution
@@ -25,11 +25,11 @@ public enum ERegularClass
     knight = 1, mage = 2, zombie = 3, skeleton = 4,
     adept = 5, alchemist = 6, wizard = 7, warlock = 8,
     sorcerer = 9, elementalist = 10, warrior = 11,
-    guard=12,
+    guard=12, priest=13,
     savager, herbalist,
     lumberjack, hunter, pikeman, crossbowman,
      blacksmith, battlemage, gladiator,
-    acolyte, monk, priest, shaman, pilgrim,
+    acolyte, monk, shaman, pilgrim,
     minstrel, duelist
 }
 public enum EEliteClass
@@ -111,12 +111,12 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_class_wizard, ELocalStringID.game_class_warlock,
         ELocalStringID.game_class_sorcerer, ELocalStringID.game_class_elementalist,
         ELocalStringID.game_class_warrior, ELocalStringID.game_class_guard,
+        ELocalStringID.game_class_priest,
         //////////////////////////////
         ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
         ELocalStringID.game_class_acolyte, ELocalStringID.game_class_pikeman,
         ELocalStringID.game_class_crossbowman,
-        ELocalStringID.game_class_monk, ELocalStringID.game_class_duelist,
-        ELocalStringID.game_class_priest
+        ELocalStringID.game_class_monk, ELocalStringID.game_class_duelist
     };
 
     private void Awake()
@@ -218,6 +218,13 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 if (templateCharacter.typeConstitution == EConstitution.balanced)
                 {
                     templateCharacter.attributes.might--;
+                    templateCharacter.attributes.personality++;
+                }
+                break;
+            case ERegularClass.priest:
+                if (templateCharacter.typeConstitution == EConstitution.balanced)
+                {
+                    templateCharacter.attributes.dexterity--;
                     templateCharacter.attributes.personality++;
                 }
                 break;

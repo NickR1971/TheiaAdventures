@@ -49,24 +49,21 @@ public class CNewGamePanel : CUI
         iCharacterManager.AddCharacter(character);
         iCharacterManager.AddCharacter(
             iCharacterManager.CreateCharacterTemplate(
-                EOrigin.artisan, ERegularClass.guard,EConstitution.balanced,EActorType.knight));
+                EOrigin.barbarian, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
+        iCharacterManager.AddCharacter(
+            iCharacterManager.CreateCharacterTemplate(
+                EOrigin.artisan, ERegularClass.priest, EConstitution.balanced, EActorType.priest));
         if (character.regularClass == ERegularClass.mage)
         {
             iCharacterManager.AddCharacter(
                 iCharacterManager.CreateCharacterTemplate(
                     EOrigin.artisan, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
-            iCharacterManager.AddCharacter(
-                iCharacterManager.CreateCharacterTemplate(
-                    EOrigin.peasant, ERegularClass.adept, EConstitution.balanced, EActorType.mage));
         }
         else
         {
             iCharacterManager.AddCharacter(
                 iCharacterManager.CreateCharacterTemplate(
-                    EOrigin.artisan, ERegularClass.wizard, EConstitution.scholar, EActorType.mage));
-            iCharacterManager.AddCharacter(
-                iCharacterManager.CreateCharacterTemplate(
-                    EOrigin.barbarian, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
+                    EOrigin.artisan, ERegularClass.alchemist, EConstitution.scholar, EActorType.mage));
         }
         iCharacterManager.AddCharacter(
             iCharacterManager.CreateCharacterTemplate(
