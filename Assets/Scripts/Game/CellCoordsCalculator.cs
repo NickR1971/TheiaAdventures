@@ -64,7 +64,6 @@ public abstract class CellCoordsCalculator : IGameMap
         direction[(int)EMapDirection.west] = new Vector3(-1, -1, 0);
         direction[(int)EMapDirection.northwest] = new Vector3(-1, -1, -1);
     }
-
     public int GetRoomWidth() => width;
     public int GetRoomHeight() => height;
     public int GetWidth() => width * mapWidth;
@@ -102,12 +101,10 @@ public abstract class CellCoordsCalculator : IGameMap
 
         return GetCell(_y * GetWidth() + _x);
     }
-
     public void SetOnCreateCellAction(Action<Cell> _onCell)
     {
         onCreateCell = _onCell;
     }
-
     public void CreateMap(int _width, int _height)
     {
         mapWidth = _width;
@@ -120,7 +117,6 @@ public abstract class CellCoordsCalculator : IGameMap
     {
         return startCellInRoom + _y * mapWidth * width + _x;
     }
-
     private Color GetSurfaceColor(ECellType _surfaceType)
     {
         switch(_surfaceType)
@@ -132,7 +128,7 @@ public abstract class CellCoordsCalculator : IGameMap
             case ECellType.water:
                 return Color.blue;
             default:
-                return Color.red;
+                return Color.black;
         }
     }
     private bool CheckSurface(Vector3 _position, out Vector3 _result, out ECellType _surfaceType)
@@ -168,21 +164,18 @@ public abstract class CellCoordsCalculator : IGameMap
             map[cellNumber] = cell;
             cell.SetBaseType(surfaceType);
             onCreateCell(cell);
-//            cell.SetColor(GetSurfaceColor(surfaceType));
-            cell.SetColor(Color.yellow);
+            cell.SetColor(GetSurfaceColor(surfaceType));
+            //cell.SetColor(Color.green);
             cell.SetActive(false);
         }
     }
-
     protected void SetStartCell(int _roomRow, int _roomCol)
     {
         if (_roomRow > mapHeight) Debug.LogError("room row above height!");
         if (_roomCol > mapWidth) Debug.LogError("room col above width!");
         startCellInRoom = _roomRow * mapWidth * width * height + _roomCol * width;
-        //Debug.Log($"Row={_roomRow} Col={_roomCol} : Start number is {startCellInRoom}");
     }
     public abstract void Build(int _roomCol, int _roomRow, Vector3 _basePosition);
-
     public Vector3 GetDirectionVector(EMapDirection _direction)
     {
         return direction[(int)_direction];
@@ -200,7 +193,6 @@ public abstract class CellCoordsCalculator : IGameMap
         }
     }
 }
-
 //=================================================================================================
 public class CellSquareCalculator : CellCoordsCalculator
 {
@@ -229,7 +221,6 @@ public class CellSquareCalculator : CellCoordsCalculator
         }
     }
 }
-
 public class CellHexCalculator : CellCoordsCalculator
 {
     public CellHexCalculator() : base(10,15)
@@ -239,7 +230,6 @@ public class CellHexCalculator : CellCoordsCalculator
         direction[(int)EMapDirection.southwest] = new Vector3(-0.866f, -1, 0.5f);
         direction[(int)EMapDirection.northwest] = new Vector3(-0.866f, -1, -0.5f);
     }
-
     private void CorrectNearList(bool _isOddRow)
     {
         if (_isOddRow)

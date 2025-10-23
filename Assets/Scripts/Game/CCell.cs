@@ -9,6 +9,7 @@ public class CCell : MonoBehaviour, IPointerClickHandler
     private Cell cell;
     private int num;
     private Renderer rend;
+    private Color baseColor;
     private static CCell lastCell = null;
 
     public void Init(Cell _cell)
@@ -17,17 +18,31 @@ public class CCell : MonoBehaviour, IPointerClickHandler
         num = cell.GetNumber();
         battle = AllServices.Container.Get<IBattle>();
         rend = GetComponent<Renderer>();
+        transform.position = cell.GetPosition();
     }
 
     public Cell GetCell() => cell;
     public int GetNumber() => num;
+    public void ChangeColor(Color _color)
+    {
+        rend.material.color = _color;
+    }
+    public void RestoreColor()
+    {
+        rend.material.color = baseColor;
+    }
+    public void SetColor(Color _color)
+    {
+        baseColor = _color;
+        RestoreColor();
+    }
     ///////////////////////////////////////////////
     // OnMouse standart events
     // OnMouseEnter(), OnMouseOver(), OnMouseExit()
     void OnMouseEnter()
     {
-        if (lastCell != null) lastCell.rend.material.color = Color.yellow;
-        rend.material.color = Color.red;
+        if (lastCell != null) lastCell.RestoreColor();
+        ChangeColor(Color.red);
         lastCell = this;
     }
     ///////////////////////////////////////////////
