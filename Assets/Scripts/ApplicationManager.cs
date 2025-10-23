@@ -23,7 +23,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	private IDialog dialog;
 	private UImanager uiManager;
 	private IGameConsole gameConsole;
-	private IInputController inputController;
+	private IInputController iInputController;
 
 
     private void Awake()
@@ -37,8 +37,8 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 		AllServices.Container.Register<IMainMenu>(this);
 
-		inputController = GetComponent<IInputController>();
-		AllServices.Container.Register<IInputController>(inputController);
+		iInputController = GetComponent<IInputController>();
+		AllServices.Container.Register<IInputController>(iInputController);
 
 		saveFile = new CSaveFile();
 		saveFile.LoadSettings(out settingsData);
@@ -71,8 +71,22 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 		gameConsole.Hide();
 
 	}
-
-	private void OnDestroy()
+	private void Start()
+    {
+		localization = AllServices.Container.Get<ILocalization>();
+		localization.LoadLanguage(usedLanguage);
+		uiManager.OpenUI(mainMenu);
+		uiManager.OpenUI(uiStart);
+	}
+    private void Update()
+    {
+        if(iInputController.IsPressed(MyButton.Start))
+        {
+			if (gameConsole.IsActive()) gameConsole.Hide();
+			else gameConsole.Show();
+        }
+    }
+    private void OnDestroy()
     {
 		uiManager.CloseUI();
 		AllServices.Container.UnRegister<IGameConsole>();
@@ -83,15 +97,6 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 		AllServices.Container.UnRegister<IMainMenu>();
 		AllServices.Container.UnRegister<IGame>();
 	}
-
-	private void Start()
-    {
-		localization = AllServices.Container.Get<ILocalization>();
-		localization.LoadLanguage(usedLanguage);
-		uiManager.OpenUI(mainMenu);
-		uiManager.OpenUI(uiStart);
-	}
-
 	//--------------------------------------------------------------
 	// IMainMenu interface
 	//--------------------------------------------------------------

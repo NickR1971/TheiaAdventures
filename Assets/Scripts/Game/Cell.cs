@@ -7,7 +7,6 @@ public class Cell
     private readonly Vector3 position;
     private readonly int number;
     private CCell markCell;
-    private GameObject markObj;
     private ECellType baseType;
     private int[] nearList;
     private CRoom room;
@@ -46,7 +45,6 @@ public class Cell
     public int GetNumber() => number;
     public void SetObject(GameObject _obj)
     {
-        markObj = _obj;
         markCell = _obj.GetComponent<CCell>();
         markCell.Init(this);
     }
@@ -55,8 +53,8 @@ public class Cell
         if (markCell == null) Debug.Log($"Cell #{number} mark not instantiated!");
         else markCell.SetColor(_color);
     }
-    public void SetActive(bool _f) => markObj.SetActive(_f);
-    public bool IsActive() => markObj.activeSelf;
+    public void SetActive(bool _f) => markCell.SetActive(_f);
+    public bool IsActive() => markCell.IsActive();
     public void SetValue(int _v) => tempValue = _v;
     public void ResetValue() => tempValue = maxValue;
     public int GetValue() => tempValue;

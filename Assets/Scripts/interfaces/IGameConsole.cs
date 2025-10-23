@@ -8,4 +8,5 @@ public interface IGameConsole : IService
     void ExecuteCommand(string _cmd);
     void Show();
     void Hide();
+    bool IsActive();
 }

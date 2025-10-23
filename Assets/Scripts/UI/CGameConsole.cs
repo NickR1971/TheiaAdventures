@@ -45,7 +45,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
     private GameObject[] msgList = new GameObject[maxMsgList];
     private SortedList<string, CGameConsoleCommand> commandsList = new SortedList<string, CGameConsoleCommand>();
     private IMainMenu mainMenu;
-    private IInputController inputController;
+    private IInputController iInputController;
 
     private void Start()
     {
@@ -59,26 +59,19 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         AddCommand(new CGameConsoleCommand("quit", Quit,ELocalStringID.core_quit));
         AddCommand(new CGameConsoleCommand("getString", GetLocStr, "check local string"));
         mainMenu = AllServices.Container.Get<IMainMenu>();
-        inputController = AllServices.Container.Get<IInputController>();
+        iInputController = AllServices.Container.Get<IInputController>();
     }
-
     private void OnDestroy()
     {
         commandsList.Clear();
     }
-
     private void AddMsg(GameObject _msg)
     {
         if (currentMsg == maxMsgList) currentMsg = 0;
         Destroy(msgList[currentMsg]);
         msgList[currentMsg++] = _msg;
     }
-
-    public IGameConsole GetIGameConsole()
-    {
-        return this;
-    }
-
+    public IGameConsole GetIGameConsole() => this;
     public void AddCommand(CGameConsoleCommand _command)
     {
         if (commandsList.ContainsKey(_command.command))
@@ -88,7 +81,6 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         }
         commandsList.Add(_command.command, _command);
     }
-
     public void RemoveCommand(string _cmdName)
     {
         if (commandsList.ContainsKey(_cmdName))
@@ -96,7 +88,6 @@ public class CGameConsole : MonoBehaviour, IGameConsole
             commandsList.Remove(_cmdName);
         }
     }
-
     public void ShowMessage(string _message)
     {
         GameObject newString;
@@ -105,22 +96,10 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         AddMsg(newString);
         scroll.value = 0.0f;
     }
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void Quit(string _str)
-    {
-            mainMenu.Quit();
-    }
-
+    public void Show() => gameObject.SetActive(true);
+    public void Hide() => gameObject.SetActive(false);
+    public bool IsActive() => gameObject.activeSelf;
+    private void Quit(string _str) => mainMenu.Quit();
     private void Help(string _str)
     {
         foreach(var cmd in commandsList)
@@ -128,7 +107,6 @@ public class CGameConsole : MonoBehaviour, IGameConsole
             ShowMessage($"{ cmd.Key} {cmd.Value.strHint}");
         }
     }
-
     private void DoCommand(string _cmd)
     {
         CGameConsoleCommand gcCommand;
@@ -139,12 +117,11 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         }
         else ShowMessage(localization.GetString(ELocalStringID.err_noCommnand) + " [" + _cmd + "]");
     }
-
     public void OnTextEnter()
     {
         string sText = inputText.text;
 
-        if (inputController.IsPressedEnter())
+        if (iInputController.IsPressedEnter())
         {
             if (sText.Trim().Length > 0)
             {
@@ -153,7 +130,6 @@ public class CGameConsole : MonoBehaviour, IGameConsole
             }
         }
     }
-
     public void OnButton()
     {
         Hide();
@@ -165,7 +141,6 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         locstr = localization.GetString(_str);
         ShowMessage(locstr);
     }
-
     public void ExecuteCommand(string _cmd)
     {
         DoCommand(_cmd);

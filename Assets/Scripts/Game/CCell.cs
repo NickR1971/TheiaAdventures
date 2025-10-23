@@ -20,22 +20,18 @@ public class CCell : MonoBehaviour, IPointerClickHandler
         rend = GetComponent<Renderer>();
         transform.position = cell.GetPosition();
     }
-
     public Cell GetCell() => cell;
     public int GetNumber() => num;
-    public void ChangeColor(Color _color)
-    {
-        rend.material.color = _color;
-    }
-    public void RestoreColor()
-    {
-        rend.material.color = baseColor;
-    }
+    public void ChangeColor(Color _color) => rend.material.color = _color;
+    public void RestoreColor() => rend.material.color = baseColor;
     public void SetColor(Color _color)
     {
         baseColor = _color;
         RestoreColor();
     }
+    public bool IsActive() => gameObject.activeSelf;
+    public void SetActive(bool _f) => gameObject.SetActive(_f);
+
     ///////////////////////////////////////////////
     // OnMouse standart events
     // OnMouseEnter(), OnMouseOver(), OnMouseExit()
