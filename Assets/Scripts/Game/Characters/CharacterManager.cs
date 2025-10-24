@@ -198,6 +198,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 }
                 break;
             case ERegularClass.mage:
+            case ERegularClass.alchemist:
                 if (templateCharacter.typeConstitution == EConstitution.balanced)
                 {
                     templateCharacter.attributes.might--;

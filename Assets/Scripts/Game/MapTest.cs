@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapTest : ConsoleService
 {
-    private ICamera mCamera;
+    private ICamera iCamera;
     private IDungeon dungeon;
     private IGameMap map;
     private int currentCell;
@@ -14,7 +14,8 @@ public class MapTest : ConsoleService
     {
         Init();
         AddCommand("cell", OnConsole,"cell number OR direction and distance");
-        mCamera = AllServices.Container.Get<ICamera>();
+        AddCommand("map", onMap, "map hide|unhide");
+        iCamera = AllServices.Container.Get<ICamera>();
         dungeon = AllServices.Container.Get<IDungeon>();
         map = dungeon.GetGameMap();
     }
@@ -28,9 +29,32 @@ public class MapTest : ConsoleService
             else
             {
                 cell.SetColor(Color.black);
-                mCamera.SetViewPoint(cell.GetPosition());
+                iCamera.SetViewPoint(cell.GetPosition());
                 gameConsole.ShowMessage($"cell #{currentCell} is found at {cell.GetPosition()}");
             }
+    }
+    private void onMap(string _str)
+    {
+        if (_str == "hide")
+        {
+            gameConsole.ShowMessage("hide command not supported now");
+        }
+        else if (_str == "unhide")
+        {
+            CRoom room;
+            int x, y;
+
+            for (y = 1; y < dungeon.GetHeight(); y++)
+            {
+                for (x = 1; x < dungeon.GetWidth(); x++)
+                {
+                    room = dungeon.GetRoom(x, y);
+                    if (room != null) room.Unhide();
+                }
+            }
+        }
+        else gameConsole.ShowMessage("none command recognized");
+
     }
     private void OnConsole(string _str)
     {

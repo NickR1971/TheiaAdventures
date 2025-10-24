@@ -8,6 +8,9 @@ public interface IDungeon : IService
     int GetSequenceNumber(uint _max);
     CActor CreateCharacter(GameObject _chr, Cell _cell);
     IGameMap GetGameMap();
+    int GetWidth();
+    int GetHeight();
+    CRoom GetRoom(int _x, int _y);
 }
 
 public class CDungeon : MonoBehaviour, IDungeon
@@ -334,5 +337,16 @@ public class CDungeon : MonoBehaviour, IDungeon
         actor = Instantiate(_chr, _cell.GetPosition(), Quaternion.identity, transform).GetComponent<CActor>();
         actor.SetCurrentCell(_cell);
         return actor;
+    }
+    public int GetWidth() => mapWidth;
+    public int GetHeight() => mapHeight;
+    public CRoom GetRoom(int _x, int _y)
+    {
+        if (_x < 0 || _y < 0) return null;
+
+        CRoom room = null;
+        if (_x < mapWidth && _y < mapHeight)
+            room = map[_x + _y * mapWidth];
+        return room;
     }
 }
