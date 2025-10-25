@@ -19,6 +19,7 @@ public class CBattle : CUI, IBattle
     private ICharacterManager iCharacterManager;
     private IDungeon dungeon;
     private IGameMap gameMap;
+    [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject characterImage;
     [SerializeField] private GameObject characterName;
     [SerializeField] private CTextLocalize characterOrigin;
@@ -30,6 +31,9 @@ public class CBattle : CUI, IBattle
     [SerializeField] private CTextAttribute Know;
     [SerializeField] private Sprite[] actionSprites = new Sprite[10];
     [SerializeField] private Button[] actionButtons = new Button[10];
+    private float cameraSpeed = 10.0f;
+    private int cameraDirection;
+    private float cameraDistance = 10.0f;
     private Image imgChar;
     private Text nameChar;
     private ICharacter currentCharacter;
@@ -61,11 +65,65 @@ public class CBattle : CUI, IBattle
         CGameManager.GetData().num_scene = 2;
         imgChar = characterImage.GetComponent<Image>();
         nameChar = characterName.GetComponent<Text>();
+        iCamera.SetPosition(EMapDirection.north);
+        cameraDirection = (int)EMapDirection.north;
 
         gameMap = dungeon.GetGameMap();
         SelectStartCells();
         CreateTestCharacter();
     }
+    //==============================================================
+    // Camera control block
+    private void RelativeMove(float _horizontal, float _vertical)
+    {
+        Vector3 v = mainCamera.transform.rotation.eulerAngles;
+        float tmpCos = Mathf.Cos(v.y * Mathf.Deg2Rad);
+        float tmpSin = Mathf.Sin(v.y * Mathf.Deg2Rad);
+
+        float offsetH = _horizontal * cameraSpeed * Time.deltaTime;
+        float offsetV = _vertical * cameraSpeed * Time.deltaTime;
+        float x = offsetH * tmpCos + offsetV * tmpSin;
+        float z = -offsetH * tmpSin + offsetV * tmpCos;
+        Vector3 pos = new Vector3(x, 0, z);
+        iCamera.SetPositionInstant(mainCamera.transform.position + pos);
+    }
+    private void CameraUpodate()
+    {
+        if (iCamera.IsBusy()) return;
+        if (iInputController.IsPressed(MyButton.CrossLeft))
+        {
+            cameraDirection++;
+            if (cameraDirection == 9) cameraDirection = 1;
+            iCamera.SetPosition((EMapDirection)cameraDirection);
+        }
+        if (iInputController.IsPressed(MyButton.CrossRight))
+        {
+            cameraDirection--;
+            if (cameraDirection == 0) cameraDirection = 8;
+            iCamera.SetPosition((EMapDirection)cameraDirection);
+        }
+        if (iInputController.IsPressed(MyButton.CrossUp))
+        {
+            cameraDistance = cameraDistance + 1.0f;
+            if (cameraDistance > 10.0f) cameraDistance = 10.0f;
+            iCamera.SetRelativePosition(cameraDistance, cameraDistance, (EMapDirection)cameraDirection);
+        }
+        if (iInputController.IsPressed(MyButton.CrossDown))
+        {
+            cameraDistance = cameraDistance - 1.0f;
+            if (cameraDistance < 1.0f) cameraDistance = 1.0f;
+            iCamera.SetRelativePosition(cameraDistance, cameraDistance, (EMapDirection)cameraDirection);
+        }
+        if (iInputController.IsPressed(MyButton.Rstick))
+        {
+            iCamera.SetPosition((EMapDirection)cameraDirection);
+        }
+
+        iInputController.GetRightStick(out float h, out float v);
+
+        RelativeMove(h, v);
+    }
+    //==============================================================
     protected override void OnUpdate()
     {
         int n;
@@ -92,6 +150,7 @@ public class CBattle : CUI, IBattle
                 SetCurrentCharacter(listPC[n]);
             }
         }
+        CameraUpodate();
     }
     private void OnDestroy()
     {

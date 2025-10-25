@@ -2350,7 +2350,6 @@ GameObject:
   - component: {fileID: 1460508639}
   - component: {fileID: 1460508638}
   - component: {fileID: 1460508637}
-  - component: {fileID: 1460508641}
   - component: {fileID: 1460508640}
   - component: {fileID: 1460508642}
   m_Layer: 0
@@ -2435,18 +2434,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f11c6d4d5c61ca4d98c39290fbde93b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1460508641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460508636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ef7aba8f2ab28c44b0987380960c699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1460508642
@@ -3527,6 +3514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ceac3fb3ef5014e9a52bc484eb21af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 1460508636}
   characterImage: {fileID: 2044407136}
   characterName: {fileID: 722880593}
   characterOrigin: {fileID: 6827606}
