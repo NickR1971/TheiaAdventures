@@ -56,7 +56,7 @@ public class CNewGamePanel : CUI
         iCharacterManager.AddCharacter(chr);
         iCharacterManager.AddCharacter(
             iCharacterManager.CreateCharacterTemplate(
-                EOrigin.barbarian, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
+                EOrigin.barbarian, ERegularClass.warrior, EConstitution.balanced, EActorType.barbarian));
         iCharacterManager.AddCharacter(
             iCharacterManager.CreateCharacterTemplate(
                 EOrigin.artisan, ERegularClass.priest, EConstitution.balanced, EActorType.priest));

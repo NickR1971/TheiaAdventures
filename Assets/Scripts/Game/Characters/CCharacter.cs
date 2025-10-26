@@ -78,6 +78,7 @@ public abstract class CCharacter : CMovable, ICharacter
 
         switch(_character.cType)
         {
+            case EActorType.barbarian:
             case EActorType.knight:
                 chr = new CUnitKnight(_character);
                 break;
