@@ -14,6 +14,7 @@ public abstract class CActor : CGameObject
     protected IGameMap gameMap;
     protected ActorState state;
     protected EMapDirection dir;
+    protected float initRotation = 90.0f;
     protected float walkSpeed;
     protected float runSpeed;
     protected float turnAngle;
@@ -44,7 +45,7 @@ public abstract class CActor : CGameObject
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
         dir = EMapDirection.east;
-        positionControl.Rotate(90.0f); // turn model to east
+        positionControl.Rotate(initRotation); // turn model to east
     }
     protected override void CheckUnhide(CRoom _room)
     {

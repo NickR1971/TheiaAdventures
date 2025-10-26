@@ -56,13 +56,13 @@ public class CNewGamePanel : CUI
         iCharacterManager.AddCharacter(chr);
         iCharacterManager.AddCharacter(
             iCharacterManager.CreateCharacterTemplate(
-                EOrigin.barbarian, ERegularClass.warrior, EConstitution.balanced, EActorType.barbarian));
+                EOrigin.peasant, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
         iCharacterManager.AddCharacter(
             iCharacterManager.CreateCharacterTemplate(
                 EOrigin.artisan, ERegularClass.priest, EConstitution.balanced, EActorType.priest));
         iCharacterManager.AddCharacter(
             iCharacterManager.CreateCharacterTemplate(
-                EOrigin.goblin, ERegularClass.warrior, EConstitution.balanced, EActorType.goblin));
+                EOrigin.animal, ERegularClass.savager, EConstitution.balanced, EActorType.spider));
         SceneManager.LoadScene("SceneBase");
     }
 

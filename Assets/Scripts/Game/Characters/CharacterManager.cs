@@ -5,7 +5,7 @@ using UnityEngine;
 public enum EActorType
 {
     none=-1, knight=0, mage=1, goblin=2, priest=3, barbarian=4,
-    zombie=5, skeleton=6
+    zombie=5, skeleton=6, spider=7
 }
 public enum EConstitution
 {
@@ -25,10 +25,9 @@ public enum ERegularClass
     knight = 1, mage = 2, zombie = 3, skeleton = 4,
     adept = 5, alchemist = 6, wizard = 7, warlock = 8,
     sorcerer = 9, elementalist = 10, warrior = 11,
-    guard=12, priest=13,
-    savager, herbalist,
+    guard=12, priest=13, savager=14,
+    herbalist, blacksmith, battlemage, gladiator,
     lumberjack, hunter, pikeman, crossbowman,
-     blacksmith, battlemage, gladiator,
     acolyte, monk, shaman, pilgrim,
     minstrel, duelist
 }
@@ -73,8 +72,8 @@ public interface ICharacterManager : IService
 }
 public class CharacterManager : MonoBehaviour, ICharacterManager
 {
-    [SerializeField] private Sprite[] sprites = new Sprite[7];
-    [SerializeField] private GameObject[] prefabs = new GameObject[7];
+    [SerializeField] private Sprite[] sprites = new Sprite[8];
+    [SerializeField] private GameObject[] prefabs = new GameObject[8];
     private ELocalStringID[] origins = {
         ELocalStringID.game_origin_peasant,
         ELocalStringID.game_origin_artisan,
@@ -111,7 +110,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_class_wizard, ELocalStringID.game_class_warlock,
         ELocalStringID.game_class_sorcerer, ELocalStringID.game_class_elementalist,
         ELocalStringID.game_class_warrior, ELocalStringID.game_class_guard,
-        ELocalStringID.game_class_priest,
+        ELocalStringID.game_class_priest, ELocalStringID.game_class_savager,
         //////////////////////////////
         ELocalStringID.game_class_lumberjack, ELocalStringID.game_class_hunter,
         ELocalStringID.game_class_acolyte, ELocalStringID.game_class_pikeman,

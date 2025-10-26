@@ -2,32 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CKnight : CActor
+public class CSpider : CActor
 {
     [SerializeField] private SkinnedMeshRenderer rend;
     private Animator animator;
     void Start()
     {
+        initRotation = -90.0f;
         InitActor();
         animator = GetComponent<Animator>();
-        walkSpeed = 1.0f;
-        runSpeed = 2.0f;
+        walkSpeed = 3.0f;
+        runSpeed = 3.0f;
     }
     protected override void Adjust()
     {
-        switch (character.GetClass())
-        {
-            case ERegularClass.knight:
-                if (character.GetOrigin() == EOrigin.undead) rend.material.color = Color.black;
-                else rend.material.color = Color.yellow;
-                break;
-            case ERegularClass.guard:
-                rend.material.color = Color.red;
-                break;
-            case ERegularClass.warrior:
-                if (character.GetOrigin() == EOrigin.barbarian) rend.material.color = Color.cyan;
-                break;
-        }
+        rend.material.color = Color.black;
     }
     public override void Idle()
     {
@@ -37,16 +26,11 @@ public class CKnight : CActor
     {
         switch (_cmd)
         {
+            case ActorCommand.run:
             case ActorCommand.walk:
                 SetState(ActorState.move);
                 animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();
-                break;
-            case ActorCommand.run:
-                SetState(ActorState.move);
-                animator.SetBool("walk", true);
-                animator.SetBool("run", true);
-                if (!MoveForward(runSpeed)) Idle();
                 break;
             case ActorCommand.turnleft:
                 SetState(ActorState.move);
@@ -76,18 +60,9 @@ public class CKnight : CActor
                 animator.SetBool("attack", true);
                 positionControl.Wait(1);
                 break;
-            case ActorCommand.range:
-                break;
-            case ActorCommand.magic:
-                break;
             case ActorCommand.interact:
                 SetState(ActorState.use);
-                animator.SetBool("attack", true);
-                positionControl.Wait(1);
-                break;
-            case ActorCommand.use:
-                SetState(ActorState.use);
-                animator.SetBool("attack", false);
+                animator.SetBool("interact", true);
                 positionControl.Wait(1);
                 break;
             case ActorCommand.hit:
@@ -112,7 +87,6 @@ public class CKnight : CActor
         switch (state)
         {
             case ActorState.move:
-                animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 break;
             case ActorState.melee:
@@ -120,7 +94,7 @@ public class CKnight : CActor
                 animator.SetBool("attack2", false);
                 break;
             case ActorState.use:
-                animator.SetBool("attack", false);
+                animator.SetBool("interact", false);
                 break;
             case ActorState.hit:
                 if (_state != ActorState.die) animator.SetBool("gethit", false);

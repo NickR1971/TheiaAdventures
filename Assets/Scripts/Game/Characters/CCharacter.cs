@@ -78,7 +78,12 @@ public abstract class CCharacter : CMovable, ICharacter
 
         switch(_character.cType)
         {
+            case EActorType.spider:
+                chr = new CUnitSpider(_character);
+                break;
             case EActorType.barbarian:
+                chr = new CUnitBarbarian(_character);
+                break;
             case EActorType.knight:
                 chr = new CUnitKnight(_character);
                 break;
@@ -136,7 +141,6 @@ public abstract class CCharacter : CMovable, ICharacter
                 gamemap.ActivateCells(false);
                 break;
             case 0: // middle button
-                Rotate(actor.GetCurrentCell(), cell, actor.GetDirection());
                 selectedCell = null;
                 gamemap.ActivateCells(false);
                 break;

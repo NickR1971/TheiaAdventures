@@ -46,6 +46,12 @@ public static class CGameManager
     private static SaveData gameData = null;
     private static ICharacterManager iCharacterManager = null;
 
+    public static void GetVersion(out int _verMajor, out int _verMinor, out int _verPatch)
+    {
+        _verMajor = versionMajor;
+        _verMinor = versionMinor;
+        _verPatch = versionPatch;
+    }
     public static void SetCharacterInterface(ICharacterManager _characterManager)
     {
         iCharacterManager = _characterManager;
