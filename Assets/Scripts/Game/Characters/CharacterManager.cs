@@ -242,11 +242,14 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 break;
         }
 
+        templateCharacter.portraitIndex = (int)templateCharacter.cType;
+
         switch (templateCharacter.origin)
         {
             case EOrigin.barbarian:
                 templateCharacter.typeConstitution = EConstitution.barbarian;
                 templateCharacter.attributes = SetAttributes(templateCharacter.typeConstitution);
+                templateCharacter.portraitIndex = 4;
                 break;
             case EOrigin.undead:
                 templateCharacter.attributes.personality = 1;
@@ -255,8 +258,6 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 templateCharacter.attributes.intelligence = 1;
                 break;
         }
-
-        templateCharacter.portraitIndex = (int)templateCharacter.cType;
 
         templateCharacter.secondaryAttributes.speed = templateCharacter.attributes.dexterity;
         templateCharacter.secondaryAttributes.initiative = templateCharacter.attributes.dexterity;

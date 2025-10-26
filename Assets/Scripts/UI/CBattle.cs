@@ -128,7 +128,7 @@ public class CBattle : CUI, IBattle
     {
         int n;
 
-        if (iInputController.IsPressed(MyButton.LBumper))
+        if (iInputController.IsPressed(MyButton.RBumper))
         {
             if (currentCharacter == null) SetCurrentCharacter(listPC[0]);
             else
@@ -139,7 +139,7 @@ public class CBattle : CUI, IBattle
                 SetCurrentCharacter(listPC[n]);
             }
         }
-        if (iInputController.IsPressed(MyButton.RBumper))
+        if (iInputController.IsPressed(MyButton.LBumper))
         {
             if (currentCharacter == null) SetCurrentCharacter(listPC[0]);
             else
