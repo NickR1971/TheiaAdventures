@@ -57,7 +57,6 @@ public enum ECharacterCommand
     attack = 4, range=5, magic = 6,
     special=7, interact = 8, use = 9
 }
-
 public abstract class CCharacter : CMovable, ICharacter
 {
     protected SCharacter character;
@@ -155,9 +154,7 @@ public abstract class CCharacter : CMovable, ICharacter
     public ERegularClass GetClass() => character.regularClass;
     public EEliteClass GetEliteClass() => character.eliteClass;
     public EActorType GetActorType() => character.cType;
-
     public void SetNumInParty(int _num) => numInParty = _num;
-
     public int GetNumInParty() => numInParty;
     //======================
 }

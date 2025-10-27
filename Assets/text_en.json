@@ -56,6 +56,13 @@
 { "key": "game_ability_warcry", "value": "warcry" },
 { "key": "game_ability_warlord", "value": "warlord" },
 { "key": "game_ability_wildcraft", "value": "wildcraft" },
+{ "key": "game_animal_bear", "value": "bear" },
+{ "key": "game_animal_boar", "value": "boar" },
+{ "key": "game_animal_dog", "value": "dog" },
+{ "key": "game_animal_rat", "value": "rat" },
+{ "key": "game_animal_scorpio", "value": "scorpio" },
+{ "key": "game_animal_spider", "value": "spider" },
+{ "key": "game_animal_wolf", "value": "wolf" },
 { "key": "game_attribute_constitution", "value": "constitutuion" },
 { "key": "game_attribute_Dex", "value": "dexterity" },
 { "key": "game_attribute_Init", "value": "initiative" },
@@ -142,5 +149,8 @@
 { "key": "msg_remove", "value": "Remove" },
 { "key": "msg_scenario", "value": "scenario" },
 { "key": "msg_select", "value": "select" },
+{ "key": "game_heroname_knight", "value": "sir Marcus" },
+{ "key": "game_heroname_mage", "value": "magistre Henner" },
+{ "key": "game_heroname_priest", "value": "Augusto" },
 { "key": "core_empty", "value": "" }
 ] }

@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EUnitType
+{
+    unknown, knight, mage, priest, guard,
+    warrior, orc, goblin, spider,
+    zombie, skeleton, deathknight, lich
+}
 public enum EActorType
 {
     none=-1, knight=0, mage=1, goblin=2, priest=3, barbarian=4,
@@ -10,7 +16,8 @@ public enum EActorType
 public enum EConstitution
 {
     balanced = 0, scholar = 1, barbarian = 2, leader = 3, agile = 4,
-    goof = 5, orphan = 6, genius = 7, nerd = 8, politician = 9
+    goof = 5, orphan = 6, genius = 7, nerd = 8, politician = 9,
+    animal = 10
 }
 public enum EOrigin
 {
@@ -68,11 +75,12 @@ public interface ICharacterManager : IService
     SCharacter SetStandartName(ref SCharacter _character);
     SCharacter CreateCharacterTemplate(
         EOrigin _origin, ERegularClass _rClass, EConstitution _constitution, EActorType _actor);
+    bool GenerateStandartCharacter(EUnitType _unitType, out SCharacter _character);
     void AddCharacter(SCharacter _character);
 }
 public class CharacterManager : MonoBehaviour, ICharacterManager
 {
-    [SerializeField] private Sprite[] sprites = new Sprite[8];
+    [SerializeField] private Sprite[] sprites = new Sprite[36];
     [SerializeField] private GameObject[] prefabs = new GameObject[8];
     private ELocalStringID[] origins = {
         ELocalStringID.game_origin_peasant,
@@ -97,12 +105,13 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_const_barbarian, ELocalStringID.game_const_leader,
         ELocalStringID.game_const_agile, ELocalStringID.game_const_goof,
         ELocalStringID.game_const_orphan, ELocalStringID.game_const_genius,
-        ELocalStringID.game_const_nerd, ELocalStringID.game_const_politician };
-    private readonly int[] mightValues = { 3, 1, 4, 4, 2, 5, 3, 1, 2, 2 };
-    private readonly int[] dexValues =   { 3, 2, 4, 3, 4, 3, 5, 1, 2, 2 };
-    private readonly int[] intValues =   { 3, 4, 3, 2, 4, 1, 2, 5, 2, 3 };
-    private readonly int[] persValues =  { 3, 4, 3, 4, 2, 3, 2, 3, 3, 5 };
-    private readonly int[] knowValues =  { 3, 4, 1, 2, 3, 1, 2, 4, 5, 1 };
+        ELocalStringID.game_const_nerd, ELocalStringID.game_const_politician,
+        ELocalStringID.game_origin_animal };
+    private readonly int[] mightValues = { 3, 1, 4, 4, 2, 5, 3, 1, 2, 2, 4 };
+    private readonly int[] dexValues =   { 3, 2, 4, 3, 4, 3, 5, 1, 2, 2, 2 };
+    private readonly int[] intValues =   { 3, 4, 3, 2, 4, 1, 2, 5, 2, 3, 1 };
+    private readonly int[] persValues =  { 3, 4, 3, 4, 2, 3, 2, 3, 3, 5, 3 };
+    private readonly int[] knowValues =  { 3, 4, 1, 2, 3, 1, 2, 4, 5, 1, 3 };
     private ELocalStringID[] classes = {
         ELocalStringID.core_empty, ELocalStringID.game_class_knight, ELocalStringID.game_class_mage,
         ELocalStringID.game_class_zombie, ELocalStringID.game_class_skeleton,
@@ -130,6 +139,58 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     {
         AllServices.Container.UnRegister<ICharacterManager>();
         CGameManager.SetCharacterInterface(null);
+    }
+    private int SelectDefaultPortrait(SCharacter _chr)
+    {
+        int num;
+
+        switch(_chr.cType)
+        {
+            case EActorType.knight:
+                switch(_chr.regularClass)
+                {
+                    case ERegularClass.knight:
+                        num = 2;
+                        break;
+                    case ERegularClass.guard:
+                        num = 29;
+                        break;
+                    case ERegularClass.warrior:
+                        num = 25;
+                        break;
+                    default:
+                        num = 24;
+                        break;
+                }
+                if (_chr.origin == EOrigin.undead) num = 26;
+                break;
+            case EActorType.mage:
+                if (_chr.origin == EOrigin.undead) num = 23;
+                else num = 3;
+                break;
+            case EActorType.barbarian:
+                num = 35;
+                break;
+            case EActorType.goblin:
+                num = 5;
+                break;
+            case EActorType.priest:
+                num = 4;
+                break;
+            case EActorType.skeleton:
+                num = 30;
+                break;
+            case EActorType.zombie:
+                num = 31;
+                break;
+            case EActorType.spider:
+                num = 6;
+                break;
+            default:
+                num = 1;
+                break;
+        }
+        return num;
     }
     /////// ======= ICharacterManager ==========
     public bool GetCharacter(SCharacter _character, out Sprite _spr, out GameObject _prefab)
@@ -241,14 +302,11 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 break;
         }
 
-        templateCharacter.portraitIndex = (int)templateCharacter.cType;
-
         switch (templateCharacter.origin)
         {
             case EOrigin.barbarian:
                 templateCharacter.typeConstitution = EConstitution.barbarian;
                 templateCharacter.attributes = SetAttributes(templateCharacter.typeConstitution);
-                templateCharacter.portraitIndex = 4;
                 break;
             case EOrigin.undead:
                 templateCharacter.attributes.personality = 1;
@@ -257,6 +315,8 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 templateCharacter.attributes.intelligence = 1;
                 break;
         }
+
+        templateCharacter.portraitIndex = SelectDefaultPortrait(templateCharacter);
 
         templateCharacter.secondaryAttributes.speed = templateCharacter.attributes.dexterity;
         templateCharacter.secondaryAttributes.initiative = templateCharacter.attributes.dexterity;
@@ -293,5 +353,88 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     {
         if (string.IsNullOrEmpty(_character.cName)) SetStandartName(ref _character);
         CGameManager.GetData().AddCharacter(_character);
+    }
+    public bool GenerateStandartCharacter(EUnitType _unitType, out SCharacter _character)
+    {
+        bool r = false;
+        
+        _character = new SCharacter();
+
+        switch(_unitType)
+        {
+            case EUnitType.knight:
+                _character = CreateCharacterTemplate(
+                    EOrigin.noble, ERegularClass.knight, EConstitution.leader, EActorType.knight);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_knight);
+                r = true;
+                break;
+            case EUnitType.guard:
+                _character = CreateCharacterTemplate(
+                    EOrigin.peasant, ERegularClass.guard, EConstitution.balanced, EActorType.knight);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_guard);
+                r = true;
+                break;
+            case EUnitType.warrior:
+                _character = CreateCharacterTemplate(
+                    EOrigin.artisan, ERegularClass.warrior, EConstitution.balanced, EActorType.knight);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_warrior);
+                r = true;
+                break;
+            case EUnitType.deathknight:
+                _character = CreateCharacterTemplate(
+                    EOrigin.undead, ERegularClass.knight, EConstitution.balanced, EActorType.knight);
+                r = true;
+                break;
+            case EUnitType.zombie:
+                _character = CreateCharacterTemplate(
+                    EOrigin.undead, ERegularClass.zombie, EConstitution.goof, EActorType.zombie);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_zombie);
+                r = true;
+                break;
+            case EUnitType.skeleton:
+                _character = CreateCharacterTemplate(
+                    EOrigin.undead, ERegularClass.skeleton, EConstitution.goof, EActorType.skeleton);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_skeleton);
+                r = true;
+                break;
+            case EUnitType.spider:
+                _character = CreateCharacterTemplate(
+                    EOrigin.animal, ERegularClass.savager, EConstitution.animal, EActorType.spider);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_animal_spider);
+                r = true;
+                break;
+            case EUnitType.goblin:
+                _character = CreateCharacterTemplate(
+                    EOrigin.goblin, ERegularClass.warrior, EConstitution.balanced, EActorType.goblin);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_origin_goblin);
+                r = true;
+                break;
+            case EUnitType.lich:
+                _character = CreateCharacterTemplate(
+                    EOrigin.undead, ERegularClass.mage, EConstitution.genius, EActorType.mage);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_necromancer);
+                r = true;
+                break;
+            case EUnitType.mage:
+                _character = CreateCharacterTemplate(
+                    EOrigin.noble, ERegularClass.mage, EConstitution.genius, EActorType.mage);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_mage);
+                r = true;
+                break;
+            case EUnitType.orc:
+                _character = CreateCharacterTemplate(
+                    EOrigin.orc, ERegularClass.warrior, EConstitution.balanced, EActorType.barbarian);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_origin_orc);
+                r = true;
+                break;
+            case EUnitType.priest:
+                _character = CreateCharacterTemplate(
+                    EOrigin.artisan, ERegularClass.priest, EConstitution.balanced, EActorType.priest);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_class_priest);
+                r = true;
+                break;
+        }
+
+        return r;
     }
 }

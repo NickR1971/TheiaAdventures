@@ -46,23 +46,30 @@ public class CNewGamePanel : CUI
     public void ToGame()
     {
         //iCharacterManager.AddCharacter(character);
-        SCharacter chr = iCharacterManager.CreateCharacterTemplate(
-            EOrigin.noble, ERegularClass.knight, EConstitution.leader, EActorType.knight);
-        chr.cName = "sir Marcus";
-        iCharacterManager.AddCharacter(chr);
-        chr = iCharacterManager.CreateCharacterTemplate(
-            EOrigin.noble, ERegularClass.mage, EConstitution.genius, EActorType.mage);
-        chr.cName = "Henner";
-        iCharacterManager.AddCharacter(chr);
-        iCharacterManager.AddCharacter(
-            iCharacterManager.CreateCharacterTemplate(
-                EOrigin.peasant, ERegularClass.warrior, EConstitution.balanced, EActorType.knight));
-        iCharacterManager.AddCharacter(
-            iCharacterManager.CreateCharacterTemplate(
-                EOrigin.artisan, ERegularClass.priest, EConstitution.balanced, EActorType.priest));
-        iCharacterManager.AddCharacter(
-            iCharacterManager.CreateCharacterTemplate(
-                EOrigin.animal, ERegularClass.savager, EConstitution.balanced, EActorType.spider));
+        SCharacter chr;
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.knight, out chr))
+        {
+            chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_knight);
+            iCharacterManager.AddCharacter(chr);
+        }
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.mage, out chr))
+        {
+            chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_mage);
+            iCharacterManager.AddCharacter(chr);
+        }
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.priest, out chr))
+        {
+            chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_priest);
+            iCharacterManager.AddCharacter(chr);
+        }
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.guard, out chr))
+        {
+            iCharacterManager.AddCharacter(chr);
+        }
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.spider, out chr))
+        {
+            iCharacterManager.AddCharacter(chr);
+        }
         SceneManager.LoadScene("SceneBase");
     }
 

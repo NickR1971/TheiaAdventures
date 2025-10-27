@@ -56,6 +56,13 @@
 { "key": "game_ability_warcry", "value": "бойовий крик" },
 { "key": "game_ability_warlord", "value": "воєвода" },
 { "key": "game_ability_wildcraft", "value": "збиральництво" },
+{ "key": "game_animal_bear", "value": "ведмідь" },
+{ "key": "game_animal_boar", "value": "кабан" },
+{ "key": "game_animal_dog", "value": "собака" },
+{ "key": "game_animal_rat", "value": "щур" },
+{ "key": "game_animal_scorpio", "value": "скорпіон" },
+{ "key": "game_animal_spider", "value": "павук" },
+{ "key": "game_animal_wolf", "value": "вовк" },
 { "key": "game_attribute_constitution", "value": "тілобудова" },
 { "key": "game_attribute_Dex", "value": "спритність" },
 { "key": "game_attribute_Init", "value": "ініціатива" },
@@ -142,5 +149,8 @@
 { "key": "msg_remove", "value": "Видалити" },
 { "key": "msg_scenario", "value": "сценарій" },
 { "key": "msg_select", "value": "оберіть" },
+{ "key": "game_heroname_knight", "value": "сер Маркус" },
+{ "key": "game_heroname_mage", "value": "магістр Геннер" },
+{ "key": "game_heroname_priest", "value": "Августо" },
 { "key": "core_empty", "value": "" }
 ] }
