@@ -12,6 +12,7 @@ public abstract class CMovable
     protected Cell selectedCell;
     protected ECharacterCommand selectedCommand;
     protected float threshold = 2.0f; // порогове значення перепаду висот для переміщення
+    protected float topHeight;
     public void SetActor(CActor _actor)
     {
         actor = _actor;
@@ -248,6 +249,56 @@ public abstract class CMovable
         {
             CreatePathTo(selectedCell, 0);
             MoveChar();
+            selectedCell = null;
+            gamemap.ActivateCells(false);
+        }
+    }
+    private void ActivateCellsToJump(Cell _cell, int _distance)
+    {
+        Cell cell;
+        EMapDirection dirStart, dir;
+        int i;
+
+        const float roof = 7.0f; // стандартне обмеження висоти у підземеллях
+        topHeight = _cell.GetHeight() + ((float)_distance);
+        if (topHeight > roof) topHeight = roof;
+        dirStart = EMapDirection.east;
+        dir = dirStart;
+        do
+        {
+            cell = _cell;
+            for (i = 0; i < _distance; i++)
+            {
+                cell = gamemap.GetCell(cell.GetNearNumber(dir));
+                if (cell == null) break;
+                if (cell.GetHeight() > topHeight) break;
+                if (CheckSurface(cell) && cell.GetGameObject() == null)
+                {
+                    cell.SetActive(true);
+                    cell.SetValue((int)dir);
+                }
+            }
+            dir = CDirControl.GetLeft(dir);
+        }
+        while (dir != dirStart);
+    }
+    private void JumpTo(Cell _cell)
+    {
+        actor.SetTarget(_cell);
+        actor.SetTopJump(topHeight);
+        actor.AddCommand(ActorCommand.jump);
+    }
+    protected void StandartJump(int _distance)
+    {
+        if (selectedCell == null)
+        {
+            selectedCommand = ECharacterCommand.jump;
+            ActivateCellsToJump(actor.GetCurrentCell(), _distance);
+        }
+        else
+        {
+            RotateTo((EMapDirection)selectedCell.GetValue());
+            JumpTo(selectedCell);
             selectedCell = null;
             gamemap.ActivateCells(false);
         }

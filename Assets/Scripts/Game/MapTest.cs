@@ -14,7 +14,7 @@ public class MapTest : ConsoleService
     {
         Init();
         AddCommand("cell", OnConsole,"cell number OR direction and distance");
-        AddCommand("map", onMap, "map hide|unhide");
+        AddCommand("map", onMap, "map id|hide|unhide");
         iCamera = AllServices.Container.Get<ICamera>();
         dungeon = AllServices.Container.Get<IDungeon>();
         map = dungeon.GetGameMap();
@@ -38,6 +38,10 @@ public class MapTest : ConsoleService
         if (_str == "hide")
         {
             gameConsole.ShowMessage("hide command not supported now");
+        }
+        else if(_str=="id")
+        {
+            gameConsole.ShowMessage("Map ID is: " + CGameManager.GetData().id);
         }
         else if (_str == "unhide")
         {

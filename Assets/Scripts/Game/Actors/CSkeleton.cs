@@ -45,7 +45,7 @@ public class CSkeleton : CActor
             case ActorCommand.crouch:
                 break;
             case ActorCommand.melee:
-                SetState(ActorState.melee);
+                SetState(ActorState.attack);
                 animator.SetBool("attack", true);
                 positionControl.Wait(1);
                 break;
@@ -78,7 +78,7 @@ public class CSkeleton : CActor
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 break;
-            case ActorState.melee:
+            case ActorState.attack:
                 animator.SetBool("attack", false);
                 break;
             case ActorState.die:

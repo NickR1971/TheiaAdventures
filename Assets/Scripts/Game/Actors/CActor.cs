@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActorState { idle, move, melee, range, magic, use, hit, die }
+public enum ActorState { idle, move, attack, magic, use, hit, die }
 
 public enum ActorCommand { wait, walk, run, turnleft, turnright, turnback, jump, crouch,
     melee, heavyattack, range, magic, interact, use, hit, die }
@@ -20,6 +20,8 @@ public abstract class CActor : CGameObject
     protected float turnAngle;
     protected Sprite charSprite;
     protected CCharacter character;
+    protected Cell targetCell = null;
+    protected float topHeight;
     private ICamera iCamera;
 
     private class Command
@@ -50,6 +52,14 @@ public abstract class CActor : CGameObject
     protected override void CheckUnhide(CRoom _room)
     {
         _room.Unhide();
+    }
+    protected void JumpToTarget(float _speed)
+    {
+        if (targetCell == null) return;
+
+        positionControl.JumpTo(targetCell.GetPosition(), topHeight, _speed);
+        SetCurrentCell(targetCell);
+        iCamera.SetViewPoint(targetCell.GetPosition());
     }
     protected bool MoveForward(float _speed)
     {
@@ -103,6 +113,8 @@ public abstract class CActor : CGameObject
     public Sprite GetSprite() => charSprite;
     public void AddCommand(ActorCommand _cmd) => cmdList.Enqueue(new Command(_cmd));
     public ActorState GetState() => state;
+    public void SetTarget(Cell _cell) => targetCell = _cell;
+    public void SetTopJump(float _value) => topHeight = _value;
     public abstract void DoCommand(ActorCommand _cmd);
     public abstract void Idle();
     protected override void OnLeftClick()

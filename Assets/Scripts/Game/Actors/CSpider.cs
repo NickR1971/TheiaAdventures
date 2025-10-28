@@ -29,6 +29,7 @@ public class CSpider : CActor
             case ActorCommand.run:
             case ActorCommand.walk:
                 SetState(ActorState.move);
+                animator.SetBool("leap", false);
                 animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();
                 break;
@@ -45,25 +46,38 @@ public class CSpider : CActor
                 TurnBackward();
                 break;
             case ActorCommand.jump:
+                SetState(ActorState.move);
+                animator.SetBool("walk", false);
+                animator.SetBool("leap", true);
+                JumpToTarget(walkSpeed);
                 break;
             case ActorCommand.crouch:
                 break;
             case ActorCommand.melee:
-                SetState(ActorState.melee);
-                animator.SetBool("attack2", true);
+                SetState(ActorState.attack);
+                animator.SetBool("attack2", false);
                 animator.SetBool("attack", false);
-                positionControl.Wait(1);
+                animator.SetBool("attack3", true);
+                positionControl.Wait(0.9f);
                 break;
             case ActorCommand.heavyattack:
-                SetState(ActorState.melee);
+                SetState(ActorState.attack);
+                animator.SetBool("attack3", false);
                 animator.SetBool("attack2", false);
                 animator.SetBool("attack", true);
+                positionControl.Wait(1.1f);
+                break;
+            case ActorCommand.range:
+                SetState(ActorState.attack);
+                animator.SetBool("attack3", false);
+                animator.SetBool("attack", false);
+                animator.SetBool("attack2", true);
                 positionControl.Wait(1);
                 break;
             case ActorCommand.interact:
                 SetState(ActorState.use);
                 animator.SetBool("interact", true);
-                positionControl.Wait(1);
+                positionControl.Wait(2.0f);
                 break;
             case ActorCommand.hit:
                 SetState(ActorState.hit);
@@ -88,10 +102,12 @@ public class CSpider : CActor
         {
             case ActorState.move:
                 animator.SetBool("walk", false);
+                animator.SetBool("leap", false);
                 break;
-            case ActorState.melee:
+            case ActorState.attack:
                 animator.SetBool("attack", false);
                 animator.SetBool("attack2", false);
+                animator.SetBool("attack3", false);
                 break;
             case ActorState.use:
                 animator.SetBool("interact", false);

@@ -31,7 +31,15 @@ public class CPositionControl
         move.SetActionSpeed(moveSpeed = _speed);
         move.StartAction();
     }
+    public void JumpTo(Vector3 _target, float _topH, float _speed = 0)
+    {
+        if (move.IsActive()) return;
 
+        if (_speed == 0) _speed = moveSpeed;
+        move.SetPositions(transform.position, _target, _topH);
+        move.SetActionSpeed(moveSpeed = _speed);
+        move.StartAction();
+    }
     public void MoveForward(float _speed= 0)
     {
         MoveTo(transform.position + transform.forward, _speed);

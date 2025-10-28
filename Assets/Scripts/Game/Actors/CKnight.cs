@@ -65,13 +65,13 @@ public class CKnight : CActor
             case ActorCommand.crouch:
                 break;
             case ActorCommand.melee:
-                SetState(ActorState.melee);
+                SetState(ActorState.attack);
                 animator.SetBool("attack2", true);
                 animator.SetBool("attack", false);
                 positionControl.Wait(1);
                 break;
             case ActorCommand.heavyattack:
-                SetState(ActorState.melee);
+                SetState(ActorState.attack);
                 animator.SetBool("attack2", false);
                 animator.SetBool("attack", true);
                 positionControl.Wait(1);
@@ -115,7 +115,7 @@ public class CKnight : CActor
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 break;
-            case ActorState.melee:
+            case ActorState.attack:
                 animator.SetBool("attack", false);
                 animator.SetBool("attack2", false);
                 break;

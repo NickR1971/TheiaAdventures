@@ -119,6 +119,10 @@ public abstract class CCharacter : CMovable, ICharacter
     {
         StandartMove(character.secondaryAttributes.speed);
     }
+    protected void StandartJump()
+    {
+        StandartJump(character.currentPoints.redHits);
+    }
     public abstract void DoCommand(ECharacterCommand _cmd);
 
     //========== ICharacter

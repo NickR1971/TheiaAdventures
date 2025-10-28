@@ -46,14 +46,14 @@ public class CZombie : CActor
             case ActorCommand.crouch:
                 break;
             case ActorCommand.melee:
-                SetState(ActorState.melee);
+                SetState(ActorState.attack);
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 animator.SetBool("attack", true);
                 positionControl.Wait(1);
                 break;
             case ActorCommand.heavyattack:
-                SetState(ActorState.melee);
+                SetState(ActorState.attack);
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 animator.SetBool("attack", true);
@@ -89,7 +89,7 @@ public class CZombie : CActor
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
                 break;
-            case ActorState.melee:
+            case ActorState.attack:
                 animator.SetBool("attack", false);
                 break;
             case ActorState.hit:

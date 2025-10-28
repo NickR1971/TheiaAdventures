@@ -17,6 +17,8 @@ public class CMove
     private Vector3 currentPosition;
     private float actionSpeed;
     private CTimer actionTimer;
+    private float topJump = -1.0f;
+    private float topTime;
 
     //---------------------------------------------------------------------------
     // конструктор встановлює час дії на 1 секунду за замовчуванням 
@@ -44,10 +46,18 @@ public class CMove
     // SetPositions
     // встановлюємо маршрут руху
     // та перераховуємо час дії якщо встановлена швидкість
-    public void SetPositions(Vector3 _start, Vector3 _target)
+    public void SetPositions(Vector3 _start, Vector3 _target, float _topJump = -1.0f)
     {
         startPosition = _start;
         targetPosition = _target;
+        topJump = _topJump;
+        if (_topJump > 0)
+        {
+            float h1, h2;
+            h1 = _topJump - _start.y;
+            h2 = _topJump - _target.y;
+            topTime = h1 / (h1 + h2);
+        }
         CalcActionTime();
     }
     //---------------------------------------------------------------------------
@@ -93,7 +103,14 @@ public class CMove
     public bool UpdatePosition()
     {
         if (actionTimer.UpdateState())
-            currentPosition = Vector3.Lerp(startPosition, targetPosition, actionTimer.GetState());
+        {
+            float t = actionTimer.GetState();
+            currentPosition = Vector3.Lerp(startPosition, targetPosition, t);
+            if (topJump > 0)
+            {
+                currentPosition.y = topJump - Mathf.Abs(topTime - t) * topJump;
+            }
+        }
         else
             currentPosition = targetPosition;
 
