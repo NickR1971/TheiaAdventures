@@ -253,15 +253,14 @@ public abstract class CMovable
             gamemap.ActivateCells(false);
         }
     }
-    private void ActivateCellsToJump(Cell _cell, int _distance)
+    private void ActivateCellsToJump(Cell _cell, int _distance, float _roof)
     {
         Cell cell;
         EMapDirection dirStart, dir;
         int i;
 
-        const float roof = 7.0f; // стандартне обмеження висоти у підземеллях
         topHeight = _cell.GetHeight() + ((float)_distance);
-        if (topHeight > roof) topHeight = roof;
+        if (topHeight > _roof) topHeight = _roof;
         dirStart = EMapDirection.east;
         dir = dirStart;
         do
@@ -290,15 +289,42 @@ public abstract class CMovable
     }
     protected void StandartJump(int _distance)
     {
+        const float roof = 7.0f; // стандартне обмеження висоти у підземеллях
         if (selectedCell == null)
         {
             selectedCommand = ECharacterCommand.jump;
-            ActivateCellsToJump(actor.GetCurrentCell(), _distance);
+            ActivateCellsToJump(actor.GetCurrentCell(), _distance, roof);
         }
         else
         {
             RotateTo((EMapDirection)selectedCell.GetValue());
             JumpTo(selectedCell);
+            selectedCell = null;
+            gamemap.ActivateCells(false);
+        }
+    }
+    private void SprintTo(Cell _cell)
+    {
+        EMapDirection dir = (EMapDirection)selectedCell.GetValue();
+        Cell cell = actor.GetCurrentCell();
+        do
+        {
+            cell = gamemap.GetCell(cell.GetNearNumber(dir));
+            if (!(CheckSurface(cell) && cell.GetGameObject() == null)) break;
+            actor.AddCommand(ActorCommand.jump);
+        } while (cell != _cell);
+    }
+    protected void StandartSprint(int _speed)
+    {
+        if (selectedCell == null)
+        {
+            selectedCommand = ECharacterCommand.jump;
+            ActivateCellsToJump(actor.GetCurrentCell(), _speed, actor.GetCurrentCell().GetHeight() + 1.0f);
+        }
+        else
+        {
+            RotateTo((EMapDirection)selectedCell.GetValue());
+            SprintTo(selectedCell);
             selectedCell = null;
             gamemap.ActivateCells(false);
         }

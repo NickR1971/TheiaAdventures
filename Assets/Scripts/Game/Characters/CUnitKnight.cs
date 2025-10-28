@@ -7,6 +7,7 @@ public class CUnitKnight : CCharacter
     public CUnitKnight(SCharacter _character) : base(_character)
     {
         AddActiveCommand(ECharacterCommand.move);
+        AddActiveCommand(ECharacterCommand.jump);
         AddActiveCommand(ECharacterCommand.attack);
         AddActiveCommand(ECharacterCommand.interact);
         AddActiveCommand(ECharacterCommand.use);
@@ -17,6 +18,9 @@ public class CUnitKnight : CCharacter
         {
             case ECharacterCommand.move:
                 StandartMove();
+                break;
+            case ECharacterCommand.jump:
+                StandartSprint(character.secondaryAttributes.speed * 2);
                 break;
             case ECharacterCommand.attack:
                 actor.AddCommand(ActorCommand.melee);

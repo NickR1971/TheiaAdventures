@@ -39,11 +39,13 @@ public class CKnight : CActor
         {
             case ActorCommand.walk:
                 SetState(ActorState.move);
+                animator.SetBool("sprint", false);
                 animator.SetBool("walk", true);
                 if (!MoveForward(walkSpeed)) Idle();
                 break;
             case ActorCommand.run:
                 SetState(ActorState.move);
+                animator.SetBool("sprint", false);
                 animator.SetBool("walk", true);
                 animator.SetBool("run", true);
                 if (!MoveForward(runSpeed)) Idle();
@@ -61,6 +63,11 @@ public class CKnight : CActor
                 TurnBackward();
                 break;
             case ActorCommand.jump:
+                SetState(ActorState.move);
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
+                animator.SetBool("sprint", true);
+                if (!MoveForward(runSpeed * 2)) Idle();
                 break;
             case ActorCommand.crouch:
                 break;
@@ -114,6 +121,7 @@ public class CKnight : CActor
             case ActorState.move:
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);
+                animator.SetBool("sprint", false);
                 break;
             case ActorState.attack:
                 animator.SetBool("attack", false);
