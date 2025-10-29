@@ -101,6 +101,9 @@ public abstract class CCharacter : CMovable, ICharacter
             case EActorType.skeleton:
                 chr = new CUnitSkeleton(_character);
                 break;
+            case EActorType.golem:
+                chr = new CUtilGolem(_character);
+                break;
         }
 
         return chr;

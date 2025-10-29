@@ -5,13 +5,13 @@ using UnityEngine;
 public enum EUnitType
 {
     unknown, knight, mage, priest, guard,
-    warrior, orc, goblin, spider,
+    warrior, orc, goblin, spider, golem,
     zombie, skeleton, deathknight, lich
 }
 public enum EActorType
 {
     none=-1, knight=0, mage=1, goblin=2, priest=3, barbarian=4,
-    zombie=5, skeleton=6, spider=7
+    zombie=5, skeleton=6, spider=7, golem=8
 }
 public enum EConstitution
 {
@@ -24,7 +24,8 @@ public enum EOrigin
     peasant = 0, artisan = 1, noble = 2, barbarian = 3,
     animal = 4, demon = 5, elemental = 6, elf = 7,
     giant = 8, goblin = 9, ogre = 10, orc = 11,
-    monster = 12, dragon = 13, undead = 14, vampire = 15
+    monster = 12, dragon = 13, undead = 14, vampire = 15,
+    construct=16, golem=17
 }
 public enum ERegularClass
 {
@@ -81,7 +82,7 @@ public interface ICharacterManager : IService
 public class CharacterManager : MonoBehaviour, ICharacterManager
 {
     [SerializeField] private Sprite[] sprites = new Sprite[36];
-    [SerializeField] private GameObject[] prefabs = new GameObject[8];
+    [SerializeField] private GameObject[] prefabs = new GameObject[9];
     private ELocalStringID[] origins = {
         ELocalStringID.game_origin_peasant,
         ELocalStringID.game_origin_artisan,
@@ -98,7 +99,9 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_origin_monster,
         ELocalStringID.game_origin_dragon,
         ELocalStringID.game_origin_undead,
-        ELocalStringID.game_origin_vampire
+        ELocalStringID.game_origin_vampire,
+        ELocalStringID.game_origin_construct,
+        ELocalStringID.game_origin_golem
     };
     private ELocalStringID[] constType = {
         ELocalStringID.game_const_balanced, ELocalStringID.game_const_scholar,
@@ -448,6 +451,12 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 _character = CreateCharacterTemplate(
                     EOrigin.artisan, ERegularClass.priest, EConstitution.balanced, EActorType.priest);
                 _character.cName = CLocalization.GetString(ELocalStringID.game_class_priest);
+                r = true;
+                break;
+            case EUnitType.golem:
+                _character = CreateCharacterTemplate(
+                    EOrigin.golem, ERegularClass.warrior, EConstitution.goof, EActorType.golem);
+                _character.cName = CLocalization.GetString(ELocalStringID.game_origin_golem);
                 r = true;
                 break;
         }
