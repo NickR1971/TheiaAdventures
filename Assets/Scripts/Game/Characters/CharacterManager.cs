@@ -144,10 +144,10 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
     {
         int num;
 
-        switch(_chr.cType)
+        switch (_chr.cType)
         {
             case EActorType.knight:
-                switch(_chr.regularClass)
+                switch (_chr.regularClass)
                 {
                     case ERegularClass.knight:
                         num = 2;
@@ -166,7 +166,24 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 break;
             case EActorType.mage:
                 if (_chr.origin == EOrigin.undead) num = 23;
-                else num = 3;
+                else
+                {
+                    switch (_chr.regularClass)
+                    {
+                        case ERegularClass.alchemist:
+                            num = 33;
+                            break;
+                        case ERegularClass.elementalist:
+                            num = 21;
+                            break;
+                        case ERegularClass.wizard:
+                            num = 27;
+                            break;
+                        default:
+                            num = 3;
+                            break;
+                    }
+                }
                 break;
             case EActorType.barbarian:
                 num = 35;
