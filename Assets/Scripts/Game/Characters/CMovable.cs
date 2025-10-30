@@ -253,6 +253,34 @@ public abstract class CMovable
             gamemap.ActivateCells(false);
         }
     }
+    private void ActivateCellsToSprint(Cell _cell, int _distance)
+    {
+        Cell cell;
+        EMapDirection dirStart, dir;
+        int i;
+
+        topHeight = _cell.GetHeight() + 0.5f;
+        dirStart = EMapDirection.east;
+        dir = dirStart;
+        do
+        {
+            cell = _cell;
+            for (i = 0; i < _distance; i++)
+            {
+                cell = gamemap.GetCell(cell.GetNearNumber(dir));
+                if (cell == null) break;
+                if (cell.GetHeight() > topHeight) break;
+                if (CheckSurface(cell) && cell.GetGameObject() == null)
+                {
+                    cell.SetActive(true);
+                    cell.SetValue((int)dir);
+                }
+                else break;
+            }
+            dir = CDirControl.GetLeft(dir);
+        }
+        while (dir != dirStart);
+    }
     private void ActivateCellsToJump(Cell _cell, int _distance, float _roof)
     {
         Cell cell;
@@ -313,13 +341,15 @@ public abstract class CMovable
             if (!(CheckSurface(cell) && cell.GetGameObject() == null)) break;
             actor.AddCommand(ActorCommand.jump);
         } while (cell != _cell);
+
+        if (cell != _cell) Debug.Log("Sprint failed!");
     }
     protected void StandartSprint(int _speed)
     {
         if (selectedCell == null)
         {
             selectedCommand = ECharacterCommand.jump;
-            ActivateCellsToJump(actor.GetCurrentCell(), _speed, actor.GetCurrentCell().GetHeight() + 1.0f);
+            ActivateCellsToSprint(actor.GetCurrentCell(), _speed);
         }
         else
         {

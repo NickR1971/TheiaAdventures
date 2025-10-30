@@ -206,6 +206,9 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
             case EActorType.spider:
                 num = 6;
                 break;
+            case EActorType.golem:
+                num = 20;
+                break;
             default:
                 num = 1;
                 break;
@@ -271,6 +274,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                 }
                 break;
             case ERegularClass.guard:
+            case ERegularClass.savager:
                 if (templateCharacter.typeConstitution == EConstitution.balanced)
                 {
                     templateCharacter.attributes.might++;

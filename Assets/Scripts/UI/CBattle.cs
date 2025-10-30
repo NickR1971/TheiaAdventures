@@ -33,7 +33,7 @@ public class CBattle : CUI, IBattle
     [SerializeField] private Button[] actionButtons = new Button[10];
     private float cameraSpeed = 10.0f;
     private int cameraDirection;
-    private float cameraDistance = 10.0f;
+    private float cameraDistance = 5.0f;
     private Image imgChar;
     private Text nameChar;
     private ICharacter currentCharacter;

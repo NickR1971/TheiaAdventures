@@ -66,7 +66,7 @@ public class CNewGamePanel : CUI
         {
             iCharacterManager.AddCharacter(chr);
         }
-        if (iCharacterManager.GenerateStandartCharacter(EUnitType.golem, out chr))
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.spider, out chr))
         {
             iCharacterManager.AddCharacter(chr);
         }
