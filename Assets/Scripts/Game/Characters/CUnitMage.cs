@@ -7,6 +7,7 @@ public class CUnitMage : CCharacter
     public CUnitMage(SCharacter _character) : base(_character)
     {
         AddActiveCommand(ECharacterCommand.move);
+        AddActiveCommand(ECharacterCommand.jump);
         AddActiveCommand(ECharacterCommand.attack);
         AddActiveCommand(ECharacterCommand.magic);
         AddActiveCommand(ECharacterCommand.interact);
@@ -18,6 +19,9 @@ public class CUnitMage : CCharacter
         {
             case ECharacterCommand.move:
                 StandartMove();
+                break;
+            case ECharacterCommand.jump:
+                StandartTeleport(character.currentPoints.mana);
                 break;
             case ECharacterCommand.attack:
                 actor.AddCommand(ActorCommand.melee);

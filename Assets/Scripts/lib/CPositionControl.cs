@@ -21,7 +21,10 @@ public class CPositionControl
         rotationTimer = new CTimer();
         waitTimer = new CTimer();
     }
-
+    public void GoTo(Vector3 _target)
+    {
+        transform.position = _target;
+    }
     public void MoveTo(Vector3 _target, float _speed = 0)
     {
         if (move.IsActive()) return;

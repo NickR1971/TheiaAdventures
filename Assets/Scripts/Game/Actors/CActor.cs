@@ -53,6 +53,14 @@ public abstract class CActor : CGameObject
     {
         _room.Unhide();
     }
+    protected void Teleport()
+    {
+        if (targetCell == null) return;
+
+        positionControl.GoTo(targetCell.GetPosition());
+        SetCurrentCell(targetCell);
+        iCamera.SetViewPoint(targetCell.GetPosition());
+    }
     protected void JumpToTarget(float _speed)
     {
         if (targetCell == null) return;

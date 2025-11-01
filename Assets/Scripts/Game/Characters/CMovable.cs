@@ -281,6 +281,24 @@ public abstract class CMovable
         }
         while (dir != dirStart);
     }
+    private void ActivateCellsToTeleport(Cell _cell, int _distance)
+    {
+        float distance = (float)_distance + 0.5f;
+        int maxCells = gamemap.GetHeight() * gamemap.GetWidth();
+        int i;
+        Cell cell;
+        //Vector3.Distance
+        for (i = 0; i < maxCells; i++)
+        {
+            cell = gamemap.GetCell(i);
+            if (cell == null) continue;
+            if (CheckSurface(cell) && cell.GetGameObject() == null)
+            {
+                if (Vector3.Distance(_cell.GetPosition(), cell.GetPosition()) < distance)
+                    cell.SetActive(true);
+            }
+        }
+    }
     private void ActivateCellsToJump(Cell _cell, int _distance, float _roof)
     {
         Cell cell;
@@ -326,6 +344,20 @@ public abstract class CMovable
         else
         {
             RotateTo((EMapDirection)selectedCell.GetValue());
+            JumpTo(selectedCell);
+            selectedCell = null;
+            gamemap.ActivateCells(false);
+        }
+    }
+    protected void StandartTeleport(int _distance)
+    {
+        if (selectedCell == null)
+        {
+            selectedCommand = ECharacterCommand.jump;
+            ActivateCellsToTeleport(actor.GetCurrentCell(), _distance);
+        }
+        else
+        {
             JumpTo(selectedCell);
             selectedCell = null;
             gamemap.ActivateCells(false);

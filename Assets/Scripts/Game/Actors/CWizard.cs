@@ -64,6 +64,9 @@ public class CWizard : CActor
                 TurnBackward();
                 break;
             case ActorCommand.jump:
+                SetState(ActorState.move);
+                Teleport();
+                positionControl.Wait(1);
                 break;
             case ActorCommand.crouch:
                 break;
