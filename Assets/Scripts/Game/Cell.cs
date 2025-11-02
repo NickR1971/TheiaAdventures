@@ -42,6 +42,7 @@ public class Cell
     public int GetNearNumber(EMapDirection _direction) => nearList[(int)_direction];
     public void AddRoom(CRoom _room) => room = _room;
     public CRoom GetRoom() => room;
+    public bool IsHidden() => room.IsHidden();
     public int GetNumber() => number;
     public void SetObject(GameObject _obj)
     {

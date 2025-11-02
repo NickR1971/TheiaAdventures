@@ -13,7 +13,7 @@ public class CZombie : CActor
         walkSpeed = 0.5f;
         runSpeed = 2.0f;
     }
-    public override void DoCommand(ActorCommand _cmd)
+    public override void DoCommand(ActorCommand _cmd, int _param)
     {
         switch (_cmd)
         {

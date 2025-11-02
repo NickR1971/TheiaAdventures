@@ -22,7 +22,7 @@ public class CSpider : CActor
     {
         SetState(ActorState.idle);
     }
-    public override void DoCommand(ActorCommand _cmd)
+    public override void DoCommand(ActorCommand _cmd, int param)
     {
         switch (_cmd)
         {

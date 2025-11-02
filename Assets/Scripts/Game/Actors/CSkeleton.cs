@@ -13,7 +13,7 @@ public class CSkeleton : CActor
         walkSpeed = 1.0f;
         runSpeed = 2.0f;
     }
-    public override void DoCommand(ActorCommand _cmd)
+    public override void DoCommand(ActorCommand _cmd, int param)
     {
         switch (_cmd)
         {

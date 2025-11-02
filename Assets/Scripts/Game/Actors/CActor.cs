@@ -27,7 +27,8 @@ public abstract class CActor : CGameObject
     private class Command
     {
         public ActorCommand command;
-        public Command(ActorCommand _cmd) { command = _cmd; }
+        public int param;
+        public Command(ActorCommand _cmd,int _param) { command = _cmd; param = _param; }
     }
 
     private Queue<Command> cmdList = new Queue<Command>();
@@ -105,7 +106,7 @@ public abstract class CActor : CGameObject
         }
 
         Command cmd = cmdList.Dequeue();
-        DoCommand(cmd.command);
+        DoCommand(cmd.command, cmd.param);
     }
     protected virtual void Adjust() { }
     public void SetCharacter(CCharacter _character)
@@ -119,11 +120,15 @@ public abstract class CActor : CGameObject
     public string GetName() => character.GetName();
     public CActor SetSprite(Sprite _spr) { charSprite = _spr; return this; }
     public Sprite GetSprite() => charSprite;
-    public void AddCommand(ActorCommand _cmd) => cmdList.Enqueue(new Command(_cmd));
+    public void AddCommand(ActorCommand _cmd, int param=0)
+    {
+        cmdList.Enqueue(new Command(_cmd, param));
+    }
+
     public ActorState GetState() => state;
     public void SetTarget(Cell _cell) => targetCell = _cell;
     public void SetTopJump(float _value) => topHeight = _value;
-    public abstract void DoCommand(ActorCommand _cmd);
+    public abstract void DoCommand(ActorCommand _cmd, int _param);
     public abstract void Idle();
     protected override void OnLeftClick()
     {

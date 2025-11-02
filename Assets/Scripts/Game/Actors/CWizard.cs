@@ -41,7 +41,7 @@ public class CWizard : CActor
     {
         SetState(ActorState.idle);
     }
-    public override void DoCommand(ActorCommand _cmd)
+    public override void DoCommand(ActorCommand _cmd, int _param)
     {
         switch (_cmd)
         {
@@ -64,9 +64,18 @@ public class CWizard : CActor
                 TurnBackward();
                 break;
             case ActorCommand.jump:
-                SetState(ActorState.move);
-                Teleport();
-                positionControl.Wait(1);
+                SetState(ActorState.magic);
+                if (_param == 0)
+                {
+                    animator.SetBool("victory", true);
+                    positionControl.Wait(2.5f);
+                }                
+                else
+                {
+                    animator.SetBool("victory", false);
+                    Teleport();
+                    positionControl.Wait(1.2f);
+                }
                 break;
             case ActorCommand.crouch:
                 break;
