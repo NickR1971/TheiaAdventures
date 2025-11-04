@@ -69,7 +69,7 @@ public class CMove
 
     //---------------------------------------------------------------------------
     // SetActionSpeed
-    // істановлюємо час дії згідно заданої швидкості
+    // встановлюємо час дії згідно заданої швидкості
     public void SetActionSpeed(float _actionSpeed)
     {
         actionSpeed = _actionSpeed;
