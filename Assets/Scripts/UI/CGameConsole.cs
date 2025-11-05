@@ -57,6 +57,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         }
         AddCommand(new CGameConsoleCommand("help", Help));
         AddCommand(new CGameConsoleCommand("quit", Quit,ELocalStringID.core_quit));
+        AddCommand(new CGameConsoleCommand("sqe", SQE, "solve quadratic equation: sqe a b c"));
         AddCommand(new CGameConsoleCommand("getString", GetLocStr, "check local string"));
         mainMenu = AllServices.Container.Get<IMainMenu>();
         iInputController = AllServices.Container.Get<IInputController>();
@@ -99,6 +100,60 @@ public class CGameConsole : MonoBehaviour, IGameConsole
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
     public bool IsActive() => gameObject.activeSelf;
+    private void SQE(string _str)
+    {
+        string str = _str;
+        float a, b, c, x1, x2;
+        int i;
+
+        a = CUtil.StringToFloat(CUtil.GetWord(str));
+
+        for (i = 0; i < _str.Length; i++)
+        {
+            if (_str[i] <= ' ') break;
+        }
+        while (i < _str.Length && _str[i] <= ' ') i++;
+        if (i < _str.Length)
+        {
+            str = _str.Substring(i);
+            b = CUtil.StringToFloat(CUtil.GetWord(str));
+        }
+        else b = 0;
+        while (i < _str.Length)
+        {
+            if (_str[i] <= ' ') break;
+            i++;
+        }
+        while (i < _str.Length && _str[i] <= ' ') i++;
+        if (i < _str.Length)
+        {
+            str = _str.Substring(i);
+            c = CUtil.StringToFloat(CUtil.GetWord(str));
+        }
+        else c = 0;
+        if (a == 0)
+        {
+            ShowMessage("Error: no a");
+        }
+        else
+        {
+            str = "" + a + "XX";
+            if (b >= 0) str = str + "+";
+            str = str + b+"X";
+            if (c >= 0) str = str + "+";
+            str = str + c + "=0";
+            ShowMessage(str);
+        }
+        if (!CUtil.SolveQuadraticEcuation(a, b, c, out x1, out x2))
+        {
+            ShowMessage("Solve not found!");
+        }
+        else
+        {
+            ShowMessage("x1=" + x1);
+            ShowMessage("x2=" + x2);
+        }
+    }
     private void Quit(string _str) => mainMenu.Quit();
     private void Help(string _str)
     {

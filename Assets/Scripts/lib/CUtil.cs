@@ -52,4 +52,15 @@ public static class CUtil
     {
         AllServices.Container.Get<IGameConsole>().ShowMessage(_msg);
     }
+    public static bool SolveQuadraticEcuation(float _a, float _b, float _c, out float _x1, out float _x2)
+    {
+        float d = (_b * _b) - (4.0f * _a * _c);
+        _x1 = _x2 = 0;
+        if (d < 0) return false;
+
+        d = Mathf.Sqrt(d);
+        _x1 = (-_b + d) / (2.0f * _a);
+        _x2 = (-_b - d) / (2.0f * _a);
+        return true;
+    }
 }
