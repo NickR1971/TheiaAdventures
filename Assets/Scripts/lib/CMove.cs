@@ -56,12 +56,11 @@ public class CMove
         {
             float hmax, h;
             float b, c;
-            float x1, x2;
             hmax = _topJump - _start.y;
             h = _target.y - _start.y;
             b = (4.0f * hmax) - (2.0f * h);
             c = h * h;
-            if (CUtil.SolveQuadraticEcuation(1.0f, b, c, out x1, out x2))
+            if (CUtil.SolveQuadraticEcuation(1.0f, b, c, out float x1, out float x2))
             {
                 //CUtil.LogConsole("x1=" + x1 + " x2=" + x2);
                 if (x2 < x1) jumpA = x2;

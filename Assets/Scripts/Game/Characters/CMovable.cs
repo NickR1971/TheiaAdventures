@@ -333,6 +333,7 @@ public abstract class CMovable
         actor.SetTarget(_cell);
         actor.SetTopJump(topHeight);
         actor.AddCommand(ActorCommand.jump);
+        actor.AddCommand(ActorCommand.jump, 1);
     }
     protected void StandartJump(int _distance)
     {

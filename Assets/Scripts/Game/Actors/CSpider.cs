@@ -12,7 +12,7 @@ public class CSpider : CActor
         InitActor();
         animator = GetComponent<Animator>();
         walkSpeed = 3.0f;
-        runSpeed = 3.0f;
+        runSpeed = 5.0f;
     }
     protected override void Adjust()
     {
@@ -22,7 +22,7 @@ public class CSpider : CActor
     {
         SetState(ActorState.idle);
     }
-    public override void DoCommand(ActorCommand _cmd, int param)
+    public override void DoCommand(ActorCommand _cmd, int _param)
     {
         switch (_cmd)
         {
@@ -48,8 +48,16 @@ public class CSpider : CActor
             case ActorCommand.jump:
                 SetState(ActorState.move);
                 animator.SetBool("walk", false);
-                animator.SetBool("leap", true);
-                JumpToTarget(walkSpeed);
+                if (_param == 0)
+                {
+                    animator.SetBool("leap", true);
+                    positionControl.Wait(0.45f);
+                }
+                if (_param == 1)
+                {
+                    animator.SetBool("leap", false);
+                    JumpToTarget(runSpeed);
+                }
                 break;
             case ActorCommand.crouch:
                 break;
