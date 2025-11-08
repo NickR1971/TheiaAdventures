@@ -18,7 +18,8 @@ public class CMove
     private float actionSpeed;
     private CTimer actionTimer;
     private float topJump = -1.0f;
-    private float topTime;
+    private float jumpA;
+    private float jumpB;
 
     //---------------------------------------------------------------------------
     // конструктор встановлює час дії на 1 секунду за замовчуванням 
@@ -53,19 +54,31 @@ public class CMove
         topJump = _topJump;
         if (_topJump > 0)
         {
-            float h1, h2;
-            h1 = _topJump - _start.y;
-            h2 = _topJump - _target.y;
-            topTime = h1 / (h1 + h2);
+            float hmax, h;
+            float b, c;
+            float x1, x2;
+            hmax = _topJump - _start.y;
+            h = _target.y - _start.y;
+            b = (4.0f * hmax) - (2.0f * h);
+            c = h * h;
+            if (CUtil.SolveQuadraticEcuation(1.0f, b, c, out x1, out x2))
+            {
+                //CUtil.LogConsole("x1=" + x1 + " x2=" + x2);
+                if (x2 < x1) jumpA = x2;
+                else jumpA = x1;
+                jumpB = h - jumpA;
+            }
+            else
+            {
+                CUtil.LogConsole("jump failed");
+                topJump = -1.0f;
+            }
         }
         CalcActionTime();
     }
     //---------------------------------------------------------------------------
     // SetActionTime
-    public void SetActionTime(float _actionTime)
-    {
-        actionTimer.SetActionTime(_actionTime);
-    }
+    public void SetActionTime(float _actionTime) => actionTimer.SetActionTime(_actionTime);
 
     //---------------------------------------------------------------------------
     // SetActionSpeed
@@ -92,10 +105,7 @@ public class CMove
     //---------------------------------------------------------------------------
     // GetCurrentPosition
     // отримуємо поточну позицію
-    public Vector3 GetCurrentPosition()
-    {
-        return currentPosition;
-    }
+    public Vector3 GetCurrentPosition() => currentPosition;
 
     //---------------------------------------------------------------------------
     // UpdatePosition
@@ -108,7 +118,7 @@ public class CMove
             currentPosition = Vector3.Lerp(startPosition, targetPosition, t);
             if (topJump > 0)
             {
-                currentPosition.y = topJump - Mathf.Abs(topTime - t) * topJump;
+                currentPosition.y = (jumpA * t * t) + (jumpB * t) + startPosition.y;
             }
         }
         else
@@ -120,9 +130,6 @@ public class CMove
     //---------------------------------------------------------------------------
     // CorrectTargetPosition
     // Корекція координат призначення використовується якщо ціль рухається
-    public void CorrectTargetPosition(Vector3 _target)
-    {
-        targetPosition = _target;
-    }
+    public void CorrectTargetPosition(Vector3 _target) => targetPosition = _target;
 
 }
