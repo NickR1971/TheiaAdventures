@@ -45,18 +45,8 @@ public class CNewGamePanel : CUI
     }
     public void ToGame()
     {
-        //iCharacterManager.AddCharacter(character);
         SCharacter chr;
-        if (iCharacterManager.GenerateStandartCharacter(EUnitType.knight, out chr))
-        {
-            chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_knight);
-            iCharacterManager.AddCharacter(chr);
-        }
-        if (iCharacterManager.GenerateStandartCharacter(EUnitType.mage, out chr))
-        {
-            chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_mage);
-            iCharacterManager.AddCharacter(chr);
-        }
+        iCharacterManager.AddCharacter(character);
         if (iCharacterManager.GenerateStandartCharacter(EUnitType.priest, out chr))
         {
             chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_priest);
@@ -81,16 +71,20 @@ public class CNewGamePanel : CUI
     }
     public void OnCreateKnight()
     {
-        SCharacter chr = iCharacterManager.CreateCharacterTemplate(
-            EOrigin.noble, ERegularClass.knight, EConstitution.leader, EActorType.knight);
-        chr.cName = "sir Marcus";
+        SCharacter chr;
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.knight, out chr))
+        {
+            chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_knight);
+        }
         ShowSelected(chr);
     }
     public void OnCreateMage()
     {
-        SCharacter chr = iCharacterManager.CreateCharacterTemplate(
-            EOrigin.noble, ERegularClass.mage, EConstitution.genius, EActorType.mage);
-        chr.cName = "Henner";
+        SCharacter chr;
+        if (iCharacterManager.GenerateStandartCharacter(EUnitType.mage, out chr))
+        {
+            chr.cName = CLocalization.GetString(ELocalStringID.game_heroname_mage);
+        }
         ShowSelected(chr);
     }
 }
