@@ -257,62 +257,62 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         templateCharacter.cType = _actor;
         templateCharacter.numPC = -1;
 
-        switch (_rClass)
+        if (templateCharacter.typeConstitution == EConstitution.balanced)
         {
-            case ERegularClass.knight:
-                if (templateCharacter.typeConstitution == EConstitution.balanced)
-                {
+            switch (templateCharacter.origin)
+            {
+                case EOrigin.noble:
+                    templateCharacter.attributes.personality++;
+                    break;
+                case EOrigin.artisan:
+                    templateCharacter.attributes.knowledge++;
+                    break;
+                case EOrigin.peasant:
+                    templateCharacter.attributes.might++;
+                    break;
+            }
+            switch (_rClass)
+            {
+                case ERegularClass.knight:
                     templateCharacter.attributes.might++;
                     templateCharacter.attributes.intelligence--;
-                }
-                break;
-            case ERegularClass.warrior:
-                if (templateCharacter.typeConstitution == EConstitution.balanced)
-                {
+                    break;
+                case ERegularClass.warrior:
                     templateCharacter.attributes.might++;
                     templateCharacter.attributes.personality--;
-                }
-                break;
-            case ERegularClass.guard:
-            case ERegularClass.savager:
-                if (templateCharacter.typeConstitution == EConstitution.balanced)
-                {
+                    break;
+                case ERegularClass.guard:
+                case ERegularClass.savager:
                     templateCharacter.attributes.might++;
                     templateCharacter.attributes.knowledge--;
-                }
-                break;
-            case ERegularClass.mage:
-            case ERegularClass.alchemist:
-                if (templateCharacter.typeConstitution == EConstitution.balanced)
-                {
+                    break;
+                case ERegularClass.mage:
+                case ERegularClass.alchemist:
                     templateCharacter.attributes.might--;
                     templateCharacter.attributes.knowledge++;
-                }
-                break;
-            case ERegularClass.wizard:
-            case ERegularClass.adept:
-                if (templateCharacter.typeConstitution == EConstitution.balanced)
-                {
+                    break;
+                case ERegularClass.wizard:
+                case ERegularClass.adept:
                     templateCharacter.attributes.might--;
                     templateCharacter.attributes.intelligence++;
-                }
-                break;
-            case ERegularClass.sorcerer:
-            case ERegularClass.elementalist:
-            case ERegularClass.warlock:
-                if (templateCharacter.typeConstitution == EConstitution.balanced)
-                {
+                    break;
+                case ERegularClass.sorcerer:
+                case ERegularClass.elementalist:
+                case ERegularClass.warlock:
                     templateCharacter.attributes.might--;
                     templateCharacter.attributes.personality++;
-                }
-                break;
-            case ERegularClass.priest:
-                if (templateCharacter.typeConstitution == EConstitution.balanced)
-                {
+                    break;
+                case ERegularClass.priest:
                     templateCharacter.attributes.dexterity--;
                     templateCharacter.attributes.personality++;
-                }
-                break;
+                    break;
+                default:
+                    Debug.Log("Class not corrected " + _rClass.ToString());
+                    break;
+            }
+        }
+        switch (_rClass)
+        {
             case ERegularClass.zombie:
             case ERegularClass.skeleton:
                 if (templateCharacter.origin != EOrigin.undead)
@@ -321,11 +321,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
                     Debug.Log("origin turn to undead for " + _rClass.ToString());
                 }
                 break;
-            default:
-                Debug.Log("Class not corrected " + _rClass.ToString());
-                break;
         }
-
         switch (templateCharacter.origin)
         {
             case EOrigin.barbarian:
