@@ -45,7 +45,7 @@ public class CZombie : CActor
                 break;
             case ActorCommand.crouch:
                 break;
-            case ActorCommand.melee:
+            case ActorCommand.attack:
                 SetState(ActorState.attack);
                 animator.SetBool("run", false);
                 animator.SetBool("walk", false);

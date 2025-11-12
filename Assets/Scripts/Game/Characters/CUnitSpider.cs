@@ -24,13 +24,13 @@ public class CUnitSpider : CCharacter
                 StandartJump();
                 break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.melee);
+                actor.AddCommand(ActorCommand.attack, 2);
                 break;
             case ECharacterCommand.range:
-                actor.AddCommand(ActorCommand.range);
+                actor.AddCommand(ActorCommand.attack, 3);
                 break;
             case ECharacterCommand.special:
-                actor.AddCommand(ActorCommand.heavyattack);
+                actor.AddCommand(ActorCommand.attack);
                 break;
             case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.interact);

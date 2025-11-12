@@ -23,7 +23,7 @@ public class CUnitKnight : CCharacter
                 StandartSprint(character.secondaryAttributes.speed * 2);
                 break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.melee);
+                actor.AddCommand(ActorCommand.attack);
                 break;
             case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.interact);

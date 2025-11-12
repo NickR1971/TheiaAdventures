@@ -24,10 +24,10 @@ public class CUnitMage : CCharacter
                 StandartTeleport(character.currentPoints.mana);
                 break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.melee);
+                actor.AddCommand(ActorCommand.attack);
                 break;
             case ECharacterCommand.magic:
-                actor.AddCommand(ActorCommand.magic);
+                actor.AddCommand(ActorCommand.attack, 2);
                 break;
             case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.interact);

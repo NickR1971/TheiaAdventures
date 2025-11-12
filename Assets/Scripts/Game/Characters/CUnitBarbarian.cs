@@ -19,7 +19,7 @@ public class CUnitBarbarian : CCharacter
                 StandartMove();
                 break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.melee);
+                actor.AddCommand(ActorCommand.attack);
                 break;
             case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.interact);

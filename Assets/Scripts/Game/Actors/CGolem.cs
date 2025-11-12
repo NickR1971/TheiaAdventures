@@ -43,7 +43,7 @@ public class CGolem : CActor
                 SetState(ActorState.move);
                 TurnBackward();
                 break;
-            case ActorCommand.melee:
+            case ActorCommand.attack:
                 SetState(ActorState.attack);
                 animator.SetBool("attack", true);
                 animator.SetBool("range", false);

@@ -46,7 +46,7 @@ public class CGoblin : CActor
                 break;
             case ActorCommand.crouch:
                 break;
-            case ActorCommand.melee:
+            case ActorCommand.attack:
                 SetState(ActorState.attack);
                 animator.SetBool("attack", true);
                 positionControl.Wait(1);

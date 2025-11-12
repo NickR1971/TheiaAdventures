@@ -18,7 +18,7 @@ public class CUtilGolem : CCharacter
                 StandartMove();
                 break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.melee);
+                actor.AddCommand(ActorCommand.attack);
                 break;
             case ECharacterCommand.range:
                 actor.AddCommand(ActorCommand.range);

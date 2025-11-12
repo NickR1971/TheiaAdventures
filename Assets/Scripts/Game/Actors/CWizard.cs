@@ -43,6 +43,8 @@ public class CWizard : CActor
     }
     public override void DoCommand(ActorCommand _cmd, int _param)
     {
+        float ftime;
+
         switch (_cmd)
         {
             case ActorCommand.walk:
@@ -79,31 +81,42 @@ public class CWizard : CActor
                 break;
             case ActorCommand.crouch:
                 break;
-            case ActorCommand.melee:
+            case ActorCommand.attack:
                 SetState(ActorState.attack);
-                animator.SetBool("attack", true);
+                animator.SetBool("attack", false);
                 animator.SetBool("attack2", false);
-                animator.SetBool("range", false);
-                positionControl.Wait(1);
+                animator.SetBool("attack3", false);
+                animator.SetBool("attack4", false);
+                switch (_param)
+                {
+                    case 1:
+                        animator.SetBool("attack", true);
+                        ftime = 1.0f;
+                        break;
+                    case 2:
+                        animator.SetBool("attack2", true);
+                        ftime = 1.0f;
+                        break;
+                    case 3:
+                        animator.SetBool("attack3", true);
+                        ftime = 1.7f;
+                        break;
+                    case 4:
+                        animator.SetBool("attack4", true);
+                        ftime = 1.333f;
+                        break;
+                    default:
+                        animator.SetBool("attack", true);
+                        ftime = 1.0f;
+                        break;
+                }
+                positionControl.Wait(ftime);
                 break;
             case ActorCommand.heavyattack:
-                SetState(ActorState.attack);
-                animator.SetBool("attack", false);
-                animator.SetBool("attack2", true);
-                animator.SetBool("range", false);
-                positionControl.Wait(1);
                 break;
             case ActorCommand.range:
-                SetState(ActorState.attack);
-                animator.SetBool("range", true);
-                animator.SetBool("attack", false);
-                animator.SetBool("attack2", false);
-                positionControl.Wait(1);
                 break;
             case ActorCommand.magic:
-                SetState(ActorState.magic);
-                animator.SetBool("magic", true);
-                positionControl.Wait(1);
                 break;
             case ActorCommand.interact:
                 SetState(ActorState.use);
@@ -138,7 +151,8 @@ public class CWizard : CActor
             case ActorState.attack:
                 animator.SetBool("attack", false);
                 animator.SetBool("attack2", false);
-                animator.SetBool("range", false);
+                animator.SetBool("attack3", false);
+                animator.SetBool("attack4", false);
                 break;
             case ActorState.magic:
                 animator.SetBool("magic", false);

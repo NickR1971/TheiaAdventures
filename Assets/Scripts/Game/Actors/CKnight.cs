@@ -71,7 +71,7 @@ public class CKnight : CActor
                 break;
             case ActorCommand.crouch:
                 break;
-            case ActorCommand.melee:
+            case ActorCommand.attack:
                 SetState(ActorState.attack);
                 animator.SetBool("attack2", true);
                 animator.SetBool("attack", false);

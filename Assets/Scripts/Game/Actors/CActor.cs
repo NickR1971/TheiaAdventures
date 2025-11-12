@@ -5,7 +5,7 @@ using UnityEngine;
 public enum ActorState { idle, move, attack, magic, use, hit, die }
 
 public enum ActorCommand { wait, walk, run, turnleft, turnright, turnback, jump, crouch,
-    melee, heavyattack, range, magic, interact, use, hit, die }
+    attack, heavyattack, range, magic, interact, use, hit, die }
 
 public abstract class CActor : CGameObject
 {
@@ -132,7 +132,7 @@ public abstract class CActor : CGameObject
     public abstract void Idle();
     protected override void OnLeftClick()
     {
-        AddCommand(ActorCommand.melee);
+        AddCommand(ActorCommand.attack);
     }
     protected override void OnRightClick()
     {

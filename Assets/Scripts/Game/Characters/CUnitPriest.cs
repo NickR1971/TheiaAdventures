@@ -20,10 +20,10 @@ public class CUnitPriest : CCharacter
                 StandartMove();
                 break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.melee);
+                actor.AddCommand(ActorCommand.attack, 4);
                 break;
             case ECharacterCommand.magic:
-                actor.AddCommand(ActorCommand.magic);
+                actor.AddCommand(ActorCommand.attack, 3);
                 break;
             case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.interact);

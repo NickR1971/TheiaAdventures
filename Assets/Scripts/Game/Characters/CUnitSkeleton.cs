@@ -17,7 +17,7 @@ public class CUnitSkeleton : CCharacter
                 StandartMove();
                 break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.melee);
+                actor.AddCommand(ActorCommand.attack);
                 break;
         }
     }

@@ -24,6 +24,8 @@ public class CSpider : CActor
     }
     public override void DoCommand(ActorCommand _cmd, int _param)
     {
+        float ftime;
+
         switch (_cmd)
         {
             case ActorCommand.run:
@@ -61,26 +63,31 @@ public class CSpider : CActor
                 break;
             case ActorCommand.crouch:
                 break;
-            case ActorCommand.melee:
+            case ActorCommand.attack:
                 SetState(ActorState.attack);
                 animator.SetBool("attack2", false);
                 animator.SetBool("attack", false);
-                animator.SetBool("attack3", true);
-                positionControl.Wait(0.9f);
-                break;
-            case ActorCommand.heavyattack:
-                SetState(ActorState.attack);
                 animator.SetBool("attack3", false);
-                animator.SetBool("attack2", false);
-                animator.SetBool("attack", true);
-                positionControl.Wait(1.1f);
-                break;
-            case ActorCommand.range:
-                SetState(ActorState.attack);
-                animator.SetBool("attack3", false);
-                animator.SetBool("attack", false);
-                animator.SetBool("attack2", true);
-                positionControl.Wait(1);
+                switch (_param)
+                {
+                    case 1:
+                        animator.SetBool("attack", true);
+                        ftime = 1.1f;
+                        break;
+                    case 2:
+                        animator.SetBool("attack2", true);
+                        ftime = 1.0f;
+                        break;
+                    case 3:
+                        animator.SetBool("attack3", true);
+                        ftime = 0.9f;
+                        break;
+                    default:
+                        animator.SetBool("attack", true);
+                        ftime = 1.1f;
+                        break;
+                }
+                positionControl.Wait(ftime);
                 break;
             case ActorCommand.interact:
                 SetState(ActorState.use);
