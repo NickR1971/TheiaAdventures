@@ -68,23 +68,20 @@ public class CSpider : CActor
                 animator.SetBool("attack2", false);
                 animator.SetBool("attack", false);
                 animator.SetBool("attack3", false);
+                ftime = 0.8f;
                 switch (_param)
                 {
                     case 1:
                         animator.SetBool("attack", true);
-                        ftime = 1.1f;
                         break;
                     case 2:
                         animator.SetBool("attack2", true);
-                        ftime = 1.0f;
                         break;
                     case 3:
                         animator.SetBool("attack3", true);
-                        ftime = 0.9f;
                         break;
                     default:
                         animator.SetBool("attack", true);
-                        ftime = 1.1f;
                         break;
                 }
                 positionControl.Wait(ftime);

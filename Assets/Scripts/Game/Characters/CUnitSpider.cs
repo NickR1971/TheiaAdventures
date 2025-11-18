@@ -8,6 +8,7 @@ public class CUnitSpider : CCharacter
     {
         AddActiveCommand(ECharacterCommand.move);
         AddActiveCommand(ECharacterCommand.jump);
+        AddActiveCommand(ECharacterCommand.crouch);
         AddActiveCommand(ECharacterCommand.attack);
         AddActiveCommand(ECharacterCommand.range);
         AddActiveCommand(ECharacterCommand.special);
@@ -23,14 +24,16 @@ public class CUnitSpider : CCharacter
             case ECharacterCommand.jump:
                 StandartJump();
                 break;
+            case ECharacterCommand.crouch:
+                break;
             case ECharacterCommand.attack:
-                actor.AddCommand(ActorCommand.attack, 2);
+                actor.AddCommand(ActorCommand.attack);
                 break;
             case ECharacterCommand.range:
                 actor.AddCommand(ActorCommand.attack, 3);
                 break;
             case ECharacterCommand.special:
-                actor.AddCommand(ActorCommand.attack);
+                actor.AddCommand(ActorCommand.attack, 2);
                 break;
             case ECharacterCommand.interact:
                 actor.AddCommand(ActorCommand.interact);

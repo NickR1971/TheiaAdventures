@@ -41,6 +41,7 @@ public struct SCharacter
     public int portraitIndex;
     public int numPC;
     public EConstitution typeConstitution;
+    public ECharacterLevel level;
     public SAttributes attributes;
     public SSecondaryAttributes secondaryAttributes;
     public SCharactersPoints points;

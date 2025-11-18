@@ -19,6 +19,10 @@ public enum EConstitution
     goof = 5, orphan = 6, genius = 7, nerd = 8, politician = 9,
     animal = 10
 }
+public enum ECharacterLevel
+{
+    recruit = 0, regular = 1, veteran = 2, elite = 3, hero = 4, demigod = 5
+}
 public enum EOrigin
 {
     peasant = 0, artisan = 1, noble = 2, barbarian = 3,
@@ -111,7 +115,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         ELocalStringID.game_const_nerd, ELocalStringID.game_const_politician,
         ELocalStringID.game_origin_animal };
     private readonly int[] mightValues = { 3, 1, 4, 4, 2, 5, 3, 1, 2, 2, 4 };
-    private readonly int[] dexValues =   { 3, 2, 4, 3, 4, 3, 5, 1, 2, 2, 2 };
+    private readonly int[] dexValues =   { 3, 2, 4, 3, 4, 3, 5, 1, 2, 2, 4 };
     private readonly int[] intValues =   { 3, 4, 3, 2, 4, 1, 2, 5, 2, 3, 1 };
     private readonly int[] persValues =  { 3, 4, 3, 4, 2, 3, 2, 3, 3, 5, 3 };
     private readonly int[] knowValues =  { 3, 4, 1, 2, 3, 1, 2, 4, 5, 1, 3 };
@@ -253,6 +257,7 @@ public class CharacterManager : MonoBehaviour, ICharacterManager
         templateCharacter.origin = _origin;
         templateCharacter.regularClass = _rClass;
         templateCharacter.typeConstitution = _constitution;
+        templateCharacter.level = ECharacterLevel.recruit;
         templateCharacter.attributes = SetAttributes(templateCharacter.typeConstitution);
         templateCharacter.cType = _actor;
         templateCharacter.numPC = -1;
